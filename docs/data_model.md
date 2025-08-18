@@ -1,7 +1,7 @@
 # 数据模型（本地）
 
 ## 实体
-- Template 模板
+- Template 模板（Web 首版以 docs/new 为准）
   - id: string
   - name: string
   - styleTag: ['治愈','元气','温柔','梦幻']
@@ -13,7 +13,7 @@
 - MoodRecord 情绪记录
   - id, date, mood(1..5), color(hex), note(<=120), cardProjectId
 
-## 模板 JSON（示例）
+## 模板 JSON（示例，更多见 `docs/new/mockup-templates.json`）
 ```json
 {
   "id": "tpl_cute_01",

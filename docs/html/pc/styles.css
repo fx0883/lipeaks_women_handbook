@@ -202,6 +202,41 @@ body {
   background: var(--pink-light);
 }
 
+/* 移动端菜单按钮 */
+.menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--borderRadiusMedium);
+  border: 1px solid var(--colorNeutralStroke1);
+  background: var(--colorNeutralBackground1);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-btn { display: inline-flex; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    position: absolute;
+    right: 16px;
+    left: 16px;
+    top: 64px;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: var(--colorNeutralBackground1);
+    border: 1px solid var(--colorNeutralStroke1);
+    border-radius: var(--borderRadiusXLarge);
+    box-shadow: var(--shadow16);
+  }
+  .nav-links.open a {
+    width: 100%;
+  }
+}
+
 /* 主内容区域 - Fluent UI 扁平化风格 */
 .main-content {
   flex: 1;
@@ -801,6 +836,8 @@ label {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--colorNeutralStroke1);
   transition: all var(--durationFast) ease;
+  text-decoration: none;
+  color: var(--colorNeutralForeground1);
 }
 
 .album-item:hover {
@@ -812,6 +849,34 @@ label {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+
+/* 相册标题与日期的温柔风样式（覆盖内联样式） */
+.album-item > div:last-child { padding: 12px; }
+.album-item > div:last-child > div:nth-child(1) {
+  font-size: 15px !important;
+  font-weight: var(--fontWeightSemibold) !important;
+  margin-bottom: 6px !important;
+  color: var(--colorNeutralForeground1) !important;
+}
+.album-item > div:last-child > div:nth-child(2) {
+  font-size: 12px !important;
+  color: var(--pink-dark) !important;
+  background: var(--pink-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--colorNeutralStroke1);
+}
+.album-item > div:last-child > div:nth-child(2)::before {
+  content: "📅";
+  font-size: 12px;
+}
+.album-item * { text-decoration: none; }
+.album-item:hover > div:last-child > div:nth-child(1) {
+  color: var(--pink-dark) !important;
 }
 
 /* 工具栏 - Fluent UI 扁平化风格 */

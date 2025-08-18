@@ -10,7 +10,8 @@
   <!-- 顶部导航栏 -->
   <nav class="top-nav">
     <a href="index.html" class="logo">出片手账</a>
-    <div class="nav-links">
+    <button class="menu-btn" aria-label="打开菜单" title="菜单">☰</button>
+    <div class="nav-links" id="topNavLinks">
       <a href="create.html">出片</a>
       <a href="mood.html">打卡</a>
       <a href="album.html">相册</a>
@@ -53,13 +54,10 @@
       <div class="card" id="data-collection">
         <h2>📊 数据收集</h2>
         <div class="policy-content">
-          <h3>我们收集的信息</h3>
-          <p>为了提供更好的服务，我们可能会收集以下信息：</p>
+          <h3>我们收集的信息（Web 版最小化）</h3>
+          <p>为了提供更好的服务（并避免歧义），MVP 阶段仅在本地处理必要数据：</p>
           <ul>
-            <li><strong>账户信息：</strong>注册时提供的手机号、邮箱、昵称等</li>
-            <li><strong>使用数据：</strong>应用使用记录、功能访问频率等</li>
-            <li><strong>设备信息：</strong>设备型号、操作系统版本、应用版本等</li>
-            <li><strong>内容数据：</strong>您创建的作品、情绪记录等（仅本地存储）</li>
+            <li><strong>内容数据：</strong>您创建的作品、情绪记录、主题偏好（仅本地存储）</li>
           </ul>
           
           <h3>我们不会收集的信息</h3>
@@ -68,6 +66,7 @@
             <li>位置信息（除非您明确授权）</li>
             <li>通讯录、短信等个人隐私数据</li>
             <li>其他与产品功能无关的个人信息</li>
+            <li>账户体系相关信息（MVP 不提供注册/登录）</li>
           </ul>
         </div>
       </div>
@@ -79,11 +78,9 @@
           <h3>使用目的</h3>
           <p>我们收集的信息将用于以下目的：</p>
           <ul>
-            <li>提供和改进产品服务</li>
-            <li>个性化用户体验</li>
-            <li>技术支持和问题解决</li>
-            <li>安全防护和风险控制</li>
-            <li>产品功能开发和优化</li>
+            <li>在您的设备本地提供与改进产品服务</li>
+            <li>个性化您的本地主题、模板等体验</li>
+            <li>技术支持和问题解决（不上传个人数据）</li>
           </ul>
           
           <h3>使用原则</h3>
@@ -104,15 +101,15 @@
           <p>我们采用多种安全措施保护您的数据：</p>
           <ul>
             <li><strong>数据加密：</strong>所有数据传输和存储都经过加密</li>
-            <li><strong>本地存储：</strong>敏感数据主要存储在您的设备上</li>
+            <li><strong>本地存储：</strong>敏感数据仅存储在您的设备上</li>
             <li><strong>访问控制：</strong>严格控制数据访问权限</li>
             <li><strong>安全审计：</strong>定期进行安全检查和评估</li>
           </ul>
           
           <h3>数据存储</h3>
           <ul>
-            <li>您的作品和记录主要存储在本地设备</li>
-            <li>云端仅存储必要的账户和设置信息</li>
+            <li>您的作品和记录仅存储在本地设备</li>
+            <li>MVP 阶段不启用云端同步/备份</li>
             <li>支持数据导出和删除功能</li>
             <li>定期清理无用的临时数据</li>
           </ul>
@@ -124,22 +121,10 @@
         <h2>🤝 数据共享</h2>
         <div class="policy-content">
           <h3>我们不会共享您的数据</h3>
-          <p>除以下情况外，我们不会与第三方共享您的个人信息：</p>
-          <ul>
-            <li>获得您的明确同意</li>
-            <li>法律法规要求</li>
-            <li>保护用户和公众的安全</li>
-            <li>防止欺诈和滥用行为</li>
-          </ul>
+          <p>MVP 阶段不与任何第三方共享您的个人信息。</p>
           
           <h3>第三方服务</h3>
-          <p>我们可能使用第三方服务提供商来支持某些功能：</p>
-          <ul>
-            <li>云存储服务（仅存储非敏感数据）</li>
-            <li>分析服务（匿名化数据）</li>
-            <li>支付服务（如适用）</li>
-          </ul>
-          <p>这些服务提供商都受到严格的隐私保护协议约束。</p>
+          <p>首版不集成广告与追踪 SDK；无云存储、无账户体系相关第三方服务。</p>
         </div>
       </div>
 
@@ -159,7 +144,7 @@
           
           <h3>如何行使权利</h3>
           <ul>
-            <li>在应用内设置中管理您的数据</li>
+            <li>在应用内设置中导出/删除本地数据</li>
             <li>通过客服渠道联系我们</li>
             <li>发送邮件到隐私保护邮箱</li>
             <li>我们会在15个工作日内回复您的请求</li>
@@ -188,9 +173,10 @@
             </div>
             
             <div class="contact-method">
-              <h4>📞 客服热线</h4>
-              <p><strong>客服电话：</strong>400-888-8888</p>
-              <p>工作时间：9:00-18:00（工作日）</p>
+              <h4>🧡 未成年人求助资源</h4>
+              <p><strong>心理支持热线（示例）：</strong>12355 青少年服务台</p>
+              <p><strong>权威网站：</strong><a href="#" class="social-link">国家心理援助平台</a></p>
+              <p>若您感到情绪低落或有自伤念头，请立刻寻求监护人及专业帮助。</p>
             </div>
           </div>
           
@@ -358,6 +344,14 @@
   </style>
 
   <script>
+    (function(){
+      const btn = document.querySelector('.menu-btn');
+      const links = document.getElementById('topNavLinks');
+      if (btn && links) {
+        btn.addEventListener('click', () => links.classList.toggle('open'));
+      }
+    })();
+
     // 平滑滚动到锚点
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
