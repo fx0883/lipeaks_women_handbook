@@ -1,0 +1,112 @@
+{
+  "themes": [
+    {
+      "id": "pink-dream",
+      "name": "粉色梦境",
+      "category": "pink",
+      "description": "温柔浪漫的粉色系",
+      "colors": {
+        "id": "pink-dream",
+        "name": "粉色梦境",
+        "primary": "#ff6b9d",
+        "primaryHover": "#ff5a8c",
+        "primaryPressed": "#ff4a7a",
+        "secondary": "#ffeef4",
+        "accent": "#ffb3d1",
+        "preview": "#ff6b9d"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "purple-fantasy",
+      "name": "紫色幻想",
+      "category": "purple",
+      "description": "神秘优雅的紫色系",
+      "colors": {
+        "id": "purple-fantasy",
+        "name": "紫色幻想",
+        "primary": "#9c6bff",
+        "primaryHover": "#8a5aed",
+        "primaryPressed": "#7849db",
+        "secondary": "#f3e8ff",
+        "accent": "#d4b5ff",
+        "preview": "#9c6bff"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "mint-fresh",
+      "name": "薄荷清新",
+      "category": "mint",
+      "description": "清新自然的薄荷绿",
+      "colors": {
+        "id": "mint-fresh",
+        "name": "薄荷清新",
+        "primary": "#7bb86b",
+        "primaryHover": "#6aa55a",
+        "primaryPressed": "#599249",
+        "secondary": "#e8f5e8",
+        "accent": "#a8d4a0",
+        "preview": "#7bb86b"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "peach-warm",
+      "name": "桃子温暖",
+      "category": "peach",
+      "description": "温暖治愈的桃子色",
+      "colors": {
+        "id": "peach-warm",
+        "name": "桃子温暖",
+        "primary": "#ffb366",
+        "primaryHover": "#ffa255",
+        "primaryPressed": "#ff9144",
+        "secondary": "#fff4e6",
+        "accent": "#ffd4a3",
+        "preview": "#ffb366"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "lavender-soft",
+      "name": "薰衣草温柔",
+      "category": "lavender",
+      "description": "温柔淡雅的薰衣草",
+      "colors": {
+        "id": "lavender-soft",
+        "name": "薰衣草温柔",
+        "primary": "#b8a9ff",
+        "primaryHover": "#a798ed",
+        "primaryPressed": "#9687db",
+        "secondary": "#f8f6ff",
+        "accent": "#d4c9ff",
+        "preview": "#b8a9ff"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "id": "coral-sunset",
+      "name": "珊瑚日落",
+      "category": "coral",
+      "description": "活力四射的珊瑚色",
+      "colors": {
+        "id": "coral-sunset",
+        "name": "珊瑚日落",
+        "primary": "#ff8fa3",
+        "primaryHover": "#ff7e92",
+        "primaryPressed": "#ff6d81",
+        "secondary": "#ffe6e6",
+        "accent": "#ffb3c7",
+        "preview": "#ff8fa3"
+      },
+      "isCustom": false,
+      "createdAt": "2024-01-01"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "projects": [
+    {
+      "id": "project-001",
+      "name": "我的美好时光",
+      "description": "记录生活中的小确幸",
+      "templateId": "daily-001",
+      "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&q=80",
+      "content": {
+        "title": "我的美好时光",
+        "subtitle": "记录生活中的小确幸",
+        "images": ["https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80"],
+        "stickers": ["sticker-001", "sticker-002"],
+        "filters": ["filter-warm"],
+        "text": "今天天气真好，心情也特别棒！",
+        "mood": "happy",
+        "colors": {
+          "primary": "#ff6b9d",
+          "secondary": "#ffeef4",
+          "text": "#4a3c35"
+        }
+      },
+      "tags": ["日常", "心情", "美好"],
+      "isPublic": true,
+      "createdAt": "2024-01-20T10:30:00Z",
+      "updatedAt": "2024-01-20T10:30:00Z"
+    },
+    {
+      "id": "project-002",
+      "name": "宁静时光",
+      "description": "享受安静的阅读时光",
+      "templateId": "mood-001",
+      "thumbnail": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=80",
+      "content": {
+        "title": "宁静时光",
+        "subtitle": "享受安静的阅读时光",
+        "images": ["https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80"],
+        "stickers": ["sticker-003"],
+        "filters": ["filter-calm"],
+        "text": "今天在家看书，享受安静的时光，感觉很放松。",
+        "mood": "calm",
+        "colors": {
+          "primary": "#7bb86b",
+          "secondary": "#e8f5e8",
+          "text": "#4a3c35"
+        }
+      },
+      "tags": ["阅读", "安静", "放松"],
+      "isPublic": true,
+      "createdAt": "2024-01-19T20:15:00Z",
+      "updatedAt": "2024-01-19T20:15:00Z"
+    },
+    {
+      "id": "project-003",
+      "name": "惊喜礼物",
+      "description": "收到期待已久的礼物",
+      "templateId": "memory-001",
+      "thumbnail": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=80",
+      "content": {
+        "title": "惊喜礼物",
+        "subtitle": "收到期待已久的礼物",
+        "images": ["https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"],
+        "stickers": ["sticker-004", "sticker-005"],
+        "filters": ["filter-bright"],
+        "text": "收到了期待已久的礼物，超级开心！",
+        "mood": "excited",
+        "colors": {
+          "primary": "#ff6b9d",
+          "secondary": "#ffeef4",
+          "text": "#4a3c35"
+        }
+      },
+      "tags": ["礼物", "惊喜", "兴奋"],
+      "isPublic": true,
+      "createdAt": "2024-01-18T16:45:00Z",
+      "updatedAt": "2024-01-18T16:45:00Z"
+    },
+    {
+      "id": "project-004",
+      "name": "小失落",
+      "description": "今天有点小失落，但相信明天会更好",
+      "templateId": "daily-002",
+      "thumbnail": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=80",
+      "content": {
+        "title": "小失落",
+        "subtitle": "今天有点小失落，但相信明天会更好",
+        "images": ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"],
+        "stickers": ["sticker-006"],
+        "filters": ["filter-soft"],
+        "text": "今天有点小失落，但相信明天会更好。",
+        "mood": "sad",
+        "colors": {
+          "primary": "#9c6bff",
+          "secondary": "#f3e8ff",
+          "text": "#4a3c35"
+        }
+      },
+      "tags": ["失落", "希望", "明天"],
+      "isPublic": false,
+      "createdAt": "2024-01-17T22:00:00Z",
+      "updatedAt": "2024-01-17T22:00:00Z"
+    },
+    {
+      "id": "project-005",
+      "name": "美丽夕阳",
+      "description": "今天天气很好，出去散步看到了美丽的夕阳",
+      "templateId": "mood-002",
+      "thumbnail": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&q=80",
+      "content": {
+        "title": "美丽夕阳",
+        "subtitle": "今天天气很好，出去散步看到了美丽的夕阳",
+        "images": ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80"],
+        "stickers": ["sticker-007"],
+        "filters": ["filter-warm"],
+        "text": "今天天气很好，出去散步看到了美丽的夕阳。",
+        "mood": "happy",
+        "colors": {
+          "primary": "#ffb366",
+          "secondary": "#fff4e6",
+          "text": "#4a3c35"
+        }
+      },
+      "tags": ["天气", "散步", "夕阳"],
+      "isPublic": true,
+      "createdAt": "2024-01-16T18:20:00Z",
+      "updatedAt": "2024-01-16T18:20:00Z"
+    }
+  ]
+}

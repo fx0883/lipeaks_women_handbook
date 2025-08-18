@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>相册 · 作品</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html">打卡</a>
+      <a href="album.html" class="active">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>筛选条件</h3>
+      <nav class="sidebar-nav">
+        <a href="#" class="active">📸 全部作品</a>
+        <a href="#">🎨 手账作品</a>
+        <a href="#">😊 情绪卡片</a>
+        <a href="#">⭐ 收藏</a>
+      </nav>
+      
+      <h3>时间筛选</h3>
+      <nav class="sidebar-nav">
+        <a href="#">今天</a>
+        <a href="#">本周</a>
+        <a href="#">本月</a>
+        <a href="#">全部</a>
+      </nav>
+      
+      <h3>统计信息</h3>
+      <div class="stats">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">总作品数</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">42</div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">本月新增</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">15</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">收藏数</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">8</div>
+        </div>
+      </div>
+      
+      <h3>快速操作</h3>
+      <div class="actions" style="flex-direction: column; gap: 8px;">
+        <button class="btn">📤 导出相册</button>
+        <button class="btn">🗑️ 批量删除</button>
+        <button class="btn">📁 创建文件夹</button>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>我的相册</h1>
+        <p class="sub">已保存的作品与情绪卡片</p>
+      </div>
+
+      <!-- 搜索和排序 -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <input class="input" placeholder="搜索作品..." style="width: 300px;" />
+            <button class="btn">搜索</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn pill">最新</button>
+            <button class="btn pill">最旧</button>
+            <button class="btn pill">名称</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 作品网格 -->
+      <div class="card">
+        <div class="album-grid">
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80" alt="作品1" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">社团招新海报</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-15</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=300&q=80" alt="作品2" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">宿舍美食记录</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-14</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1553729784-e91953dec042?w=300&q=80" alt="作品3" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">周计划复盘</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-13</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&q=80" alt="作品4" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">自习记录</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-12</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=300&q=80" alt="作品5" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">校园日常拼贴</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-11</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?w=300&q=80" alt="作品6" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">课程表</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-10</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=300&q=80" alt="作品7" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">Citywalk记录</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-09</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?w=300&q=80" alt="作品8" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">通勤咖啡</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-08</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=300&q=80" alt="作品9" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">纪念日卡片</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-07</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=300&q=80" alt="作品10" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">温柔吐槽卡</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-06</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&q=80" alt="作品11" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">倒计时Flag</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-05</div>
+            </div>
+          </a>
+          <a href="project_detail.html" class="album-item">
+            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=300&q=80" alt="作品12" />
+            <div style="padding: 12px;">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px;">宿舍日常</div>
+              <div style="font-size: 12px; color: var(--sub);">2024-01-04</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="card">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+          <button class="btn ghost">上一页</button>
+          <button class="btn primary">1</button>
+          <button class="btn ghost">2</button>
+          <button class="btn ghost">3</button>
+          <button class="btn ghost">下一页</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">使用教程</a></li>
+          <li><a href="settings.html">常见问题</a></li>
+          <li><a href="settings.html">意见反馈</a></li>
+          <li><a href="settings.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">产品介绍</a></li>
+          <li><a href="settings.html">隐私政策</a></li>
+          <li><a href="settings.html">用户协议</a></li>
+          <li><a href="settings.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

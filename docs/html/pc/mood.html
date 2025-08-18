@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>情绪打卡</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html" class="active">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>快速操作</h3>
+      <nav class="sidebar-nav">
+        <a href="mood_calendar.html">📅 查看日历</a>
+        <a href="mood_card.html">🎨 生成卡片</a>
+        <a href="album.html">📸 我的相册</a>
+      </nav>
+      
+      <h3>今日统计</h3>
+      <div class="stats">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">连续打卡</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">7天</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">本月打卡</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">15天</div>
+        </div>
+      </div>
+      
+      <h3>情绪趋势</h3>
+      <div style="height: 120px; background: linear-gradient(135deg, #f8fafc, #eef2f7); border-radius: 12px; display: flex; align-items: end; justify-content: space-around; padding: 16px;">
+        <div style="width: 8px; background: var(--primary); border-radius: 4px; height: 60%;"></div>
+        <div style="width: 8px; background: var(--accent-pink); border-radius: 4px; height: 80%;"></div>
+        <div style="width: 8px; background: var(--accent-yellow); border-radius: 4px; height: 40%;"></div>
+        <div style="width: 8px; background: var(--accent-blue); border-radius: 4px; height: 90%;"></div>
+        <div style="width: 8px; background: var(--primary); border-radius: 4px; height: 70%;"></div>
+        <div style="width: 8px; background: var(--accent-pink); border-radius: 4px; height: 85%;"></div>
+        <div style="width: 8px; background: var(--accent-yellow); border-radius: 4px; height: 55%;"></div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>情绪打卡</h1>
+        <p class="sub">选择表情 + 色卡 + 一句话（可选）</p>
+      </div>
+
+      <!-- 打卡表单 -->
+      <div class="card">
+        <h2>1. 今天的心情</h2>
+        <div class="mood-selector">
+          <button class="mood-btn">😀</button>
+          <button class="mood-btn">🙂</button>
+          <button class="mood-btn">😐</button>
+          <button class="mood-btn">🙁</button>
+          <button class="mood-btn">😢</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. 选择色卡</h2>
+        <div class="color-selector">
+          <div class="color-btn" style="background:#8fd3c8;"></div>
+          <div class="color-btn" style="background:#f7c3d3;"></div>
+          <div class="color-btn" style="background:#ffe79a;"></div>
+          <div class="color-btn" style="background:#bcd9ff;"></div>
+          <div class="color-btn" style="background:#ff6b6b;"></div>
+          <div class="color-btn" style="background:#4ecdc4;"></div>
+          <div class="color-btn" style="background:#45b7d1;"></div>
+          <div class="color-btn" style="background:#96ceb4;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. 一句鼓励（可换）</h2>
+        <input class="input" placeholder="今天也值得被温柔以待 ✿" />
+        <div class="actions" style="margin-top:12px">
+          <button class="btn ghost">换一句</button>
+          <button class="btn ghost">随机推荐</button>
+        </div>
+      </div>
+
+      <!-- 预览卡片 -->
+      <div class="card">
+        <h2>预览效果</h2>
+        <div style="max-width: 300px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #8fd3c8, #f7c3d3); border-radius: 16px; padding: 24px; text-align: center; color: white;">
+            <div style="font-size: 48px; margin-bottom: 16px;">😀</div>
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">今天也值得被温柔以待 ✿</div>
+            <div style="font-size: 14px; opacity: 0.8;">2024年1月15日</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">使用教程</a></li>
+          <li><a href="settings.html">常见问题</a></li>
+          <li><a href="settings.html">意见反馈</a></li>
+          <li><a href="settings.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">产品介绍</a></li>
+          <li><a href="settings.html">隐私政策</a></li>
+          <li><a href="settings.html">用户协议</a></li>
+          <li><a href="settings.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 工具栏 -->
+  <div class="toolbar">
+    <div class="actions">
+      <a href="mood_calendar.html" class="btn">查看日历</a>
+      <button class="btn ghost">保存草稿</button>
+    </div>
+    <a href="mood_card.html" class="btn primary">保存并生成卡片</a>
+  </div>
+
+  <script>
+    // 情绪选择
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    // 颜色选择
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

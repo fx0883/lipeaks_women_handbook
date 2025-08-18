@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我的 · 设置</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html" class="active">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>设置分类</h3>
+      <nav class="sidebar-nav">
+        <a href="#privacy" class="active">🔒 隐私与安全</a>
+        <a href="#notifications">🔔 提醒与通知</a>
+        <a href="#appearance">🎨 主题与外观</a>
+        <a href="#data">💾 数据管理</a>
+        <a href="#about">ℹ️ 关于</a>
+      </nav>
+      
+      <h3>账户信息</h3>
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent-pink)); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white;">👤</div>
+        <div style="font-weight: 600; margin-bottom: 4px;">用户昵称</div>
+        <div style="font-size: 12px; color: var(--sub);">已使用 15 天</div>
+      </div>
+      
+      <h3>使用统计</h3>
+      <div class="stats">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">创作作品</div>
+          <div style="font-size: 20px; font-weight: 600; color: var(--primary);">42</div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">情绪打卡</div>
+          <div style="font-size: 20px; font-weight: 600; color: var(--primary);">28</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">存储空间</div>
+          <div style="font-size: 20px; font-weight: 600; color: var(--primary);">156MB</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>设置</h1>
+        <p class="sub">个性化你的出片手账体验</p>
+      </div>
+
+      <!-- 隐私与安全 -->
+      <div class="card" id="privacy">
+        <h2>🔒 隐私与安全</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">应用锁定</div>
+            <div style="font-size: 14px; color: var(--sub);">使用密码或生物识别锁定应用</div>
+          </div>
+          <a href="lock.html" class="btn">设置</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">回收站</div>
+            <div style="font-size: 14px; color: var(--sub);">管理已删除的作品</div>
+          </div>
+          <a href="recycle_bin.html" class="btn">查看</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">数据加密</div>
+            <div style="font-size: 14px; color: var(--sub);">本地数据加密存储</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--sub);">已开启</span>
+            <div style="width: 40px; height: 20px; background: var(--primary); border-radius: 10px; position: relative;">
+              <div style="width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; right: 2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 提醒与通知 -->
+      <div class="card" id="notifications">
+        <h2>🔔 提醒与通知</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">每日一句</div>
+            <div style="font-size: 14px; color: var(--sub);">每天收到一句温柔鼓励</div>
+          </div>
+          <a href="daily_quote.html" class="btn">设置</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">打卡提醒</div>
+            <div style="font-size: 14px; color: var(--sub);">提醒记录每日心情</div>
+          </div>
+          <a href="reminders.html" class="btn">设置</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">通知声音</div>
+            <div style="font-size: 14px; color: var(--sub);">开启通知提示音</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--sub);">已开启</span>
+            <div style="width: 40px; height: 20px; background: var(--primary); border-radius: 10px; position: relative;">
+              <div style="width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; right: 2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主题与外观 -->
+      <div class="card" id="appearance">
+        <h2>🎨 主题与外观</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">主题包</div>
+            <div style="font-size: 14px; color: var(--sub);">选择喜欢的颜色主题</div>
+          </div>
+          <a href="theme.html" class="btn">选择</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">深色模式</div>
+            <div style="font-size: 14px; color: var(--sub);">切换深色/浅色主题</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--sub);">浅色</span>
+            <div style="width: 40px; height: 20px; background: var(--line); border-radius: 10px; position: relative;">
+              <div style="width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px;"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">字体大小</div>
+            <div style="font-size: 14px; color: var(--sub);">调整界面字体大小</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--sub);">标准</span>
+            <div style="width: 60px; height: 6px; background: var(--line); border-radius: 3px; position: relative;">
+              <div style="width: 20px; height: 6px; background: var(--primary); border-radius: 3px; position: absolute; left: 20px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 数据管理 -->
+      <div class="card" id="data">
+        <h2>💾 数据管理</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">数据备份</div>
+            <div style="font-size: 14px; color: var(--sub);">备份作品到云端</div>
+          </div>
+          <button class="btn">备份</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">数据导出</div>
+            <div style="font-size: 14px; color: var(--sub);">导出作品为图片文件</div>
+          </div>
+          <button class="btn">导出</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">清除缓存</div>
+            <div style="font-size: 14px; color: var(--sub);">清理临时文件</div>
+          </div>
+          <button class="btn">清理</button>
+        </div>
+      </div>
+
+      <!-- 关于 -->
+      <div class="card" id="about">
+        <h2>ℹ️ 关于</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">版本信息</div>
+            <div style="font-size: 14px; color: var(--sub);">出片手账 v1.0.0</div>
+          </div>
+          <span style="font-size: 12px; color: var(--sub);">最新版本</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">使用引导</div>
+            <div style="font-size: 14px; color: var(--sub);">查看功能介绍</div>
+          </div>
+          <a href="onboarding.html" class="btn">查看</a>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">隐私政策</div>
+            <div style="font-size: 14px; color: var(--sub);">查看隐私保护条款</div>
+          </div>
+          <button class="btn">查看</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 500; margin-bottom: 4px;">用户协议</div>
+            <div style="font-size: 14px; color: var(--sub);">查看使用条款</div>
+          </div>
+          <button class="btn">查看</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">使用教程</a></li>
+          <li><a href="settings.html">常见问题</a></li>
+          <li><a href="settings.html">意见反馈</a></li>
+          <li><a href="settings.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">产品介绍</a></li>
+          <li><a href="settings.html">隐私政策</a></li>
+          <li><a href="settings.html">用户协议</a></li>
+          <li><a href="settings.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

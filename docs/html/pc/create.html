@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>出片 · 模板选择</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html" class="active">出片</a>
+      <a href="mood.html">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>模板分类</h3>
+      <nav class="sidebar-nav">
+        <a href="#high-school" class="active">🏫 高中</a>
+        <a href="#university">🎓 大学</a>
+        <a href="#workplace">💼 职场</a>
+        <a href="#all">📚 全部</a>
+      </nav>
+      
+      <h3>筛选条件</h3>
+      <div class="filter-group">
+        <label>比例</label>
+        <div class="actions">
+          <button class="btn pill">全部</button>
+          <button class="btn pill">1:1</button>
+          <button class="btn pill">4:5</button>
+          <button class="btn pill">9:16</button>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <label>风格</label>
+        <div class="actions">
+          <button class="btn pill">治愈</button>
+          <button class="btn pill">元气</button>
+          <button class="btn pill">温柔</button>
+          <button class="btn pill">梦幻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>选择模板</h1>
+        <p class="sub">选择一个模板开始创作（高中/大学/职场 3 套风格）</p>
+      </div>
+
+      <!-- 高中模板 -->
+      <div class="card" id="high-school">
+        <h2>🏫 高中 · 校园/社团/备考/闺蜜</h2>
+        <div class="grid cols-4">
+          <a class="template" href="editor.html?tpl=campus_collage">
+            <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=400&q=80" alt="校园日常"/>
+            <div class="template-info">
+              <h3>校园日常拼贴</h3>
+              <span class="badge">4:5</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=club_poster">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="社团招新"/>
+            <div class="template-info">
+              <h3>社团招新海报</h3>
+              <span class="badge">9:16</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=exam_countdown">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80" alt="倒计时/Flag"/>
+            <div class="template-info">
+              <h3>倒计时/Flag 卡</h3>
+              <span class="badge">1:1</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=homework_board">
+            <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?w=400&q=80" alt="课程表/作业清单"/>
+            <div class="template-info">
+              <h3>课程表/作业清单</h3>
+              <span class="badge">3:4</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 大学模板 -->
+      <div class="card" id="university">
+        <h2>🎓 大学 · 宿舍/自习/旅行/纪念日</h2>
+        <div class="grid cols-4">
+          <a class="template" href="editor.html?tpl=library_log">
+            <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&q=80" alt="自习记录"/>
+            <div class="template-info">
+              <h3>自习记录</h3>
+              <span class="badge">4:5</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=citywalk">
+            <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=400&q=80" alt="Citywalk/旅行"/>
+            <div class="template-info">
+              <h3>Citywalk/旅行</h3>
+              <span class="badge">9:16</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=dorm_food">
+            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400&q=80" alt="宿舍日常/美食"/>
+            <div class="template-info">
+              <h3>宿舍日常/美食</h3>
+              <span class="badge">1:1</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=anniversary">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80" alt="纪念日卡"/>
+            <div class="template-info">
+              <h3>纪念日卡</h3>
+              <span class="badge">3:4</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 职场模板 -->
+      <div class="card" id="workplace">
+        <h2>💼 职场 · 通勤/穿搭/复盘/治愈</h2>
+        <div class="grid cols-4">
+          <a class="template" href="editor.html?tpl=commute_desk">
+            <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?w=400&q=80" alt="通勤咖啡/桌搭"/>
+            <div class="template-info">
+              <h3>通勤咖啡/桌搭</h3>
+              <span class="badge">4:5</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=ootd">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80" alt="穿搭 OOTD"/>
+            <div class="template-info">
+              <h3>穿搭 OOTD</h3>
+              <span class="badge">1:1</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=weekly_review">
+            <img src="https://images.unsplash.com/photo-1553729784-e91953dec042?w=400&q=80" alt="周计划/复盘"/>
+            <div class="template-info">
+              <h3>周计划/复盘</h3>
+              <span class="badge">3:4</span>
+            </div>
+          </a>
+          <a class="template" href="editor.html?tpl=soft吐槽">
+            <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=400&q=80" alt="温柔吐槽卡"/>
+            <div class="template-info">
+              <h3>温柔吐槽卡</h3>
+              <span class="badge">9:16</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">使用教程</a></li>
+          <li><a href="settings.html">常见问题</a></li>
+          <li><a href="settings.html">意见反馈</a></li>
+          <li><a href="settings.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">产品介绍</a></li>
+          <li><a href="settings.html">隐私政策</a></li>
+          <li><a href="settings.html">用户协议</a></li>
+          <li><a href="settings.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

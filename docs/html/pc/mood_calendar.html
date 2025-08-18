@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>情绪日历</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html" class="active">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>快速操作</h3>
+      <nav class="sidebar-nav">
+        <a href="mood.html">😊 今日打卡</a>
+        <a href="mood_calendar.html" class="active">📅 情绪日历</a>
+        <a href="mood_card.html">🎨 生成卡片</a>
+        <a href="album.html">📸 我的相册</a>
+      </nav>
+      
+      <h3>本月统计</h3>
+      <div class="stats">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">打卡天数</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">15/31</div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">连续打卡</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">7天</div>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">平均心情</div>
+          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">😊</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">最常用色卡</div>
+          <div style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary); margin-top: 4px;"></div>
+        </div>
+      </div>
+      
+      <h3>情绪分布</h3>
+      <div style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 14px;">😀 开心</span>
+          <span style="font-size: 12px; color: var(--sub);">8次</span>
+        </div>
+        <div style="width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden;">
+          <div style="width: 53%; height: 100%; background: var(--primary);"></div>
+        </div>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 14px;">🙂 平静</span>
+          <span style="font-size: 12px; color: var(--sub);">4次</span>
+        </div>
+        <div style="width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden;">
+          <div style="width: 27%; height: 100%; background: var(--accent-blue);"></div>
+        </div>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 14px;">😐 一般</span>
+          <span style="font-size: 12px; color: var(--sub);">2次</span>
+        </div>
+        <div style="width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden;">
+          <div style="width: 13%; height: 100%; background: var(--accent-yellow);"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 14px;">🙁 低落</span>
+          <span style="font-size: 12px; color: var(--sub);">1次</span>
+        </div>
+        <div style="width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden;">
+          <div style="width: 7%; height: 100%; background: var(--accent-pink);"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>情绪日历</h1>
+        <p class="sub">查看你的情绪变化轨迹</p>
+      </div>
+
+      <!-- 月份选择 -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="btn ghost">◀</button>
+            <h2 style="margin: 0;">2024年1月</h2>
+            <button class="btn ghost">▶</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn pill">月视图</button>
+            <button class="btn pill">周视图</button>
+            <button class="btn pill">年视图</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 日历网格 -->
+      <div class="card">
+        <!-- 星期标题 -->
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 16px;">
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">日</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">一</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">二</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">三</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">四</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">五</div>
+          <div style="text-align: center; font-weight: 600; color: var(--sub); padding: 8px;">六</div>
+        </div>
+
+        <!-- 日历日期 -->
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
+          <!-- 第一周 -->
+          <div class="calendar-day empty"></div>
+          <div class="calendar-day empty"></div>
+          <div class="calendar-day">
+            <div class="day-number">1</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">2</div>
+            <div class="mood-indicator" style="background: var(--accent-blue);">🙂</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">3</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">4</div>
+            <div class="mood-indicator" style="background: var(--accent-yellow);">😐</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">5</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+
+          <!-- 第二周 -->
+          <div class="calendar-day">
+            <div class="day-number">6</div>
+            <div class="mood-indicator" style="background: var(--accent-blue);">🙂</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">7</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">8</div>
+            <div class="mood-indicator" style="background: var(--accent-pink);">🙁</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">9</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">10</div>
+            <div class="mood-indicator" style="background: var(--accent-blue);">🙂</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">11</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">12</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+
+          <!-- 第三周 -->
+          <div class="calendar-day">
+            <div class="day-number">13</div>
+            <div class="mood-indicator" style="background: var(--accent-blue);">🙂</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">14</div>
+            <div class="mood-indicator" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">15</div>
+            <div class="mood-indicator current" style="background: var(--primary);">😀</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">16</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">17</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">18</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">19</div>
+          </div>
+
+          <!-- 第四周 -->
+          <div class="calendar-day">
+            <div class="day-number">20</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">21</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">22</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">23</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">24</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">25</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">26</div>
+          </div>
+
+          <!-- 第五周 -->
+          <div class="calendar-day">
+            <div class="day-number">27</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">28</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">29</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">30</div>
+          </div>
+          <div class="calendar-day">
+            <div class="day-number">31</div>
+          </div>
+          <div class="calendar-day empty"></div>
+          <div class="calendar-day empty"></div>
+        </div>
+      </div>
+
+      <!-- 今日详情 -->
+      <div class="card">
+        <h2>今日详情 (1月15日)</h2>
+        <div style="display: flex; gap: 24px; align-items: center;">
+          <div style="text-align: center;">
+            <div style="width: 80px; height: 80px; border-radius: 16px; background: linear-gradient(135deg, var(--primary), var(--accent-blue)); display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 8px;">😀</div>
+            <div style="font-size: 14px; color: var(--sub);">开心</div>
+          </div>
+          <div style="flex: 1;">
+            <div style="margin-bottom: 12px;">
+              <div style="font-weight: 500; margin-bottom: 4px;">今日心情</div>
+              <div style="font-size: 14px; color: var(--sub);">今天也值得被温柔以待 ✿</div>
+            </div>
+            <div style="margin-bottom: 12px;">
+              <div style="font-weight: 500; margin-bottom: 4px;">选择色卡</div>
+              <div style="display: flex; gap: 8px;">
+                <div style="width: 24px; height: 24px; border-radius: 6px; background: var(--primary);"></div>
+                <div style="width: 24px; height: 24px; border-radius: 6px; background: var(--accent-blue);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-weight: 500; margin-bottom: 4px;">打卡时间</div>
+              <div style="font-size: 14px; color: var(--sub);">2024-01-15 09:30</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn">编辑</button>
+            <button class="btn">生成卡片</button>
+            <button class="btn ghost">删除</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 情绪趋势图 -->
+      <div class="card">
+        <h2>本周情绪趋势</h2>
+        <div style="height: 200px; background: linear-gradient(135deg, #f8fafc, #eef2f7); border-radius: 12px; display: flex; align-items: end; justify-content: space-around; padding: 24px; margin-top: 16px;">
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--primary); border-radius: 6px; height: 60%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周一</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--accent-blue); border-radius: 6px; height: 40%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周二</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--primary); border-radius: 6px; height: 80%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周三</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--accent-yellow); border-radius: 6px; height: 30%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周四</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--primary); border-radius: 6px; height: 70%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周五</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--accent-blue); border-radius: 6px; height: 50%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周六</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 12px; background: var(--primary); border-radius: 6px; height: 90%; margin-bottom: 8px;"></div>
+            <div style="font-size: 12px; color: var(--sub);">周日</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">使用教程</a></li>
+          <li><a href="settings.html">常见问题</a></li>
+          <li><a href="settings.html">意见反馈</a></li>
+          <li><a href="settings.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="settings.html">产品介绍</a></li>
+          <li><a href="settings.html">隐私政策</a></li>
+          <li><a href="settings.html">用户协议</a></li>
+          <li><a href="settings.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .calendar-day {
+      aspect-ratio: 1/1;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .calendar-day:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .calendar-day.empty {
+      border: none;
+      background: transparent;
+    }
+
+    .calendar-day.current {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .day-number {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .mood-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+    }
+  </style>
+
+  <script>
+    // 日历交互
+    document.querySelectorAll('.calendar-day:not(.empty)').forEach(day => {
+      day.addEventListener('click', function() {
+        // 移除其他选中状态
+        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('current'));
+        // 添加当前选中状态
+        this.classList.add('current');
+      });
+    });
+  </script>
+</body>
+</html>

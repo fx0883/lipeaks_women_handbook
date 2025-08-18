@@ -1,0 +1,96 @@
+{
+  "moods": [
+    {
+      "id": "happy",
+      "name": "开心",
+      "emoji": "😊",
+      "color": "#ffb366",
+      "description": "心情愉悦，充满正能量"
+    },
+    {
+      "id": "excited",
+      "name": "兴奋",
+      "emoji": "🤩",
+      "color": "#ff6b9d",
+      "description": "激动不已，充满期待"
+    },
+    {
+      "id": "calm",
+      "name": "平静",
+      "emoji": "😌",
+      "color": "#7bb86b",
+      "description": "内心宁静，平和安详"
+    },
+    {
+      "id": "sad",
+      "name": "难过",
+      "emoji": "😢",
+      "color": "#9c6bff",
+      "description": "心情低落，需要安慰"
+    },
+    {
+      "id": "angry",
+      "name": "生气",
+      "emoji": "😠",
+      "color": "#ff8fa3",
+      "description": "情绪激动，需要冷静"
+    }
+  ],
+  "moodRecords": [
+    {
+      "id": "mood-001",
+      "date": "2024-01-20",
+      "mood": "happy",
+      "intensity": 8,
+      "description": "今天和朋友一起逛街，买到了心仪的衣服，心情特别好！",
+      "tags": ["朋友", "购物", "开心"],
+      "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80",
+      "cardProjectId": "project-001",
+      "createdAt": "2024-01-20T18:30:00Z"
+    },
+    {
+      "id": "mood-002",
+      "date": "2024-01-19",
+      "mood": "calm",
+      "intensity": 6,
+      "description": "今天在家看书，享受安静的时光，感觉很放松。",
+      "tags": ["阅读", "安静", "放松"],
+      "image": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80",
+      "cardProjectId": "project-002",
+      "createdAt": "2024-01-19T20:15:00Z"
+    },
+    {
+      "id": "mood-003",
+      "date": "2024-01-18",
+      "mood": "excited",
+      "intensity": 9,
+      "description": "收到了期待已久的礼物，超级开心！",
+      "tags": ["礼物", "惊喜", "兴奋"],
+      "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
+      "cardProjectId": "project-003",
+      "createdAt": "2024-01-18T16:45:00Z"
+    },
+    {
+      "id": "mood-004",
+      "date": "2024-01-17",
+      "mood": "sad",
+      "intensity": 4,
+      "description": "今天有点小失落，但相信明天会更好。",
+      "tags": ["失落", "希望", "明天"],
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80",
+      "cardProjectId": "project-004",
+      "createdAt": "2024-01-17T22:00:00Z"
+    },
+    {
+      "id": "mood-005",
+      "date": "2024-01-16",
+      "mood": "happy",
+      "intensity": 7,
+      "description": "今天天气很好，出去散步看到了美丽的夕阳。",
+      "tags": ["天气", "散步", "夕阳"],
+      "image": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80",
+      "cardProjectId": "project-005",
+      "createdAt": "2024-01-16T18:20:00Z"
+    }
+  ]
+}

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>编辑器 · 出片</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 编辑器布局 -->
+    <div class="editor-layout">
+      <!-- 预览区域 -->
+      <div class="preview-area">
+        <!-- 标题和返回模板按钮在同一行 -->
+        <div class="preview-header">
+          <h2>预览</h2>
+          <a href="create.html" class="btn">返回模板</a>
+        </div>
+        
+        <div class="preview-container">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80" alt="预览" />
+          <div class="preview-overlay">
+            <div class="preview-text">
+              <h3 class="preview-title">我的美好时光</h3>
+              <p class="preview-subtitle">记录生活中的小确幸</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 预览和导出按钮 - 图片下面 -->
+        <div class="preview-main-actions">
+          <button class="btn ghost">预览</button>
+          <a href="export.html" class="btn primary">导出</a>
+        </div>
+        
+        <div class="preview-actions">
+          <button class="btn ghost">替换图片</button>
+          <button class="btn ghost">添加图片</button>
+          <button class="btn ghost">调整尺寸</button>
+        </div>
+      </div>
+
+      <!-- 主要编辑工具 -->
+      <div class="controls-panel primary-controls">
+        <h2>编辑工具</h2>
+        
+        <!-- 文本编辑 -->
+        <div class="control-group">
+          <h3>标题</h3>
+          <input class="input" placeholder="输入标题" />
+        </div>
+        
+        <div class="control-group">
+          <h3>副标题</h3>
+          <input class="input" placeholder="输入副标题" />
+        </div>
+        
+        <!-- 贴纸选择 -->
+        <div class="control-group">
+          <h3>贴纸</h3>
+          <div class="sticker-grid">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=100&q=60" alt="贴纸1" class="sticker-item" />
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=100&q=60" alt="贴纸2" class="sticker-item" />
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=100&q=60" alt="贴纸3" class="sticker-item" />
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=100&q=60" alt="贴纸4" class="sticker-item" />
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100&q=60" alt="贴纸5" class="sticker-item" />
+            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=100&q=60" alt="贴纸6" class="sticker-item" />
+          </div>
+          <div class="actions" style="margin-top: 12px;">
+            <button class="btn ghost" style="font-size: 12px;">更多贴纸</button>
+            <button class="btn ghost" style="font-size: 12px;">上传贴纸</button>
+          </div>
+        </div>
+        
+        <!-- 滤镜选择 -->
+        <div class="control-group">
+          <h3>滤镜</h3>
+          <div class="filter-grid">
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="原图" />
+              <span>原图</span>
+            </div>
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="奶油" style="filter: brightness(1.1) contrast(0.9) saturate(1.2);" />
+              <span>奶油</span>
+            </div>
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="胶片" style="filter: contrast(1.2) saturate(0.8) sepia(0.3);" />
+              <span>胶片</span>
+            </div>
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="清透" style="filter: brightness(1.05) contrast(1.1) saturate(1.1);" />
+              <span>清透</span>
+            </div>
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="黑白" style="filter: grayscale(1);" />
+              <span>黑白</span>
+            </div>
+            <div class="filter-item">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&q=60" alt="暖色" style="filter: sepia(0.4) saturate(1.3);" />
+              <span>暖色</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 高级编辑工具 -->
+      <div class="controls-panel secondary-controls">
+        <h2>高级设置</h2>
+        
+        <!-- 花字选择 -->
+        <div class="control-group">
+          <h3>花字</h3>
+          <div class="actions">
+            <button class="btn pill">可爱圆体</button>
+            <button class="btn pill">手写体</button>
+            <button class="btn pill">无衬线</button>
+            <button class="btn pill">衬线体</button>
+          </div>
+        </div>
+        
+        <!-- 字体大小 -->
+        <div class="control-group">
+          <h3>字体大小</h3>
+          <input type="range" min="12" max="48" value="24" style="width:100%;margin:8px 0;" />
+          <div style="text-align:center;font-size:12px;color:var(--sub);">24px</div>
+        </div>
+        
+        <!-- 颜色选择 -->
+        <div class="control-group">
+          <h3>文字颜色</h3>
+          <div class="color-selector">
+            <div class="color-btn" style="background:#333333;"></div>
+            <div class="color-btn" style="background:#8fd3c8;"></div>
+            <div class="color-btn" style="background:#f7c3d3;"></div>
+            <div class="color-btn" style="background:#ffe79a;"></div>
+            <div class="color-btn" style="background:#bcd9ff;"></div>
+            <div class="color-btn" style="background:#ff6b6b;"></div>
+            <div class="color-btn" style="background:#4ecdc4;"></div>
+            <div class="color-btn" style="background:#45b7d1;"></div>
+          </div>
+        </div>
+        
+        <!-- 对齐方式 -->
+        <div class="control-group">
+          <h3>对齐方式</h3>
+          <div class="actions">
+            <button class="btn pill">左对齐</button>
+            <button class="btn pill">居中</button>
+            <button class="btn pill">右对齐</button>
+          </div>
+        </div>
+
+        <!-- 图片调整 -->
+        <div class="control-group">
+          <h3>图片调整</h3>
+          <div class="adjustment-controls">
+            <div class="control-row">
+              <label>亮度</label>
+              <input type="range" min="-100" max="100" value="0" style="width:100%;margin:8px 0;" />
+            </div>
+            <div class="control-row">
+              <label>对比度</label>
+              <input type="range" min="-100" max="100" value="0" style="width:100%;margin:8px 0;" />
+            </div>
+            <div class="control-row">
+              <label>饱和度</label>
+              <input type="range" min="-100" max="100" value="0" style="width:100%;margin:8px 0;" />
+            </div>
+            <div class="control-row">
+              <label>锐化</label>
+              <input type="range" min="0" max="100" value="0" style="width:100%;margin:8px 0;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 边框装饰 -->
+        <div class="control-group">
+          <h3>边框装饰</h3>
+          <div class="border-controls">
+            <div class="control-row">
+              <label>边框样式</label>
+              <div class="actions">
+                <button class="btn pill">无边框</button>
+                <button class="btn pill">实线</button>
+                <button class="btn pill">虚线</button>
+                <button class="btn pill">点线</button>
+              </div>
+            </div>
+            <div class="control-row">
+              <label>边框宽度</label>
+              <input type="range" min="1" max="20" value="2" style="width:100%;margin:8px 0;" />
+            </div>
+            <div class="control-row">
+              <label>圆角大小</label>
+              <input type="range" min="0" max="50" value="12" style="width:100%;margin:8px 0;" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="tutorial.html">使用教程</a></li>
+          <li><a href="faq.html">常见问题</a></li>
+          <li><a href="feedback.html">意见反馈</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">产品介绍</a></li>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">用户协议</a></li>
+          <li><a href="updates.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 简单的交互效果
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    
+    document.querySelectorAll('.btn.pill').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (this.parentElement.querySelectorAll('.btn.pill').length > 1) {
+          this.parentElement.querySelectorAll('.btn.pill').forEach(b => b.classList.remove('selected'));
+          this.classList.add('selected');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

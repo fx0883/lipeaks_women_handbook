@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>常见问题 - 出片手账</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="top-nav">
+    <a href="index.html" class="logo">出片手账</a>
+    <div class="nav-links">
+      <a href="create.html">出片</a>
+      <a href="mood.html">打卡</a>
+      <a href="album.html">相册</a>
+      <a href="settings.html">我的</a>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h3>问题分类</h3>
+      <nav class="sidebar-nav">
+        <a href="#account" class="active">👤 账号问题</a>
+        <a href="#function">⚡ 功能使用</a>
+        <a href="#technical">🔧 技术问题</a>
+        <a href="#privacy">🔒 隐私安全</a>
+        <a href="#billing">💰 付费问题</a>
+        <a href="#other">❓ 其他问题</a>
+      </nav>
+      
+      <h3>快速帮助</h3>
+      <div class="quick-help">
+        <a href="tutorial.html" class="btn ghost" style="width: 100%; margin-bottom: 8px; text-align: center; text-decoration: none;">📖 使用教程</a>
+        <a href="contact.html" class="btn ghost" style="width: 100%; margin-bottom: 8px; text-align: center; text-decoration: none;">📞 联系客服</a>
+        <a href="feedback.html" class="btn ghost" style="width: 100%; text-align: center; text-decoration: none;">📝 意见反馈</a>
+      </div>
+      
+      <h3>搜索问题</h3>
+      <div class="search-box">
+        <input type="text" id="faq-search" placeholder="输入关键词搜索..." class="input" />
+        <button class="btn" id="search-btn">搜索</button>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content">
+      <div class="page-header">
+        <h1>常见问题</h1>
+        <p class="sub">找到你需要的答案，快速解决问题</p>
+      </div>
+
+      <!-- 账号问题 -->
+      <div class="card" id="account">
+        <h2>👤 账号问题</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何注册出片手账账号？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>注册出片手账账号非常简单：</p>
+            <ol>
+              <li>下载并打开出片手账应用</li>
+              <li>点击"注册"按钮</li>
+              <li>输入手机号或邮箱地址</li>
+              <li>设置密码和昵称</li>
+              <li>完成验证即可开始使用</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>忘记密码怎么办？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>如果忘记密码，可以通过以下方式重置：</p>
+            <ul>
+              <li>在登录页面点击"忘记密码"</li>
+              <li>输入注册时的手机号或邮箱</li>
+              <li>获取验证码并输入</li>
+              <li>设置新密码</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何修改个人资料？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>修改个人资料的步骤：</p>
+            <ol>
+              <li>进入"我的"页面</li>
+              <li>点击"个人资料"</li>
+              <li>修改头像、昵称、个性签名等</li>
+              <li>点击"保存"完成修改</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 功能使用 -->
+      <div class="card" id="function">
+        <h2>⚡ 功能使用</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何使用一键出片功能？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>一键出片功能使用步骤：</p>
+            <ol>
+              <li>在"出片"页面浏览模板</li>
+              <li>选择喜欢的模板点击进入</li>
+              <li>编辑文字、添加贴纸、调整滤镜</li>
+              <li>预览效果满意后点击"导出"</li>
+              <li>选择保存到相册或分享给朋友</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>情绪打卡有什么作用？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>情绪打卡功能的作用：</p>
+            <ul>
+              <li>记录每日情绪变化，了解自己的情绪模式</li>
+              <li>通过情绪日历查看长期情绪趋势</li>
+              <li>帮助识别情绪触发因素</li>
+              <li>培养情绪觉察能力</li>
+              <li>为心理健康提供数据支持</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何生成情绪卡片？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>生成情绪卡片的步骤：</p>
+            <ol>
+              <li>进入"打卡"页面，选择"生成卡片"</li>
+              <li>选择卡片模板和风格</li>
+              <li>选择情绪表情和颜色</li>
+              <li>输入或选择文字内容</li>
+              <li>调整字体、大小、装饰等</li>
+              <li>预览效果后下载或分享</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 技术问题 -->
+      <div class="card" id="technical">
+        <h2>🔧 技术问题</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>应用闪退怎么办？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>如果应用出现闪退，可以尝试以下解决方法：</p>
+            <ul>
+              <li>重启应用</li>
+              <li>检查设备存储空间是否充足</li>
+              <li>更新应用到最新版本</li>
+              <li>重启设备</li>
+              <li>如果问题持续，请联系客服</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>图片上传失败怎么办？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>图片上传失败的常见原因和解决方法：</p>
+            <ul>
+              <li>检查网络连接是否稳定</li>
+              <li>确认图片格式是否支持（JPG、PNG等）</li>
+              <li>检查图片大小是否超过限制</li>
+              <li>尝试重新上传</li>
+              <li>如果问题持续，请检查应用权限设置</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>数据同步失败怎么办？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>数据同步失败的解决方法：</p>
+            <ol>
+              <li>检查网络连接</li>
+              <li>确认账号登录状态</li>
+              <li>尝试手动同步</li>
+              <li>检查存储空间</li>
+              <li>重启应用</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 隐私安全 -->
+      <div class="card" id="privacy">
+        <h2>🔒 隐私安全</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>我的数据安全吗？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>我们非常重视用户数据安全：</p>
+            <ul>
+              <li>所有数据都经过加密存储</li>
+              <li>支持本地存储，数据不上传服务器</li>
+              <li>提供应用锁功能保护隐私</li>
+              <li>支持数据导出和删除</li>
+              <li>严格遵守隐私政策和数据保护法规</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何设置应用锁？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>设置应用锁的步骤：</p>
+            <ol>
+              <li>进入"我的"页面</li>
+              <li>选择"隐私设置"</li>
+              <li>开启"应用锁"功能</li>
+              <li>设置锁屏密码或指纹</li>
+              <li>每次打开应用都需要验证</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>可以删除我的数据吗？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>当然可以，我们支持完整的数据删除：</p>
+            <ul>
+              <li>在设置中选择"数据管理"</li>
+              <li>选择"删除所有数据"</li>
+              <li>确认删除操作</li>
+              <li>数据将被永久删除，无法恢复</li>
+              <li>也可以选择删除特定类型的数据</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 付费问题 -->
+      <div class="card" id="billing">
+        <h2>💰 付费问题</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>出片手账是免费的吗？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>出片手账采用免费+增值服务模式：</p>
+            <ul>
+              <li>基础功能完全免费使用</li>
+              <li>提供丰富的免费模板和素材</li>
+              <li>高级功能和素材需要订阅</li>
+              <li>支持按月、按年订阅</li>
+              <li>新用户有免费试用期</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何取消订阅？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>取消订阅的方法：</p>
+            <ol>
+              <li>iOS用户：在设置中管理订阅</li>
+              <li>Android用户：在Google Play中管理订阅</li>
+              <li>也可以在应用内"订阅管理"中操作</li>
+              <li>取消后当前订阅期仍可使用</li>
+              <li>到期后自动停止续费</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 其他问题 -->
+      <div class="card" id="other">
+        <h2>❓ 其他问题</h2>
+        
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>如何联系客服？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>联系客服的方式：</p>
+            <ul>
+              <li>在应用内"帮助与反馈"中留言</li>
+              <li>发送邮件到客服邮箱</li>
+              <li>通过社交媒体联系我们</li>
+              <li>客服工作时间：9:00-18:00</li>
+              <li>紧急问题会优先处理</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h3>可以提建议吗？</h3>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>我们非常欢迎用户的建议：</p>
+            <ul>
+              <li>在"意见反馈"中提交建议</li>
+              <li>参与用户调研和投票</li>
+              <li>加入用户交流群讨论</li>
+              <li>优秀建议会被采纳并实现</li>
+              <li>提供建议的用户会获得奖励</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 没有找到答案 -->
+      <div class="card">
+        <h2>💬 没有找到答案？</h2>
+        <p>如果上面的问题没有解决你的疑惑，可以通过以下方式联系我们：</p>
+        <div class="contact-options">
+          <a href="contact.html" class="btn">📞 联系客服</a>
+          <a href="feedback.html" class="btn ghost">📝 提交反馈</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>出片手账</h4>
+        <p>把日常小确幸"可爱出片 + 温柔记录"做成手账</p>
+        <div class="social-links">
+          <a href="#" class="social-link">微博</a>
+          <a href="#" class="social-link">小红书</a>
+          <a href="#" class="social-link">抖音</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>功能特色</h4>
+        <ul class="footer-links">
+          <li><a href="create.html">一键出片</a></li>
+          <li><a href="mood.html">情绪打卡</a></li>
+          <li><a href="mood_calendar.html">情绪日历</a></li>
+          <li><a href="album.html">相册管理</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>帮助支持</h4>
+        <ul class="footer-links">
+          <li><a href="tutorial.html">使用教程</a></li>
+          <li><a href="faq.html" class="active">常见问题</a></li>
+          <li><a href="feedback.html">意见反馈</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>关于我们</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">产品介绍</a></li>
+          <li><a href="privacy.html">隐私政策</a></li>
+          <li><a href="terms.html">用户协议</a></li>
+          <li><a href="updates.html">版本更新</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 出片手账. 保留所有权利.</p>
+        <p>专为12-20岁女性设计的温柔手账应用</p>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      padding: 20px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
+    
+    .faq-question:hover {
+      background: rgba(143,211,200,.05);
+    }
+    
+    .faq-question h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .faq-icon {
+      font-size: 20px;
+      color: var(--primary);
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+    
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background: rgba(143,211,200,.05);
+    }
+    
+    .faq-answer.active {
+      padding: 20px;
+      max-height: 500px;
+    }
+    
+    .faq-answer p {
+      margin: 0 0 16px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .faq-answer ol,
+    .faq-answer ul {
+      margin: 0 0 16px;
+      padding-left: 20px;
+    }
+    
+    .faq-answer li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .search-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .search-box .input {
+      flex: 1;
+    }
+    
+    .contact-options {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    
+    .sidebar-nav a.active {
+      background: rgba(143,211,200,.2);
+      border-color: var(--primary);
+    }
+  </style>
+
+  <script>
+    // FAQ展开/收起功能
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const icon = element.querySelector('.faq-icon');
+      
+      if (answer.classList.contains('active')) {
+        answer.classList.remove('active');
+        icon.textContent = '+';
+      } else {
+        // 关闭其他所有FAQ
+        document.querySelectorAll('.faq-answer').forEach(ans => {
+          ans.classList.remove('active');
+        });
+        document.querySelectorAll('.faq-icon').forEach(ic => {
+          ic.textContent = '+';
+        });
+        
+        // 打开当前FAQ
+        answer.classList.add('active');
+        icon.textContent = '−';
+      }
+    }
+    
+    // 搜索功能
+    document.getElementById('search-btn').addEventListener('click', function() {
+      const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('h3').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+        
+        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+    
+    // 回车搜索
+    document.getElementById('faq-search').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('search-btn').click();
+      }
+    });
+    
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // 更新侧边栏活跃状态
+          document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

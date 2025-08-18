@@ -1,0 +1,238 @@
+{
+  "templates": [
+    {
+      "id": "daily-001",
+      "name": "今日心情",
+      "description": "记录每一天的美好心情",
+      "category": "daily",
+      "styleTag": ["日常", "心情", "简约"],
+      "ratio": "4:5",
+      "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+      "tags": ["日常", "心情", "简约"],
+      "isPopular": true,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-01",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.08, "y": 0.12, "w": 0.84, "h": 0.5},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "CuteRounded",
+          "size": 24,
+          "color": "#333",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.66, "w": 0.8, "h": 0.08}
+        },
+        {
+          "type": "sticker",
+          "key": "sticker1",
+          "asset": "sakura_01",
+          "frame": {"x": 0.12, "y": 0.78, "w": 0.2, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "mood-001",
+      "name": "情绪日记",
+      "description": "用色彩记录内心世界",
+      "category": "mood",
+      "styleTag": ["情绪", "色彩", "治愈"],
+      "ratio": "1:1",
+      "thumbnail": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80",
+      "tags": ["情绪", "色彩", "治愈"],
+      "isPopular": true,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-15",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.1, "y": 0.1, "w": 0.8, "h": 0.6},
+          "mask": "circle"
+        },
+        {
+          "type": "text",
+          "key": "mood",
+          "font": "EmotionFont",
+          "size": 36,
+          "color": "#ff6b9d",
+          "align": "center",
+          "frame": {"x": 0.2, "y": 0.75, "w": 0.6, "h": 0.15}
+        }
+      ]
+    },
+    {
+      "id": "memory-001",
+      "name": "美好回忆",
+      "description": "珍藏生活中的美好瞬间",
+      "category": "memory",
+      "styleTag": ["回忆", "温馨", "浪漫"],
+      "ratio": "9:16",
+      "thumbnail": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80",
+      "tags": ["回忆", "温馨", "浪漫"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-20",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "MemoryFont",
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.78, "w": 0.8, "h": 0.1}
+        },
+        {
+          "type": "text",
+          "key": "date",
+          "font": "DateFont",
+          "size": 16,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.9, "w": 0.8, "h": 0.05}
+        }
+      ]
+    },
+    {
+      "id": "special-001",
+      "name": "生日祝福",
+      "description": "为特别的日子送上祝福",
+      "category": "special",
+      "styleTag": ["生日", "祝福", "庆祝"],
+      "ratio": "3:4",
+      "thumbnail": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+      "tags": ["生日", "祝福", "庆祝"],
+      "isPopular": false,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-10",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.1, "y": 0.15, "w": 0.8, "h": 0.5},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "BirthdayFont",
+          "size": 32,
+          "color": "#ff6b9d",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.7, "w": 0.8, "h": 0.12}
+        },
+        {
+          "type": "sticker",
+          "key": "sticker1",
+          "asset": "birthday_cake",
+          "frame": {"x": 0.05, "y": 0.85, "w": 0.15, "h": 0.1}
+        },
+        {
+          "type": "sticker",
+          "key": "sticker2",
+          "asset": "balloon",
+          "frame": {"x": 0.8, "y": 0.85, "w": 0.15, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "daily-002",
+      "name": "生活小确幸",
+      "description": "发现生活中的美好细节",
+      "category": "daily",
+      "styleTag": ["生活", "美好", "细节"],
+      "ratio": "1:1",
+      "thumbnail": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+      "tags": ["生活", "美好", "细节"],
+      "isPopular": true,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-05",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.6},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "LifeFont",
+          "size": 26,
+          "color": "#4a3c35",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.7, "w": 0.8, "h": 0.1}
+        },
+        {
+          "type": "text",
+          "key": "subtitle",
+          "font": "SubtitleFont",
+          "size": 18,
+          "color": "#8a7d73",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.82, "w": 0.8, "h": 0.08}
+        }
+      ]
+    },
+    {
+      "id": "mood-002",
+      "name": "心情彩虹",
+      "description": "用彩虹色彩表达心情",
+      "category": "mood",
+      "styleTag": ["彩虹", "心情", "多彩"],
+      "ratio": "4:5",
+      "thumbnail": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+      "tags": ["彩虹", "心情", "多彩"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-18",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.08, "y": 0.08, "w": 0.84, "h": 0.55},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "mood",
+          "font": "RainbowFont",
+          "size": 30,
+          "color": "#9c6bff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.68, "w": 0.8, "h": 0.12}
+        },
+        {
+          "type": "sticker",
+          "key": "sticker1",
+          "asset": "rainbow",
+          "frame": {"x": 0.15, "y": 0.85, "w": 0.7, "h": 0.1}
+        }
+      ]
+    }
+  ]
+}
