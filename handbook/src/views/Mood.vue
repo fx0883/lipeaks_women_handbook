@@ -1,123 +1,108 @@
 <template>
   <div class="mood-page">
-    <div class="mood-container">
-      <div class="mood-form">
-        <h1>今日心情如何？</h1>
-        <p class="subtitle">记录一下今天的心情，生成专属情绪卡片</p>
-        
-        <!-- 情绪选择 -->
-        <div class="mood-selection">
-          <h3>选择情绪</h3>
-          <div class="mood-buttons">
+    <div class="main-layout">
+      <!-- 侧边栏（粘性） -->
+      <aside class="sidebar">
+        <h3>快速操作</h3>
+        <nav class="sidebar-nav">
+          <router-link to="/mood-calendar">📅 查看日历</router-link>
+          <router-link to="/mood-card">🎨 生成卡片</router-link>
+          <router-link to="/album">📸 我的相册</router-link>
+        </nav>
+
+        <h3>今日统计</h3>
+        <div class="stats">
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">连续打卡</div>
+            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">7天</div>
+          </div>
+          <div>
+            <div style="font-size: 12px; color: var(--sub); margin-bottom: 4px;">本月打卡</div>
+            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">15天</div>
+          </div>
+        </div>
+
+        <h3>情绪趋势</h3>
+        <div class="trend-mini">
+          <div class="bar" style="height:60%"></div>
+          <div class="bar" style="height:80%"></div>
+          <div class="bar" style="height:40%"></div>
+          <div class="bar" style="height:90%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:85%"></div>
+          <div class="bar" style="height:55%"></div>
+        </div>
+      </aside>
+
+      <!-- 主内容区 -->
+      <main class="content">
+        <div class="page-header">
+          <h1>情绪打卡</h1>
+          <p class="sub">选择表情 + 色卡 + 一句话（可选）</p>
+        </div>
+
+        <!-- 1. 今天的心情 -->
+        <div class="card">
+          <h2>1. 今天的心情</h2>
+          <div class="mood-selector">
             <button 
-              v-for="mood in moods" 
+              v-for="mood in moodsOrdered" 
               :key="mood.id"
               class="mood-btn"
-              :class="{ active: selectedMood === mood.id }"
+              :class="{ selected: selectedMood === mood.id }"
               @click="selectMood(mood.id)"
             >
-              <span class="mood-emoji">{{ mood.emoji }}</span>
-              <span class="mood-name">{{ mood.name }}</span>
+              {{ mood.emoji }}
             </button>
           </div>
         </div>
-        
-        <!-- 情绪强度 -->
-        <div class="mood-intensity">
-          <h3>情绪强度</h3>
-          <div class="intensity-slider">
-            <input 
-              type="range" 
-              min="1" 
-              max="10" 
-              v-model="moodIntensity"
-              class="slider"
-            />
-            <div class="intensity-labels">
-              <span>轻微</span>
-              <span>强烈</span>
+
+        <!-- 2. 选择色卡 -->
+        <div class="card">
+          <h2>2. 选择色卡</h2>
+          <div class="color-selector">
+            <div 
+              v-for="c in colorOptions" 
+              :key="c"
+              class="color-btn"
+              :class="{ selected: selectedColor === c }"
+              :style="{ background: c }"
+              @click="selectColor(c)"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 3. 一句鼓励 -->
+        <div class="card">
+          <h2>3. 一句鼓励（可换）</h2>
+          <input class="input" v-model="quote" :placeholder="defaultQuote" />
+          <div class="actions" style="margin-top: 12px;">
+            <button class="btn ghost" style="font-size:12px" @click="changeQuote">换一句</button>
+            <button class="btn ghost" style="font-size:12px" @click="randomQuote">随机推荐</button>
+          </div>
+        </div>
+
+        <!-- 预览效果 -->
+        <div class="card">
+          <h2>预览效果</h2>
+          <div class="preview-card">
+            <div class="preview-inner" :style="{ background: gradientBackground }">
+              <div class="preview-emoji">{{ currentEmoji }}</div>
+              <div class="preview-quote">{{ quote || defaultQuote }}</div>
+              <div class="preview-date">{{ dateLabel }}</div>
             </div>
-            <div class="intensity-value">{{ moodIntensity }}</div>
           </div>
         </div>
-        
-        <!-- 一句话描述 -->
-        <div class="mood-description">
-          <h3>一句话描述</h3>
-          <textarea 
-            v-model="moodDescription"
-            placeholder="用一句话描述今天的心情..."
-            class="description-input"
-            rows="3"
-          ></textarea>
-        </div>
-        
-        <!-- 标签选择 -->
-        <div class="mood-tags">
-          <h3>添加标签</h3>
-          <div class="tag-buttons">
-            <button 
-              v-for="tag in availableTags" 
-              :key="tag"
-              class="tag-btn"
-              :class="{ active: selectedTags.includes(tag) }"
-              @click="toggleTag(tag)"
-            >
-              {{ tag }}
-            </button>
-          </div>
-        </div>
-        
-        <!-- 提交按钮 -->
-        <button 
-          class="submit-btn"
-          :disabled="!selectedMood"
-          @click="submitMood"
-        >
-          生成情绪卡片
-        </button>
+      </main>
+    </div>
+
+    <!-- 底部工具栏 -->
+    <div class="toolbar">
+      <div class="actions">
+        <router-link to="/mood-calendar" class="btn">查看日历</router-link>
+        <button class="btn ghost" @click="saveDraft">保存草稿</button>
       </div>
-      
-      <!-- 预览卡片 -->
-      <div class="mood-preview">
-        <h3>预览卡片</h3>
-        <div class="mood-card" :class="`mood-${selectedMood}`">
-          <div class="card-header">
-            <div class="mood-emoji-large">{{ getCurrentMoodEmoji() }}</div>
-            <div class="mood-info">
-              <h4>{{ getCurrentMoodName() }}</h4>
-              <p class="mood-date">{{ currentDate }}</p>
-            </div>
-          </div>
-          
-          <div class="card-content">
-            <p class="mood-text">{{ moodDescription || '今天的心情...' }}</p>
-            <div class="mood-intensity-display">
-              <span class="intensity-label">强度:</span>
-              <div class="intensity-bars">
-                <div 
-                  v-for="i in 10" 
-                  :key="i"
-                  class="intensity-bar"
-                  :class="{ active: i <= moodIntensity }"
-                ></div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="card-footer">
-            <div class="mood-tags-display">
-              <span 
-                v-for="tag in selectedTags" 
-                :key="tag"
-                class="tag-display"
-              >
-                {{ tag }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button class="btn primary" @click="saveAndGenerate">保存并生成卡片</button>
     </div>
   </div>
 </template>
@@ -129,340 +114,139 @@ import type { MoodId } from '@/types/mood'
 
 const router = useRouter()
 
-// 情绪数据
-const moods = [
+// 情绪集合（顺序与原型一致：😀、🙂、😐、🙁、😢）
+const moodsOrdered: Array<{ id: MoodId; name: string; emoji: string }> = [
   { id: 'happy', name: '开心', emoji: '😀' },
-  { id: 'neutral', name: '一般', emoji: '😐' },
   { id: 'calm', name: '平静', emoji: '🙂' },
+  { id: 'neutral', name: '一般', emoji: '😐' },
   { id: 'low', name: '低落', emoji: '🙁' },
   { id: 'sad', name: '难过', emoji: '😢' }
 ]
 
-// 可用标签
-const availableTags = [
-  '学习', '工作', '生活', '朋友', '家人', '美食', '旅行', '运动', '音乐', '电影'
-]
+// 色卡（8色，与原型一致）
+const colorOptions = ['#8fd3c8', '#f7c3d3', '#ffe79a', '#bcd9ff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4']
 
-// 表单状态
+// 状态
 const selectedMood = ref<MoodId>('happy')
-const moodIntensity = ref(5)
-const moodDescription = ref('')
-const selectedTags = ref<string[]>([])
+const selectedColor = ref<string>('#8fd3c8')
+const defaultQuote = '今天也值得被温柔以待 ✿'
+const quote = ref<string>('')
 
-// 当前日期
-const currentDate = computed(() => {
-  return new Date().toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
+// 励志文案池
+const quotesPool = [
+  '今天也值得被温柔以待 ✿',
+  '保持热爱，奔赴山海',
+  '慢一点也没关系',
+  '把自己照顾好',
+  '给自己一个拥抱',
+  '心怀浪漫，追逐星光'
+]
+let quoteIndex = 0
+
+// 日期
+const dateLabel = computed(() => new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }))
+
+// 选择
+function selectMood(moodId: MoodId) { selectedMood.value = moodId }
+function selectColor(c: string) { selectedColor.value = c }
+
+// 文案
+function changeQuote() { quoteIndex = (quoteIndex + 1) % quotesPool.length; quote.value = quotesPool[quoteIndex] }
+function randomQuote() { quote.value = quotesPool[Math.floor(Math.random() * quotesPool.length)] }
+
+// 预览所需
+const currentEmoji = computed(() => moodsOrdered.find(m => m.id === selectedMood.value)?.emoji || '😀')
+const gradientPairMap: Record<string, [string, string]> = {
+  '#8fd3c8': ['#8fd3c8', '#f7c3d3'],
+  '#f7c3d3': ['#f7c3d3', '#8fd3c8'],
+  '#ffe79a': ['#ffe79a', '#bcd9ff'],
+  '#bcd9ff': ['#bcd9ff', '#ffe79a'],
+  '#ff6b6b': ['#ff6b6b', '#ffe79a'],
+  '#4ecdc4': ['#4ecdc4', '#45b7d1'],
+  '#45b7d1': ['#45b7d1', '#4ecdc4'],
+  '#96ceb4': ['#96ceb4', '#bcd9ff']
+}
+const gradientBackground = computed(() => {
+  const pair = gradientPairMap[selectedColor.value] || ['#8fd3c8', '#f7c3d3']
+  return `linear-gradient(135deg, ${pair[0]}, ${pair[1]})`
 })
 
-// 选择情绪
-const selectMood = (moodId: MoodId): void => {
-  selectedMood.value = moodId
+// 保存草稿 & 生成卡片
+function saveDraft() {
+  try {
+    const data = { mood: selectedMood.value, color: selectedColor.value, quote: quote.value || defaultQuote, date: dateLabel.value }
+    localStorage.setItem('moodDraft', JSON.stringify(data))
+    console.log('草稿已保存', data)
+  } catch {}
 }
-
-// 切换标签
-const toggleTag = (tag: string): void => {
-  const index = selectedTags.value.indexOf(tag)
-  if (index > -1) {
-    selectedTags.value.splice(index, 1)
-  } else {
-    selectedTags.value.push(tag)
-  }
-}
-
-// 获取当前情绪 emoji
-const getCurrentMoodEmoji = (): string => {
-  const mood = moods.find(m => m.id === selectedMood.value)
-  return mood?.emoji || '😀'
-}
-
-// 获取当前情绪名称
-const getCurrentMoodName = (): string => {
-  const mood = moods.find(m => m.id === selectedMood.value)
-  return mood?.name || '开心'
-}
-
-// 提交情绪
-const submitMood = (): void => {
-  // TODO: 保存到 store 并跳转到情绪日历
-  console.log('提交情绪:', {
-    mood: selectedMood.value,
-    intensity: moodIntensity.value,
-    description: moodDescription.value,
-    tags: selectedTags.value,
-    date: new Date().toISOString()
+function saveAndGenerate() {
+  const pair = gradientPairMap[selectedColor.value] || ['#8fd3c8', '#f7c3d3']
+  router.push({
+    path: '/mood-card',
+    query: { emoji: currentEmoji.value, c1: pair[0], c2: pair[1], quote: quote.value || defaultQuote, date: dateLabel.value }
   })
-  
-  // 跳转到情绪日历
-  router.push('/mood-calendar')
 }
 </script>
 
 <style scoped>
-/* 复用原型样式 */
-.mood-page {
-  width: 100%;
-  padding: 24px 32px;
-}
+.mood-page { width: 100%; padding: 24px 32px; }
+.main-layout { display: flex; gap: 24px; }
 
-.mood-container {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 32px;
-  align-items: start;
-}
+/* 侧边栏 */
+.sidebar { width: 280px; flex-shrink: 0; background: var(--colorNeutralBackground1); border: 1px solid var(--colorNeutralStroke1); border-radius: var(--borderRadiusXLarge); padding: 24px; box-shadow: var(--shadow4); position: sticky; top: 88px; height: fit-content; }
+.sidebar h3 { margin: 0 0 16px; font-size: 16px; font-weight: 600; color: var(--colorNeutralForeground1); }
+.sidebar-nav { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.sidebar-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 12px; color: var(--colorNeutralForeground2); text-decoration: none; border: 1px solid transparent; }
+.sidebar-nav a:hover { background: var(--pink-light); color: var(--pink-dark); border-color: var(--pink-medium); }
+.trend-mini { height: 120px; background: linear-gradient(135deg, #f8fafc, #eef2f7); border-radius: 12px; display: flex; align-items: end; justify-content: space-around; padding: 16px; }
+.trend-mini .bar { width: 8px; background: var(--primary); border-radius: 4px; }
 
-.mood-form {
-  background: var(--colorNeutralBackground1);
-  border: 1px solid var(--colorNeutralStroke1);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: var(--shadow4);
-}
+/* 主区 */
+.content { flex: 1; min-width: 0; }
+.page-header { margin-bottom: 32px; }
+.page-header h1 { margin: 0 0 8px; font-size: 32px; font-weight: 700; color: var(--colorNeutralForeground1); }
+.page-header .sub { margin: 0; color: var(--colorNeutralForeground2); font-size: 16px; }
 
-.mood-form h1 {
-  margin: 0 0 12px;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--colorNeutralForeground1);
-  text-align: center;
-}
+.card { background: var(--colorNeutralBackground1); border: 1px solid var(--colorNeutralStroke1); border-radius: 20px; padding: 24px; box-shadow: var(--shadow4); transition: all 0.2s ease; margin-bottom: 24px; }
+.card:hover { box-shadow: var(--shadow8); border-color: var(--pink-medium); transform: translateY(-2px); }
+.card h2 { margin: 0 0 16px; font-size: 18px; font-weight: 600; color: var(--colorNeutralForeground1); }
 
-.mood-form .subtitle {
-  margin: 0 0 32px;
-  color: var(--colorNeutralForeground2);
-  font-size: 16px;
-  text-align: center;
-}
+.mood-selector { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.mood-btn { aspect-ratio: 1/1; border-radius: 12px; border: 2px solid transparent; background: var(--pink-light); font-size: 24px; cursor: pointer; transition: all 0.15s ease; }
+.mood-btn:hover { background: var(--pink-medium); border-color: var(--pink-dark); transform: scale(1.05); }
+.mood-btn.selected { background: var(--pink-dark); border-color: var(--pink-dark); color: var(--colorBrandForeground); transform: scale(1.1); }
 
-.mood-form h3 {
-  margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--colorNeutralForeground1);
-}
+.color-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.color-btn { aspect-ratio: 1/1; border-radius: 12px; border: 2px solid transparent; cursor: pointer; transition: all 0.15s ease; }
+.color-btn:hover { transform: scale(1.05); }
+.color-btn.selected { border-color: var(--colorNeutralForeground1); }
 
-.mood-selection {
-  margin-bottom: 32px;
-}
+.input { width: 100%; padding: 12px; border: 1px solid var(--colorNeutralStroke1); border-radius: 12px; background: var(--colorNeutralBackground1); font-size: 14px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; border: 1px solid var(--colorNeutralStroke1); background: var(--colorNeutralBackground1); text-decoration: none; color: var(--colorNeutralForeground1); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; min-height: 44px; }
+.btn.primary { background: var(--colorBrandBackground); color: var(--colorBrandForeground); border-color: var(--colorBrandBackground); }
+.btn.ghost { background: transparent; border-color: transparent; }
 
-.mood-buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-}
+.preview-card { max-width: 300px; margin: 0 auto; }
+.preview-inner { border-radius: 16px; padding: 24px; text-align: center; color: white; box-shadow: var(--shadow8); }
+.preview-emoji { font-size: 48px; margin-bottom: 16px; }
+.preview-quote { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.preview-date { font-size: 14px; opacity: 0.85; }
 
-.mood-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 12px;
-  border: 2px solid var(--colorNeutralStroke1);
-  background: var(--colorNeutralBackground1);
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+/* 工具栏 */
+.toolbar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--colorNeutralBackground1); border: 1px solid var(--colorNeutralStroke1); border-radius: 20px; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow16); z-index: 1000; min-width: 400px; }
+.toolbar .actions { display: flex; gap: 8px; }
 
-.mood-btn:hover {
-  border-color: var(--pink-medium);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow4);
-}
-
-.mood-btn.active {
-  border-color: var(--colorBrandBackground);
-  background: var(--pink-light);
-}
-
-.mood-emoji {
-  font-size: 24px;
-}
-
-.mood-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--colorNeutralForeground1);
-}
-
-.mood-intensity {
-  margin-bottom: 32px;
-}
-
-.intensity-slider {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.slider {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--colorNeutralStroke1);
-  outline: none;
-  accent-color: var(--colorBrandBackground);
-}
-
-.intensity-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--colorNeutralForeground2);
-}
-
-.intensity-value {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--colorBrandBackground);
-}
-
-.mood-description {
-  margin-bottom: 32px;
-}
-
-.description-input {
-  width: 100%;
-  padding: 16px;
-  border: 1px solid var(--colorNeutralStroke1);
-  border-radius: 12px;
-  background: var(--colorNeutralBackground1);
-  color: var(--colorNeutralForeground1);
-  font-size: 14px;
-  resize: vertical;
-  font-family: inherit;
-}
-
-.description-input:focus {
-  outline: none;
-  border-color: var(--colorBrandBackground);
-}
-
-.mood-tags {
-  margin-bottom: 32px;
-}
-
-.tag-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--colorNeutralStroke1);
-  background: var(--colorNeutralBackground1);
-  color: var(--colorNeutralForeground1);
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tag-btn:hover {
-  border-color: var(--colorBrandBackground);
-  background: var(--pink-light);
-}
-
-.tag-btn.active {
-  background: var(--colorBrandBackground);
-  color: var(--colorBrandForeground);
-  border-color: var(--colorBrandBackground);
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--colorBrandBackground);
-  color: var(--colorBrandForeground);
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.submit-btn:hover:not(:disabled) {
-  background: var(--colorBrandBackgroundHover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow4);
-}
-
-.submit-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* 预览卡片 */
-.mood-preview {
-  background: var(--colorNeutralBackground1);
-  border: 1px solid var(--colorNeutralStroke1);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--shadow4);
-  position: sticky;
-  top: 88px;
-}
-
-.mood-preview h3 {
-  margin: 0 0 20px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--colorNeutralForeground1);
-  text-align: center;
-}
-
-.mood-card {
-  background: var(--colorNeutralBackground1);
-  border: 2px solid var(--colorNeutralStroke1);
-  border-radius: 20px;
-  padding: 24px;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-
-.mood-card.mood-happy { border-color: var(--themePrimary); background: linear-gradient(135deg, var(--themePrimary), var(--themePrimaryHover)); color: white; }
-.mood-card.mood-neutral { border-color: var(--themeAccent); background: linear-gradient(135deg, var(--themeAccent), var(--themePrimary)); color: white; }
-.mood-card.mood-calm { border-color: var(--themeSecondary); background: linear-gradient(135deg, var(--themeSecondary), var(--themeAccent)); color: var(--colorNeutralForeground1); }
-.mood-card.mood-low { border-color: var(--themePrimaryPressed); background: linear-gradient(135deg, var(--themePrimaryPressed), var(--themePrimary)); color: white; }
-.mood-card.mood-sad { border-color: var(--themePrimaryHover); background: linear-gradient(135deg, var(--themePrimaryHover), var(--themePrimary)); color: white; }
-
-.card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
-.mood-emoji-large { font-size: 48px; }
-.mood-info h4 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
-.mood-date { margin: 0; font-size: 14px; opacity: 0.8; }
-
-.card-content { margin-bottom: 20px; }
-.mood-text { margin: 0 0 16px; font-size: 16px; line-height: 1.5; min-height: 48px; }
-.mood-intensity-display { display: flex; align-items: center; gap: 12px; justify-content: center; }
-.intensity-label { font-size: 14px; font-weight: 500; }
-.intensity-bars { display: flex; gap: 2px; }
-.intensity-bar { width: 8px; height: 20px; background: rgba(255, 255, 255, 0.3); border-radius: 2px; transition: all 0.2s ease; }
-.intensity-bar.active { background: rgba(255, 255, 255, 0.8); }
-
-.card-footer { border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 16px; }
-.mood-tags-display { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.tag-display { background: rgba(255, 255, 255, 0.2); color: inherit; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-
-/* 响应式设计 */
+/* 响应式 */
 @media (max-width: 1024px) {
-  .mood-container { grid-template-columns: 1fr; }
-  .mood-preview { position: static; }
+  .main-layout { flex-direction: column; }
+  .sidebar { position: static; width: 100%; }
+  .toolbar { position: static; transform: none; margin-top: 12px; min-width: 0; }
 }
-
 @media (max-width: 768px) {
   .mood-page { padding: 16px; }
-  .mood-buttons { grid-template-columns: repeat(3, 1fr); }
-  .mood-form { padding: 24px; }
+  .mood-selector { grid-template-columns: repeat(3, 1fr); }
 }
-
 @media (max-width: 480px) {
-  .mood-buttons { grid-template-columns: repeat(2, 1fr); }
+  .mood-selector { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
