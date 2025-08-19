@@ -1,15 +1,15 @@
 {
   "templates": [
     {
-      "id": "daily-001",
-      "name": "今日心情",
-      "description": "记录每一天的美好心情",
-      "category": "daily",
-      "styleTag": ["日常", "心情", "简约"],
+      "id": "campus_collage",
+      "name": "校园日常拼贴",
+      "description": "记录校园生活的美好瞬间",
+      "category": "high-school",
+      "styleTag": ["校园", "日常", "拼贴"],
       "ratio": "4:5",
-      "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
-      "tags": ["日常", "心情", "简约"],
+      "thumbnail": "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80",
+      "tags": ["校园", "日常", "拼贴"],
       "isPopular": true,
       "isNew": false,
       "version": 1,
@@ -39,16 +39,48 @@
       ]
     },
     {
-      "id": "mood-001",
-      "name": "情绪日记",
-      "description": "用色彩记录内心世界",
-      "category": "mood",
-      "styleTag": ["情绪", "色彩", "治愈"],
-      "ratio": "1:1",
-      "thumbnail": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80",
-      "tags": ["情绪", "色彩", "治愈"],
+      "id": "club_poster",
+      "name": "社团招新海报",
+      "description": "吸引新成员加入社团",
+      "category": "high-school",
+      "styleTag": ["社团", "招新", "海报"],
+      "ratio": "9:16",
+      "thumbnail": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80",
+      "tags": ["社团", "招新", "海报"],
       "isPopular": true,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-01",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "PosterFont",
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "exam_countdown",
+      "name": "倒计时/Flag 卡",
+      "description": "记录学习目标和倒计时",
+      "category": "high-school",
+      "styleTag": ["倒计时", "Flag", "学习"],
+      "ratio": "1:1",
+      "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+      "tags": ["倒计时", "Flag", "学习"],
+      "isPopular": false,
       "isNew": true,
       "version": 1,
       "createdAt": "2024-01-15",
@@ -61,8 +93,8 @@
         },
         {
           "type": "text",
-          "key": "mood",
-          "font": "EmotionFont",
+          "key": "countdown",
+          "font": "CountdownFont",
           "size": 36,
           "color": "#ff6b9d",
           "align": "center",
@@ -71,15 +103,143 @@
       ]
     },
     {
-      "id": "memory-001",
-      "name": "美好回忆",
-      "description": "珍藏生活中的美好瞬间",
-      "category": "memory",
-      "styleTag": ["回忆", "温馨", "浪漫"],
+      "id": "homework_board",
+      "name": "课程表/作业清单",
+      "description": "整理学习计划和作业安排",
+      "category": "high-school",
+      "styleTag": ["课程表", "作业", "清单"],
+      "ratio": "3:4",
+      "thumbnail": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=600&q=80",
+      "tags": ["课程表", "作业", "清单"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-20",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "ScheduleFont",
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "library_log",
+      "name": "自习记录",
+      "description": "记录自习时光和收获",
+      "category": "university",
+      "styleTag": ["自习", "记录", "学习"],
+      "ratio": "4:5",
+      "thumbnail": "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=600&q=80",
+      "tags": ["自习", "记录", "学习"],
+      "isPopular": true,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-01",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.08, "y": 0.12, "w": 0.84, "h": 0.5},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "StudyFont",
+          "size": 24,
+          "color": "#333",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.66, "w": 0.8, "h": 0.08}
+        }
+      ]
+    },
+    {
+      "id": "citywalk",
+      "name": "Citywalk/旅行",
+      "description": "记录城市漫步和旅行见闻",
+      "category": "university",
+      "styleTag": ["Citywalk", "旅行", "城市"],
       "ratio": "9:16",
-      "thumbnail": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80",
-      "tags": ["回忆", "温馨", "浪漫"],
+      "thumbnail": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=600&q=80",
+      "tags": ["Citywalk", "旅行", "城市"],
+      "isPopular": true,
+      "isNew": false,
+      "version": 1,
+      "createdAt": "2024-01-01",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
+          "mask": "rounded"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "TravelFont",
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "dorm_food",
+      "name": "宿舍日常/美食",
+      "description": "记录宿舍生活和美食分享",
+      "category": "university",
+      "styleTag": ["宿舍", "日常", "美食"],
+      "ratio": "1:1",
+      "thumbnail": "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=600&q=80",
+      "tags": ["宿舍", "日常", "美食"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-15",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.1, "y": 0.1, "w": 0.8, "h": 0.6},
+          "mask": "circle"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "FoodFont",
+          "size": 36,
+          "color": "#ff6b9d",
+          "align": "center",
+          "frame": {"x": 0.2, "y": 0.75, "w": 0.6, "h": 0.15}
+        }
+      ]
+    },
+    {
+      "id": "anniversary",
+      "name": "纪念日卡",
+      "description": "记录重要纪念日和回忆",
+      "category": "university",
+      "styleTag": ["纪念日", "回忆", "纪念"],
+      "ratio": "3:4",
+      "thumbnail": "https://images.unsplash.com/photo-1519741497674-611481863552?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+      "tags": ["纪念日", "回忆", "纪念"],
       "isPopular": false,
       "isNew": true,
       "version": 1,
@@ -98,139 +258,135 @@
           "size": 28,
           "color": "#ffffff",
           "align": "center",
-          "frame": {"x": 0.1, "y": 0.78, "w": 0.8, "h": 0.1}
-        },
-        {
-          "type": "text",
-          "key": "date",
-          "font": "DateFont",
-          "size": 16,
-          "color": "#ffffff",
-          "align": "center",
-          "frame": {"x": 0.1, "y": 0.9, "w": 0.8, "h": 0.05}
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
         }
       ]
     },
     {
-      "id": "special-001",
-      "name": "生日祝福",
-      "description": "为特别的日子送上祝福",
-      "category": "special",
-      "styleTag": ["生日", "祝福", "庆祝"],
-      "ratio": "3:4",
-      "thumbnail": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
-      "tags": ["生日", "祝福", "庆祝"],
-      "isPopular": false,
-      "isNew": false,
-      "version": 1,
-      "createdAt": "2024-01-10",
-      "layers": [
-        {
-          "type": "image",
-          "key": "photo1",
-          "frame": {"x": 0.1, "y": 0.15, "w": 0.8, "h": 0.5},
-          "mask": "rounded"
-        },
-        {
-          "type": "text",
-          "key": "title",
-          "font": "BirthdayFont",
-          "size": 32,
-          "color": "#ff6b9d",
-          "align": "center",
-          "frame": {"x": 0.1, "y": 0.7, "w": 0.8, "h": 0.12}
-        },
-        {
-          "type": "sticker",
-          "key": "sticker1",
-          "asset": "birthday_cake",
-          "frame": {"x": 0.05, "y": 0.85, "w": 0.15, "h": 0.1}
-        },
-        {
-          "type": "sticker",
-          "key": "sticker2",
-          "asset": "balloon",
-          "frame": {"x": 0.8, "y": 0.85, "w": 0.15, "h": 0.1}
-        }
-      ]
-    },
-    {
-      "id": "daily-002",
-      "name": "生活小确幸",
-      "description": "发现生活中的美好细节",
-      "category": "daily",
-      "styleTag": ["生活", "美好", "细节"],
-      "ratio": "1:1",
-      "thumbnail": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
-      "tags": ["生活", "美好", "细节"],
+      "id": "commute_desk",
+      "name": "通勤咖啡/桌搭",
+      "description": "记录通勤时光和桌面搭配",
+      "category": "workplace",
+      "styleTag": ["通勤", "咖啡", "桌搭"],
+      "ratio": "4:5",
+      "thumbnail": "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=600&q=80",
+      "tags": ["通勤", "咖啡", "桌搭"],
       "isPopular": true,
       "isNew": false,
       "version": 1,
-      "createdAt": "2024-01-05",
+      "createdAt": "2024-01-01",
       "layers": [
         {
           "type": "image",
           "key": "photo1",
-          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.6},
+          "frame": {"x": 0.08, "y": 0.12, "w": 0.84, "h": 0.5},
           "mask": "rounded"
         },
         {
           "type": "text",
           "key": "title",
-          "font": "LifeFont",
-          "size": 26,
-          "color": "#4a3c35",
+          "font": "CommuteFont",
+          "size": 24,
+          "color": "#333",
           "align": "center",
-          "frame": {"x": 0.1, "y": 0.7, "w": 0.8, "h": 0.1}
-        },
-        {
-          "type": "text",
-          "key": "subtitle",
-          "font": "SubtitleFont",
-          "size": 18,
-          "color": "#8a7d73",
-          "align": "center",
-          "frame": {"x": 0.1, "y": 0.82, "w": 0.8, "h": 0.08}
+          "frame": {"x": 0.1, "y": 0.66, "w": 0.8, "h": 0.08}
         }
       ]
     },
     {
-      "id": "mood-002",
-      "name": "心情彩虹",
-      "description": "用彩虹色彩表达心情",
-      "category": "mood",
-      "styleTag": ["彩虹", "心情", "多彩"],
-      "ratio": "4:5",
-      "thumbnail": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=80",
-      "preview": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
-      "tags": ["彩虹", "心情", "多彩"],
-      "isPopular": false,
-      "isNew": true,
+      "id": "ootd",
+      "name": "穿搭 OOTD",
+      "description": "记录每日穿搭和时尚搭配",
+      "category": "workplace",
+      "styleTag": ["穿搭", "OOTD", "时尚"],
+      "ratio": "1:1",
+      "thumbnail": "https://images.unsplash.com/photo-1519741497674-611481863552?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
+      "tags": ["穿搭", "OOTD", "时尚"],
+      "isPopular": true,
+      "isNew": false,
       "version": 1,
-      "createdAt": "2024-01-18",
+      "createdAt": "2024-01-01",
       "layers": [
         {
           "type": "image",
           "key": "photo1",
-          "frame": {"x": 0.08, "y": 0.08, "w": 0.84, "h": 0.55},
+          "frame": {"x": 0.1, "y": 0.1, "w": 0.8, "h": 0.6},
+          "mask": "circle"
+        },
+        {
+          "type": "text",
+          "key": "title",
+          "font": "FashionFont",
+          "size": 36,
+          "color": "#ff6b9d",
+          "align": "center",
+          "frame": {"x": 0.2, "y": 0.75, "w": 0.6, "h": 0.15}
+        }
+      ]
+    },
+    {
+      "id": "weekly_review",
+      "name": "周计划/复盘",
+      "description": "记录周计划和复盘总结",
+      "category": "workplace",
+      "styleTag": ["周计划", "复盘", "总结"],
+      "ratio": "3:4",
+      "thumbnail": "https://images.unsplash.com/photo-1553729784-e91953dec042?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1553729784-e91953dec042?w=600&q=80",
+      "tags": ["周计划", "复盘", "总结"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-15",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
           "mask": "rounded"
         },
         {
           "type": "text",
-          "key": "mood",
-          "font": "RainbowFont",
-          "size": 30,
-          "color": "#9c6bff",
+          "key": "title",
+          "font": "PlanFont",
+          "size": 28,
+          "color": "#ffffff",
           "align": "center",
-          "frame": {"x": 0.1, "y": 0.68, "w": 0.8, "h": 0.12}
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
+        }
+      ]
+    },
+    {
+      "id": "soft吐槽",
+      "name": "温柔吐槽卡",
+      "description": "用温柔的方式表达吐槽",
+      "category": "workplace",
+      "styleTag": ["温柔", "吐槽", "表达"],
+      "ratio": "9:16",
+      "thumbnail": "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=300&q=80",
+      "preview": "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=600&q=80",
+      "tags": ["温柔", "吐槽", "表达"],
+      "isPopular": false,
+      "isNew": true,
+      "version": 1,
+      "createdAt": "2024-01-20",
+      "layers": [
+        {
+          "type": "image",
+          "key": "photo1",
+          "frame": {"x": 0.05, "y": 0.05, "w": 0.9, "h": 0.7},
+          "mask": "rounded"
         },
         {
-          "type": "sticker",
-          "key": "sticker1",
-          "asset": "rainbow",
-          "frame": {"x": 0.15, "y": 0.85, "w": 0.7, "h": 0.1}
+          "type": "text",
+          "key": "title",
+          "font": "SoftFont",
+          "size": 28,
+          "color": "#ffffff",
+          "align": "center",
+          "frame": {"x": 0.1, "y": 0.75, "w": 0.8, "h": 0.1}
         }
       ]
     }

@@ -1,0 +1,46 @@
+/* 主题色桥接文件 - 运行时注入主题色到原型样式变量 */
+
+:root {
+  /* 主题色变量 - 由 ThemeStore 动态注入 */
+  --themePrimary: #ff6b9d;
+  --themePrimaryHover: #ff5a8c;
+  --themePrimaryPressed: #ff4a7a;
+  --themeSecondary: #ffeef4;
+  --themeAccent: #ffb3d1;
+  
+  /* 桥接到原型变量 - 确保原型风格不被破坏 */
+  --colorBrandBackground: var(--themePrimary);
+  --colorBrandBackgroundHover: var(--themePrimaryHover);
+  --colorBrandBackgroundPressed: var(--themePrimaryPressed);
+  
+  /* 粉色系桥接 - 保持原型命名兼容性 */
+  --pink-light: var(--themeSecondary);
+  --pink-medium: var(--themeAccent);
+  --pink-dark: var(--themePrimary);
+}
+
+/* 主题切换时的平滑过渡 */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* 情绪色映射 - 基于当前主题 */
+.mood-happy {
+  background-color: var(--themePrimary);
+}
+
+.mood-neutral {
+  background-color: var(--themeAccent);
+}
+
+.mood-calm {
+  background-color: var(--themeSecondary);
+}
+
+.mood-low {
+  background-color: var(--themePrimaryPressed);
+}
+
+.mood-sad {
+  background-color: var(--themePrimaryHover);
+}
