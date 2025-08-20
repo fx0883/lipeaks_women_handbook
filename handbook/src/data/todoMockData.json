@@ -1,0 +1,331 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "完成手账设计项目",
+      "description": "为春季主题设计一套完整的手账模板，包含月计划、周计划、日记录等页面",
+      "category": "工作",
+      "priority": "高",
+      "status": "进行中",
+      "dueDate": "2024-03-25T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["设计", "手账", "春季", "模板"],
+      "createdAt": "2024-03-15T08:00:00.000Z",
+      "updatedAt": "2024-03-20T10:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "学习Vue3高级特性",
+      "description": "深入学习Vue3的Composition API、响应式系统、性能优化等高级特性",
+      "category": "学习",
+      "priority": "中",
+      "status": "待办",
+      "dueDate": "2024-04-10T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["Vue3", "前端", "技术", "学习"],
+      "createdAt": "2024-03-18T09:00:00.000Z",
+      "updatedAt": "2024-03-18T09:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "整理房间和书桌",
+      "description": "彻底整理房间，清理书桌，整理书籍和文具，创造一个舒适的学习环境",
+      "category": "生活",
+      "priority": "中",
+      "status": "已完成",
+      "dueDate": "2024-03-20T00:00:00.000Z",
+      "completedAt": "2024-03-19T15:30:00.000Z",
+      "mood": "😊",
+      "tags": ["整理", "生活", "环境"],
+      "createdAt": "2024-03-15T10:00:00.000Z",
+      "updatedAt": "2024-03-19T15:30:00.000Z"
+    },
+    {
+      "id": "4",
+      "title": "完成健身计划",
+      "description": "坚持一周的健身计划，包括有氧运动和力量训练，提升身体素质",
+      "category": "生活",
+      "priority": "高",
+      "status": "已完成",
+      "dueDate": "2024-03-22T00:00:00.000Z",
+      "completedAt": "2024-03-22T18:00:00.000Z",
+      "mood": "🤩",
+      "tags": ["健身", "健康", "运动"],
+      "createdAt": "2024-03-16T07:00:00.000Z",
+      "updatedAt": "2024-03-22T18:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "title": "阅读《设计心理学》",
+      "description": "阅读完《设计心理学》这本书，做好读书笔记，理解设计原则",
+      "category": "学习",
+      "priority": "中",
+      "status": "已完成",
+      "dueDate": "2024-03-18T00:00:00.000Z",
+      "completedAt": "2024-03-17T20:00:00.000Z",
+      "mood": "😌",
+      "tags": ["阅读", "设计", "心理学", "学习"],
+      "createdAt": "2024-03-10T14:00:00.000Z",
+      "updatedAt": "2024-03-17T20:00:00.000Z"
+    },
+    {
+      "id": "6",
+      "title": "制作生日蛋糕",
+      "description": "为朋友制作一个精美的生日蛋糕，尝试新的装饰技巧",
+      "category": "娱乐",
+      "priority": "低",
+      "status": "已完成",
+      "dueDate": "2024-03-19T00:00:00.000Z",
+      "completedAt": "2024-03-19T16:00:00.000Z",
+      "mood": "😄",
+      "tags": ["烘焙", "生日", "朋友", "创意"],
+      "createdAt": "2024-03-15T12:00:00.000Z",
+      "updatedAt": "2024-03-19T16:00:00.000Z"
+    },
+    {
+      "id": "7",
+      "title": "完成项目报告",
+      "description": "撰写并提交季度项目进展报告，包含数据分析和下一步计划",
+      "category": "工作",
+      "priority": "高",
+      "status": "已完成",
+      "dueDate": "2024-03-21T00:00:00.000Z",
+      "completedAt": "2024-03-20T17:00:00.000Z",
+      "mood": "😊",
+      "tags": ["工作", "报告", "项目", "分析"],
+      "createdAt": "2024-03-14T09:00:00.000Z",
+      "updatedAt": "2024-03-20T17:00:00.000Z"
+    },
+    {
+      "id": "8",
+      "title": "学习摄影技巧",
+      "description": "学习基础摄影技巧，包括构图、光线、后期处理等",
+      "category": "学习",
+      "priority": "中",
+      "status": "进行中",
+      "dueDate": "2024-04-05T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["摄影", "技巧", "学习", "艺术"],
+      "createdAt": "2024-03-20T11:00:00.000Z",
+      "updatedAt": "2024-03-20T11:00:00.000Z"
+    },
+    {
+      "id": "9",
+      "title": "整理照片库",
+      "description": "整理手机和电脑中的照片，删除重复和无用的照片，建立分类文件夹",
+      "category": "生活",
+      "priority": "低",
+      "status": "待办",
+      "dueDate": "2024-03-28T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["整理", "照片", "生活", "管理"],
+      "createdAt": "2024-03-19T16:00:00.000Z",
+      "updatedAt": "2024-03-19T16:00:00.000Z"
+    },
+    {
+      "id": "10",
+      "title": "学习新菜谱",
+      "description": "学习制作3道新菜，提升厨艺技能，为家人准备美味餐点",
+      "category": "生活",
+      "priority": "中",
+      "status": "待办",
+      "dueDate": "2024-03-30T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["烹饪", "菜谱", "学习", "生活"],
+      "createdAt": "2024-03-18T13:00:00.000Z",
+      "updatedAt": "2024-03-18T13:00:00.000Z"
+    },
+    {
+      "id": "11",
+      "title": "完成在线课程",
+      "description": "完成UX设计在线课程，获得证书，提升专业技能",
+      "category": "学习",
+      "priority": "高",
+      "status": "进行中",
+      "dueDate": "2024-04-15T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["UX设计", "在线课程", "学习", "证书"],
+      "createdAt": "2024-03-16T10:00:00.000Z",
+      "updatedAt": "2024-03-16T10:00:00.000Z"
+    },
+    {
+      "id": "12",
+      "title": "规划周末旅行",
+      "description": "规划一次周末短途旅行，包括路线、住宿、景点等安排",
+      "category": "娱乐",
+      "priority": "中",
+      "status": "待办",
+      "dueDate": "2024-03-23T00:00:00.000Z",
+      "completedAt": null,
+      "mood": null,
+      "tags": ["旅行", "规划", "周末", "娱乐"],
+      "createdAt": "2024-03-20T15:00:00.000Z",
+      "updatedAt": "2024-03-20T15:00:00.000Z"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "1",
+      "type": "first_task",
+      "title": "初次尝试",
+      "description": "完成第一个任务",
+      "icon": "🎯",
+      "unlockedAt": "2024-03-17T20:00:00.000Z",
+      "progress": 1,
+      "maxProgress": 1,
+      "isUnlocked": true
+    },
+    {
+      "id": "2",
+      "type": "task_streak",
+      "title": "坚持不懈",
+      "description": "连续完成3天任务",
+      "icon": "🔥",
+      "unlockedAt": "2024-03-22T18:00:00.000Z",
+      "progress": 3,
+      "maxProgress": 3,
+      "isUnlocked": true
+    },
+    {
+      "id": "3",
+      "type": "category_master",
+      "title": "生活达人",
+      "description": "完成5个生活类任务",
+      "icon": "🏠",
+      "unlockedAt": "2024-03-22T18:00:00.000Z",
+      "progress": 5,
+      "maxProgress": 5,
+      "isUnlocked": true
+    },
+    {
+      "id": "4",
+      "type": "priority_focus",
+      "title": "重点突破",
+      "description": "完成3个高优先级任务",
+      "icon": "⭐",
+      "unlockedAt": "2024-03-20T17:00:00.000Z",
+      "progress": 3,
+      "maxProgress": 3,
+      "isUnlocked": true
+    },
+    {
+      "id": "5",
+      "type": "mood_tracker",
+      "title": "心情记录者",
+      "description": "记录5次任务完成后的心情",
+      "icon": "😊",
+      "unlockedAt": "2024-03-22T18:00:00.000Z",
+      "progress": 5,
+      "maxProgress": 5,
+      "isUnlocked": true
+    },
+    {
+      "id": "6",
+      "type": "perfect_week",
+      "title": "完美一周",
+      "description": "一周内完成所有计划任务",
+      "icon": "🌟",
+      "unlockedAt": null,
+      "progress": 4,
+      "maxProgress": 7,
+      "isUnlocked": false
+    },
+    {
+      "id": "7",
+      "type": "monthly_goal",
+      "title": "月度目标",
+      "description": "一个月内完成20个任务",
+      "icon": "📅",
+      "unlockedAt": null,
+      "progress": 7,
+      "maxProgress": 20,
+      "isUnlocked": false
+    },
+    {
+      "id": "8",
+      "type": "social_sharer",
+      "title": "分享达人",
+      "description": "分享3次任务完成成果",
+      "icon": "📤",
+      "unlockedAt": null,
+      "progress": 0,
+      "maxProgress": 3,
+      "isUnlocked": false
+    }
+  ],
+  "moodRecords": [
+    {
+      "id": "1",
+      "todoId": "3",
+      "mood": "😊",
+      "note": "整理完房间感觉很清爽，心情很好！",
+      "timestamp": "2024-03-19T15:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "todoId": "4",
+      "mood": "🤩",
+      "description": "完成健身计划很有成就感，感觉身体更健康了",
+      "timestamp": "2024-03-22T18:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "todoId": "5",
+      "mood": "😌",
+      "note": "读完这本书很有收获，心情平静满足",
+      "timestamp": "2024-03-17T20:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "todoId": "6",
+      "mood": "😄",
+      "note": "朋友很喜欢这个蛋糕，我也很开心！",
+      "timestamp": "2024-03-19T16:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "todoId": "7",
+      "mood": "😊",
+      "note": "报告完成得很顺利，领导很满意",
+      "timestamp": "2024-03-20T17:00:00.000Z"
+    }
+  ],
+  "taskSuggestions": [
+    {
+      "id": "1",
+      "title": "学习手绘技巧",
+      "description": "基于你的手账设计项目，建议学习基础手绘技巧来提升设计质量",
+      "category": "学习",
+      "priority": "中",
+      "reason": "与当前进行中的手账项目相关",
+      "confidence": 0.85,
+      "tags": ["手绘", "设计", "技能提升"]
+    },
+    {
+      "id": "2",
+      "title": "制定每日计划模板",
+      "description": "创建一个个性化的每日计划模板，提高时间管理效率",
+      "category": "工作",
+      "priority": "中",
+      "reason": "基于你的工作习惯和已完成项目",
+      "confidence": 0.78,
+      "tags": ["计划", "模板", "效率"]
+    },
+    {
+      "id": "3",
+      "title": "学习色彩搭配",
+      "description": "深入学习色彩理论和搭配技巧，提升手账设计的视觉效果",
+      "category": "学习",
+      "priority": "中",
+      "reason": "与手账设计项目高度相关",
+      "confidence": 0.92,
+      "tags": ["色彩", "设计", "视觉"]
+    }
+  ]
+}

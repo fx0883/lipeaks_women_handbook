@@ -34,6 +34,13 @@
         相册
       </router-link>
       <router-link 
+        to="/todo" 
+        :class="{ active: isActive('/todo') }"
+        @click="closeMobileMenu"
+      >
+        待办
+      </router-link>
+      <router-link 
         to="/tutorial" 
         :class="{ active: isActive('/tutorial') }"
         @click="closeMobileMenu"

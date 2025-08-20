@@ -6,6 +6,7 @@ import AppFooter from './components/layout/AppFooter.vue'
 import { useThemeStore } from './stores/theme'
 import { useUserStore } from './stores/user'
 import './styles/tokens.css'
+import themesData from './data/themes.json'
 
 const themeStore = useThemeStore()
 const userStore = useUserStore()
@@ -13,6 +14,9 @@ const userStore = useUserStore()
 onMounted(() => {
   // 恢复用户偏好设置
   userStore.restoreFromLocal()
+  
+  // 加载主题数据
+  themeStore.loadThemes(themesData.themes)
   
   // 初始化主题
   themeStore.restoreFromLocal()
@@ -55,33 +59,7 @@ html, body {
   padding-top: 80px; /* 为固定头部留出空间 */
 }
 
-/* CSS 变量定义 */
-:root {
-  /* 中性色 */
-  --colorNeutralForeground1: #242424;
-  --colorNeutralForeground2: #616161;
-  --colorNeutralForeground3: #8a8a8a;
-  --colorNeutralBackground1: #ffffff;
-  --colorNeutralBackground2: #fafafa;
-  --colorNeutralStroke1: #e0e0e0;
-  --colorNeutralStroke2: #d1d1d1;
-  
-  /* 品牌色 */
-  --colorBrandBackground: #ff6b9d;
-  --colorBrandBackgroundHover: #ff5a8c;
-  --colorBrandBackgroundPressed: #ff4a7a;
-  --colorBrandForeground: #ffffff;
-  
-  /* 阴影 */
-  --shadow4: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow8: 0 4px 8px rgba(0, 0, 0, 0.12);
-  --shadow16: 0 8px 16px rgba(0, 0, 0, 0.15);
-  
-  /* 粉色系 */
-  --pink-light: #ffeef4;
-  --pink-medium: #ffb3d1;
-  --pink-dark: #ff6b9d;
-}
+/* 全局样式 - CSS变量定义在 tokens.css 中 */
 
 /* 响应式断点 */
 @media (max-width: 768px) {

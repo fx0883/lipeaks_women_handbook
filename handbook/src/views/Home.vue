@@ -9,6 +9,7 @@
         <router-link to="/mood">😊 情绪打卡</router-link>
         <router-link to="/mood-calendar">📅 情绪日历</router-link>
         <router-link to="/album">📸 我的相册</router-link>
+        <router-link to="/todo">📝 我的待办</router-link>
         <router-link to="/settings">⚙️ 设置</router-link>
       </nav>
       

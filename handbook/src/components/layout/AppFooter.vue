@@ -18,6 +18,7 @@
           <li><router-link to="/mood">情绪打卡</router-link></li>
           <li><router-link to="/mood-calendar">情绪日历</router-link></li>
           <li><router-link to="/album">相册管理</router-link></li>
+          <li><router-link to="/todo">待办管理</router-link></li>
         </ul>
       </div>
       

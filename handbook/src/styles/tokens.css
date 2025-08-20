@@ -17,6 +17,22 @@
   --pink-light: var(--themeSecondary);
   --pink-medium: var(--themeAccent);
   --pink-dark: var(--themePrimary);
+  
+  /* 中性色变量 */
+  --colorNeutralForeground1: #242424;
+  --colorNeutralForeground2: #616161;
+  --colorNeutralForeground3: #8a8a8a;
+  --colorNeutralBackground1: #ffffff;
+  --colorNeutralBackground2: #fafafa;
+  --colorNeutralBackground3: #f5f5f5;
+  --colorNeutralStroke1: #e0e0e0;
+  --colorNeutralStroke2: #d1d1d1;
+  --colorBrandForeground: #ffffff;
+  
+  /* 阴影变量 */
+  --shadow4: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow8: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow16: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* 主题切换时的平滑过渡 */

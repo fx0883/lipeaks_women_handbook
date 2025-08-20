@@ -118,6 +118,15 @@
               <p>保护你的个人信息和数据安全</p>
             </div>
             <div class="card-content">
+              <!-- 调试信息 -->
+              <div style="background: #f0f0f0; padding: 10px; margin-bottom: 20px; border-radius: 8px;">
+                <p><strong>调试信息：</strong></p>
+                <p>CSS变量检查：</p>
+                <p>--colorNeutralBackground1: <span style="color: var(--colorNeutralBackground1);">测试文本</span></p>
+                <p>--colorNeutralStroke1: <span style="border: 2px solid var(--colorNeutralStroke1); padding: 2px;">测试边框</span></p>
+                <p>--colorBrandBackground: <span style="background: var(--colorBrandBackground); color: white; padding: 2px;">测试背景</span></p>
+              </div>
+              
               <div class="setting-group">
                 <div class="setting-item">
                   <div class="setting-info">
@@ -522,6 +531,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useUserStore } from '@/stores/user'
 import type { Theme } from '@/types/theme'
+import themesData from '@/data/themes.json'
 
 const themeStore = useThemeStore()
 const userStore = useUserStore()
@@ -859,7 +869,7 @@ const checkForUpdates = (): void => {
 
 onMounted(() => {
   // 加载主题数据
-  themeStore.loadThemes(mockThemes)
+  themeStore.loadThemes(themesData.themes)
   
   // 恢复用户偏好
   userStore.restoreFromLocal()
@@ -1084,33 +1094,14 @@ onMounted(() => {
   font-size: 16px;
 }
 
-/* 右侧主内容区 */
+/* 右侧主内容区（PC 使用页面滚动，避免内部容器裁切内容） */
 .settings-main {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  padding-right: 8px;
 }
 
-.settings-main::-webkit-scrollbar {
-  width: 6px;
-}
-
-.settings-main::-webkit-scrollbar-track {
-  background: var(--colorNeutralBackground2);
-  border-radius: 3px;
-}
-
-.settings-main::-webkit-scrollbar-thumb {
-  background: var(--colorNeutralStroke1);
-  border-radius: 3px;
-}
-
-.settings-main::-webkit-scrollbar-thumb:hover {
-  background: var(--colorBrandBackground);
-}
+/* 仅当需要内部滚动时再开启滚动条样式（当前PC不启用） */
 
 /* 设置卡片 */
 .settings-card {
@@ -1526,9 +1517,12 @@ onMounted(() => {
     order: 2;
   }
   
+  /* 移动端使用内部滚动更友好 */
   .settings-main {
     order: 1;
     max-height: none;
+    overflow-y: auto;
+    padding-right: 8px;
   }
   
   .stats-grid {
