@@ -498,7 +498,13 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.editor-page { display: flex; flex-direction: column; min-height: calc(100vh - 80px); }
+.editor-page { 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh;
+  padding-top: 80px;
+  box-sizing: border-box;
+}
 .editor-container { flex: 1; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; padding: 24px; }
 
 /* 预览区域 */

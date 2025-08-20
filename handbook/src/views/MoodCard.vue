@@ -30,7 +30,17 @@ const gradientBackground = computed(() => `linear-gradient(135deg, ${colorA}, ${
 </script>
 
 <style scoped>
-.moodcard-page { width: 100%; padding: 24px 32px; display: flex; justify-content: center; }
+.moodcard-page { 
+  width: 100%; 
+  min-height: 100vh;
+  padding-top: 104px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
+  display: flex; 
+  justify-content: center;
+  box-sizing: border-box;
+}
 .card-wrapper { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .mood-card { width: 100%; border-radius: 16px; padding: 24px; text-align: center; color: white; box-shadow: var(--shadow8); }
 .emoji { font-size: 48px; margin-bottom: 16px; }

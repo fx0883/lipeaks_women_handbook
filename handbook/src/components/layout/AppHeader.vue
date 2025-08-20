@@ -31,6 +31,18 @@
         相册
       </router-link>
       <router-link 
+        to="/tutorial" 
+        :class="{ active: isActive('/tutorial') }"
+      >
+        教程
+      </router-link>
+      <router-link 
+        to="/faq" 
+        :class="{ active: isActive('/faq') }"
+      >
+        帮助
+      </router-link>
+      <router-link 
         to="/settings" 
         :class="{ active: isActive('/settings') }"
       >

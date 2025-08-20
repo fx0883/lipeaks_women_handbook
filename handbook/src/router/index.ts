@@ -60,6 +60,47 @@ const router = createRouter({
       name: 'export',
       component: () => import('../views/Export.vue'),
     },
+    // 新增页面路由
+    {
+      path: '/tutorial',
+      name: 'tutorial',
+      component: () => import('../views/Tutorial.vue'),
+    },
+    {
+      path: '/faq',
+      name: 'faq',
+      component: () => import('../views/FAQ.vue'),
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: () => import('../views/Feedback.vue'),
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/Contact.vue'),
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/About.vue'),
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('../views/Terms.vue'),
+    },
+    {
+      path: '/updates',
+      name: 'updates',
+      component: () => import('../views/Updates.vue'),
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/Privacy.vue'),
+    },
   ],
 })
 

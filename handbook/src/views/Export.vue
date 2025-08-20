@@ -319,7 +319,13 @@ onMounted(() => {
 .export-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 104px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
 }
 
 .page-header {

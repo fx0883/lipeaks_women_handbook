@@ -129,8 +129,12 @@
   flex: 1;
   display: flex;
   width: 100%;
-  padding: 24px 32px;
+  padding-top: 104px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
   gap: 24px;
+  box-sizing: border-box;
 }
 
 .sidebar {

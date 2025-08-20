@@ -189,7 +189,15 @@ function saveAndGenerate() {
 </script>
 
 <style scoped>
-.mood-page { width: 100%; padding: 24px 32px; }
+.mood-page { 
+  width: 100%; 
+  min-height: 100vh;
+  padding-top: 104px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
 .main-layout { display: flex; gap: 24px; }
 
 /* 侧边栏 */

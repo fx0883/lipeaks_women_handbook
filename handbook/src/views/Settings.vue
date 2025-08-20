@@ -1,144 +1,524 @@
 <template>
   <div class="settings-page">
     <div class="settings-container">
+      <!-- 页面标题 -->
       <div class="page-header">
         <h1>设置</h1>
         <p>个性化你的手账体验</p>
       </div>
 
-      <div class="settings-content">
-        <!-- 主题设置 -->
-        <div class="settings-section">
-          <h2>🎨 主题设置</h2>
-          <div class="theme-grid">
-            <div 
-              v-for="theme in themes" 
-              :key="theme.id"
-              class="theme-card"
-              :class="{ active: currentTheme?.id === theme.id }"
-              @click="switchTheme(theme)"
-            >
-              <div class="theme-preview">
-                <div 
-                  class="theme-color primary" 
-                  :style="{ backgroundColor: theme.colors.primary }"
-                ></div>
-                <div 
-                  class="theme-color secondary" 
-                  :style="{ backgroundColor: theme.colors.secondary }"
-                ></div>
-                <div 
-                  class="theme-color accent" 
-                  :style="{ backgroundColor: theme.colors.accent }"
-                ></div>
+      <!-- 两栏布局 -->
+      <div class="settings-layout">
+        <!-- 左侧边栏 -->
+        <aside class="settings-sidebar">
+          <!-- 账户信息 -->
+          <div class="account-section">
+            <div class="account-avatar">
+              <img :src="userAvatar" alt="用户头像" />
+              <div class="avatar-badge">
+                <span class="badge-icon">✨</span>
               </div>
-              <div class="theme-info">
-                <h3>{{ theme.name }}</h3>
-                <p>{{ theme.description }}</p>
+            </div>
+            <div class="account-info">
+              <h3>{{ userName }}</h3>
+              <p class="account-level">{{ userLevel }}</p>
+              <p class="account-join">加入 {{ joinDays }} 天</p>
+            </div>
+          </div>
+
+          <!-- 使用统计 -->
+          <div class="usage-stats">
+            <h4>使用统计</h4>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-number">{{ stats.totalProjects }}</div>
+                <div class="stat-label">创作作品</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">{{ stats.totalDays }}</div>
+                <div class="stat-label">使用天数</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">{{ stats.totalMoods }}</div>
+                <div class="stat-label">记录心情</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">{{ stats.totalTemplates }}</div>
+                <div class="stat-label">收藏模板</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 偏好设置 -->
-        <div class="settings-section">
-          <h2>⚙️ 偏好设置</h2>
-          <div class="preference-list">
-            <div class="preference-item">
-              <div class="preference-info">
-                <h3>自动保存</h3>
-                <p>编辑时自动保存作品</p>
+          <!-- 导航菜单 -->
+          <nav class="settings-nav">
+            <div class="nav-section">
+              <h4>设置分类</h4>
+              <ul class="nav-list">
+                <li>
+                  <a 
+                    href="#privacy" 
+                    :class="{ active: activeSection === 'privacy' }"
+                    @click="scrollToSection('privacy')"
+                  >
+                    <span class="nav-icon">🔒</span>
+                    隐私设置
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#notifications" 
+                    :class="{ active: activeSection === 'notifications' }"
+                    @click="scrollToSection('notifications')"
+                  >
+                    <span class="nav-icon">🔔</span>
+                    通知设置
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#appearance" 
+                    :class="{ active: activeSection === 'appearance' }"
+                    @click="scrollToSection('appearance')"
+                  >
+                    <span class="nav-icon">🎨</span>
+                    外观设置
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#data" 
+                    :class="{ active: activeSection === 'data' }"
+                    @click="scrollToSection('data')"
+                  >
+                    <span class="nav-icon">💾</span>
+                    数据管理
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#about" 
+                    :class="{ active: activeSection === 'about' }"
+                    @click="scrollToSection('about')"
+                  >
+                    <span class="nav-icon">ℹ️</span>
+                    关于应用
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </aside>
+
+        <!-- 右侧主内容区 -->
+        <main class="settings-main" ref="mainContent">
+          <!-- 隐私设置 -->
+          <section id="privacy" class="settings-card">
+            <div class="card-header">
+              <h2>🔒 隐私设置</h2>
+              <p>保护你的个人信息和数据安全</p>
+            </div>
+            <div class="card-content">
+              <div class="setting-group">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>数据加密</h3>
+                    <p>使用端到端加密保护你的手账内容</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="privacySettings.dataEncryption"
+                      @change="updatePrivacySetting('dataEncryption', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>匿名统计</h3>
+                    <p>允许收集匿名使用数据以改善应用体验</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="privacySettings.anonymousStats"
+                      @change="updatePrivacySetting('anonymousStats', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>自动登录</h3>
+                    <p>在此设备上保持登录状态</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="privacySettings.autoLogin"
+                      @change="updatePrivacySetting('autoLogin', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>数据共享</h3>
+                    <p>选择数据共享级别</p>
+                  </div>
+                  <select 
+                    v-model="privacySettings.dataSharing"
+                    @change="updatePrivacySetting('dataSharing', $event.target.value)"
+                    class="setting-select"
+                  >
+                    <option value="none">不共享</option>
+                    <option value="anonymous">匿名共享</option>
+                    <option value="limited">有限共享</option>
+                  </select>
+                </div>
               </div>
-              <label class="switch">
-                <input 
-                  type="checkbox" 
-                  v-model="preferences.autoSave"
-                  @change="updatePreference('autoSave', $event.target.checked)"
-                />
-                <span class="slider"></span>
-              </label>
             </div>
+          </section>
 
-            <div class="preference-item">
-              <div class="preference-info">
-                <h3>显示教程</h3>
-                <p>首次使用时显示操作指引</p>
+          <!-- 通知设置 -->
+          <section id="notifications" class="settings-card">
+            <div class="card-header">
+              <h2>🔔 通知设置</h2>
+              <p>管理你的通知偏好和提醒方式</p>
+            </div>
+            <div class="card-content">
+              <div class="setting-group">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>推送通知</h3>
+                    <p>接收应用推送通知</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="notificationSettings.pushEnabled"
+                      @change="updateNotificationSetting('pushEnabled', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>每日提醒</h3>
+                    <p>每天提醒你记录心情和创作</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="notificationSettings.dailyReminder"
+                      @change="updateNotificationSetting('dailyReminder', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>提醒时间</h3>
+                    <p>设置每日提醒的时间</p>
+                  </div>
+                  <input 
+                    type="time" 
+                    v-model="notificationSettings.reminderTime"
+                    @change="updateNotificationSetting('reminderTime', $event.target.value)"
+                    class="time-input"
+                  />
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>声音提醒</h3>
+                    <p>通知时播放提示音</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="notificationSettings.soundEnabled"
+                      @change="updateNotificationSetting('soundEnabled', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>振动提醒</h3>
+                    <p>通知时设备振动</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="notificationSettings.vibrationEnabled"
+                      @change="updateNotificationSetting('vibrationEnabled', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
               </div>
-              <label class="switch">
-                <input 
-                  type="checkbox" 
-                  v-model="preferences.showTutorial"
-                  @change="updatePreference('showTutorial', $event.target.checked)"
-                />
-                <span class="slider"></span>
-              </label>
             </div>
+          </section>
 
-            <div class="preference-item">
-              <div class="preference-info">
-                <h3>语言设置</h3>
-                <p>选择界面语言</p>
+          <!-- 外观设置 -->
+          <section id="appearance" class="settings-card">
+            <div class="card-header">
+              <h2>🎨 外观设置</h2>
+              <p>个性化你的界面外观和主题</p>
+            </div>
+            <div class="card-content">
+              <div class="setting-group">
+                <div class="theme-section">
+                  <h3>主题选择</h3>
+                  <div class="theme-grid">
+                    <div 
+                      v-for="theme in themes" 
+                      :key="theme.id"
+                      class="theme-card"
+                      :class="{ active: currentTheme?.id === theme.id }"
+                      @click="switchTheme(theme)"
+                    >
+                      <div class="theme-preview">
+                        <div 
+                          class="theme-color primary" 
+                          :style="{ backgroundColor: theme.colors.primary }"
+                        ></div>
+                        <div 
+                          class="theme-color secondary" 
+                          :style="{ backgroundColor: theme.colors.secondary }"
+                        ></div>
+                        <div 
+                          class="theme-color accent" 
+                          :style="{ backgroundColor: theme.colors.accent }"
+                        ></div>
+                      </div>
+                      <div class="theme-info">
+                        <h4>{{ theme.name }}</h4>
+                        <p>{{ theme.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>字体大小</h3>
+                    <p>调整界面字体大小</p>
+                  </div>
+                  <select 
+                    v-model="appearanceSettings.fontSize"
+                    @change="updateAppearanceSetting('fontSize', $event.target.value)"
+                    class="setting-select"
+                  >
+                    <option value="small">小</option>
+                    <option value="medium">中</option>
+                    <option value="large">大</option>
+                  </select>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>动画效果</h3>
+                    <p>启用界面动画和过渡效果</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="appearanceSettings.animations"
+                      @change="updateAppearanceSetting('animations', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>语言设置</h3>
+                    <p>选择界面语言</p>
+                  </div>
+                  <select 
+                    v-model="preferences.language"
+                    @change="updatePreference('language', $event.target.value)"
+                    class="setting-select"
+                  >
+                    <option value="zh-CN">简体中文</option>
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="en-US">English</option>
+                  </select>
+                </div>
               </div>
-              <select 
-                v-model="preferences.language"
-                @change="updatePreference('language', $event.target.value)"
-                class="language-select"
-              >
-                <option value="zh-CN">简体中文</option>
-                <option value="zh-TW">繁體中文</option>
-                <option value="en-US">English</option>
-              </select>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <!-- 数据管理 -->
-        <div class="settings-section">
-          <h2>💾 数据管理</h2>
-          <div class="data-actions">
-            <button class="action-btn" @click="exportData">
-              📤 导出数据
-            </button>
-            <button class="action-btn" @click="importData">
-              📥 导入数据
-            </button>
-            <button class="action-btn danger" @click="clearData">
-              🗑️ 清除数据
-            </button>
-          </div>
-          <input 
-            ref="fileInput" 
-            type="file" 
-            accept=".json" 
-            style="display: none"
-            @change="handleFileImport"
-          />
-        </div>
+          <!-- 数据管理 -->
+          <section id="data" class="settings-card">
+            <div class="card-header">
+              <h2>💾 数据管理</h2>
+              <p>管理你的数据备份、导入和导出</p>
+            </div>
+            <div class="card-content">
+              <div class="setting-group">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>自动保存</h3>
+                    <p>编辑时自动保存作品</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="preferences.autoSave"
+                      @change="updatePreference('autoSave', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
 
-        <!-- 关于信息 -->
-        <div class="settings-section">
-          <h2>ℹ️ 关于</h2>
-          <div class="about-info">
-            <div class="app-info">
-              <h3>出片手账</h3>
-              <p>版本 1.0.0</p>
-              <p>专为12-20岁女性设计的温柔手账应用</p>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <h3>云端同步</h3>
+                    <p>将数据同步到云端</p>
+                  </div>
+                  <label class="switch">
+                    <input 
+                      type="checkbox" 
+                      v-model="dataSettings.cloudSync"
+                      @change="updateDataSetting('cloudSync', $event.target.checked)"
+                    />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="data-actions">
+                  <button class="action-btn primary" @click="exportData">
+                    <span class="btn-icon">📤</span>
+                    导出数据
+                  </button>
+                  <button class="action-btn" @click="importData">
+                    <span class="btn-icon">📥</span>
+                    导入数据
+                  </button>
+                  <button class="action-btn" @click="backupData">
+                    <span class="btn-icon">☁️</span>
+                    备份到云端
+                  </button>
+                  <button class="action-btn danger" @click="clearData">
+                    <span class="btn-icon">🗑️</span>
+                    清除数据
+                  </button>
+                </div>
+
+                <div class="storage-info">
+                  <h4>存储使用情况</h4>
+                  <div class="storage-bar">
+                    <div class="storage-used" :style="{ width: storageUsedPercent + '%' }"></div>
+                  </div>
+                  <p class="storage-text">
+                    已使用 {{ storageUsed }}MB / {{ storageTotal }}MB
+                  </p>
+                </div>
+              </div>
+              <input 
+                ref="fileInput" 
+                type="file" 
+                accept=".json" 
+                style="display: none"
+                @change="handleFileImport"
+              />
             </div>
-            <div class="links">
-              <a href="#" class="link">使用教程</a>
-              <a href="#" class="link">意见反馈</a>
-              <a href="#" class="link">隐私政策</a>
-              <a href="#" class="link">用户协议</a>
+          </section>
+
+          <!-- 关于应用 -->
+          <section id="about" class="settings-card">
+            <div class="card-header">
+              <h2>ℹ️ 关于应用</h2>
+              <p>了解应用信息和获取帮助</p>
             </div>
-          </div>
-        </div>
+            <div class="card-content">
+              <div class="setting-group">
+                <div class="app-info">
+                  <div class="app-logo">
+                    <img src="/favicon.ico" alt="应用图标" />
+                  </div>
+                  <div class="app-details">
+                    <h3>出片手账</h3>
+                    <p class="version">版本 1.0.0</p>
+                    <p class="description">专为12-20岁女性设计的温柔手账应用</p>
+                    <p class="copyright">© 2024 出片手账团队</p>
+                  </div>
+                </div>
+
+                <div class="app-links">
+                  <h4>帮助与支持</h4>
+                  <div class="links-grid">
+                    <a href="#" class="link-item" @click="openTutorial">
+                      <span class="link-icon">📖</span>
+                      <div class="link-content">
+                        <h5>使用教程</h5>
+                        <p>学习如何使用应用功能</p>
+                      </div>
+                    </a>
+                    <a href="#" class="link-item" @click="openFeedback">
+                      <span class="link-icon">💬</span>
+                      <div class="link-content">
+                        <h5>意见反馈</h5>
+                        <p>告诉我们你的想法和建议</p>
+                      </div>
+                    </a>
+                    <a href="#" class="link-item" @click="openPrivacy">
+                      <span class="link-icon">🔒</span>
+                      <div class="link-content">
+                        <h5>隐私政策</h5>
+                        <p>了解我们如何保护你的隐私</p>
+                      </div>
+                    </a>
+                    <a href="#" class="link-item" @click="openTerms">
+                      <span class="link-icon">📋</span>
+                      <div class="link-content">
+                        <h5>用户协议</h5>
+                        <p>查看使用条款和协议</p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="update-info">
+                  <div class="setting-item">
+                    <div class="setting-info">
+                      <h3>自动更新</h3>
+                      <p>自动检查并安装应用更新</p>
+                    </div>
+                    <label class="switch">
+                      <input 
+                        type="checkbox" 
+                        v-model="aboutSettings.autoUpdate"
+                        @change="updateAboutSetting('autoUpdate', $event.target.checked)"
+                      />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <button class="action-btn" @click="checkForUpdates">
+                    <span class="btn-icon">🔄</span>
+                    检查更新
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useThemeStore } from '@/stores/theme'
 import { useUserStore } from '@/stores/user'
 import type { Theme } from '@/types/theme'
@@ -146,13 +526,65 @@ import type { Theme } from '@/types/theme'
 const themeStore = useThemeStore()
 const userStore = useUserStore()
 
-// 文件输入引用
+// 引用
 const fileInput = ref<HTMLInputElement>()
+const mainContent = ref<HTMLElement>()
+
+// 用户信息
+const userName = ref('小仙女')
+const userLevel = ref('创作达人')
+const userAvatar = ref('https://api.dicebear.com/7.x/avataaars/svg?seed=user&backgroundColor=ffeaa7,fab1a0,fd79a8,fdcb6e,e17055,74b9ff,0984e3,a29bfe,6c5ce7&clothingColor=262e33,3c4858,5a6c7d,8b9dc3,b1e5fc,ffeaa7,ffb8b8,ff7675,fd79a8,fdcb6e')
+const joinDays = ref(128)
+
+// 活跃导航区域
+const activeSection = ref('privacy')
+
+// 使用统计
+const stats = ref({
+  totalProjects: 42,
+  totalDays: 128,
+  totalMoods: 256,
+  totalTemplates: 18
+})
+
+// 存储信息
+const storageUsed = ref(15.6)
+const storageTotal = ref(100)
+const storageUsedPercent = computed(() => (storageUsed.value / storageTotal.value) * 100)
 
 // 计算属性
 const themes = computed(() => themeStore.themes)
 const currentTheme = computed(() => themeStore.current)
 const preferences = computed(() => userStore.preferences)
+
+// 设置状态
+const privacySettings = ref({
+  dataEncryption: true,
+  anonymousStats: false,
+  autoLogin: true,
+  dataSharing: 'none'
+})
+
+const notificationSettings = ref({
+  pushEnabled: true,
+  dailyReminder: true,
+  reminderTime: '20:00',
+  soundEnabled: true,
+  vibrationEnabled: false
+})
+
+const appearanceSettings = ref({
+  fontSize: 'medium',
+  animations: true
+})
+
+const dataSettings = ref({
+  cloudSync: false
+})
+
+const aboutSettings = ref({
+  autoUpdate: true
+})
 
 // 模拟主题数据
 const mockThemes: Theme[] = [
@@ -230,6 +662,74 @@ const mockThemes: Theme[] = [
   }
 ]
 
+// 导航相关方法
+const scrollToSection = (sectionId: string): void => {
+  activeSection.value = sectionId
+  const element = document.getElementById(sectionId)
+  if (element && mainContent.value) {
+    const offsetTop = element.offsetTop - mainContent.value.offsetTop - 20
+    mainContent.value.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth'
+    })
+  }
+}
+
+// 监听滚动更新活跃区域
+const handleScroll = (): void => {
+  if (!mainContent.value) return
+  
+  const sections = ['privacy', 'notifications', 'appearance', 'data', 'about']
+  const scrollTop = mainContent.value.scrollTop + 100
+  
+  for (const sectionId of sections) {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offsetTop = element.offsetTop - mainContent.value.offsetTop
+      const offsetBottom = offsetTop + element.offsetHeight
+      
+      if (scrollTop >= offsetTop && scrollTop < offsetBottom) {
+        activeSection.value = sectionId
+        break
+      }
+    }
+  }
+}
+
+// 设置更新方法
+const updatePrivacySetting = (key: string, value: any): void => {
+  privacySettings.value[key as keyof typeof privacySettings.value] = value
+  // 这里可以添加保存到本地存储或发送到服务器的逻辑
+}
+
+const updateNotificationSetting = (key: string, value: any): void => {
+  notificationSettings.value[key as keyof typeof notificationSettings.value] = value
+}
+
+const updateAppearanceSetting = (key: string, value: any): void => {
+  appearanceSettings.value[key as keyof typeof appearanceSettings.value] = value
+  
+  // 应用字体大小设置
+  if (key === 'fontSize') {
+    document.documentElement.style.setProperty('--font-scale', 
+      value === 'small' ? '0.9' : value === 'large' ? '1.1' : '1.0')
+  }
+  
+  // 应用动画设置
+  if (key === 'animations') {
+    document.documentElement.style.setProperty('--animation-duration', 
+      value ? '0.2s' : '0s')
+  }
+}
+
+const updateDataSetting = (key: string, value: any): void => {
+  dataSettings.value[key as keyof typeof dataSettings.value] = value
+}
+
+const updateAboutSetting = (key: string, value: any): void => {
+  aboutSettings.value[key as keyof typeof aboutSettings.value] = value
+}
+
 // 切换主题
 const switchTheme = (theme: Theme): void => {
   themeStore.switchTheme(theme)
@@ -241,10 +741,14 @@ const updatePreference = (key: string, value: any): void => {
   userStore.updatePreferences({ [key]: value })
 }
 
-// 导出数据
+// 数据管理方法
 const exportData = (): void => {
   const data = {
     preferences: preferences.value,
+    privacySettings: privacySettings.value,
+    notificationSettings: notificationSettings.value,
+    appearanceSettings: appearanceSettings.value,
+    dataSettings: dataSettings.value,
     timestamp: new Date().toISOString()
   }
   
@@ -259,12 +763,10 @@ const exportData = (): void => {
   URL.revokeObjectURL(url)
 }
 
-// 导入数据
 const importData = (): void => {
   fileInput.value?.click()
 }
 
-// 处理文件导入
 const handleFileImport = (event: Event): void => {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
@@ -275,8 +777,20 @@ const handleFileImport = (event: Event): void => {
       const data = JSON.parse(e.target?.result as string)
       if (data.preferences) {
         userStore.updatePreferences(data.preferences)
-        alert('数据导入成功！')
       }
+      if (data.privacySettings) {
+        privacySettings.value = { ...privacySettings.value, ...data.privacySettings }
+      }
+      if (data.notificationSettings) {
+        notificationSettings.value = { ...notificationSettings.value, ...data.notificationSettings }
+      }
+      if (data.appearanceSettings) {
+        appearanceSettings.value = { ...appearanceSettings.value, ...data.appearanceSettings }
+      }
+      if (data.dataSettings) {
+        dataSettings.value = { ...dataSettings.value, ...data.dataSettings }
+      }
+      alert('数据导入成功！')
     } catch (error) {
       alert('数据格式错误，导入失败！')
     }
@@ -284,13 +798,63 @@ const handleFileImport = (event: Event): void => {
   reader.readAsText(file)
 }
 
-// 清除数据
+const backupData = (): void => {
+  // 模拟云端备份
+  alert('数据已备份到云端！')
+}
+
 const clearData = (): void => {
   if (confirm('确定要清除所有数据吗？此操作不可恢复。')) {
     userStore.resetPreferences()
+    privacySettings.value = {
+      dataEncryption: true,
+      anonymousStats: false,
+      autoLogin: true,
+      dataSharing: 'none'
+    }
+    notificationSettings.value = {
+      pushEnabled: true,
+      dailyReminder: true,
+      reminderTime: '20:00',
+      soundEnabled: true,
+      vibrationEnabled: false
+    }
+    appearanceSettings.value = {
+      fontSize: 'medium',
+      animations: true
+    }
+    dataSettings.value = {
+      cloudSync: false
+    }
     localStorage.clear()
     alert('数据已清除！')
   }
+}
+
+// 关于页面方法
+const openTutorial = (): void => {
+  // 这里可以路由到教程页面或打开教程模态框
+  alert('即将打开使用教程')
+}
+
+const openFeedback = (): void => {
+  // 这里可以路由到反馈页面或打开反馈表单
+  alert('即将打开意见反馈')
+}
+
+const openPrivacy = (): void => {
+  // 这里可以路由到隐私政策页面
+  alert('即将打开隐私政策')
+}
+
+const openTerms = (): void => {
+  // 这里可以路由到用户协议页面
+  alert('即将打开用户协议')
+}
+
+const checkForUpdates = (): void => {
+  // 模拟检查更新
+  alert('当前已是最新版本！')
 }
 
 onMounted(() => {
@@ -300,22 +864,41 @@ onMounted(() => {
   // 恢复用户偏好
   userStore.restoreFromLocal()
   themeStore.restoreFromLocal()
+  
+  // 添加滚动监听
+  nextTick(() => {
+    if (mainContent.value) {
+      mainContent.value.addEventListener('scroll', handleScroll)
+    }
+  })
 })
 </script>
 
 <style scoped>
+/* 基础布局 */
 .settings-page {
   width: 100%;
-  padding: 24px 32px;
+  min-height: 100vh;
+  background: var(--colorNeutralBackground2);
+  padding-top: 104px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.settings-container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .page-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .page-header h1 {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   font-size: 32px;
   font-weight: 700;
   color: var(--colorNeutralForeground1);
@@ -327,85 +910,248 @@ onMounted(() => {
   font-size: 16px;
 }
 
-.settings-content {
-  display: flex;
-  flex-direction: column;
+/* 两栏布局 */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
   gap: 32px;
+  align-items: start;
 }
 
-.settings-section {
+/* 左侧边栏 */
+.settings-sidebar {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 账户信息 */
+.account-section {
   background: var(--colorNeutralBackground1);
   border: 1px solid var(--colorNeutralStroke1);
   border-radius: 20px;
   padding: 24px;
+  text-align: center;
   box-shadow: var(--shadow4);
 }
 
-.settings-section h2 {
-  margin: 0 0 24px;
+.account-avatar {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.account-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--colorBrandBackground);
+}
+
+.avatar-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 28px;
+  height: 28px;
+  background: var(--colorBrandBackground);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--colorNeutralBackground1);
+}
+
+.badge-icon {
+  font-size: 14px;
+}
+
+.account-info h3 {
+  margin: 0 0 4px;
   font-size: 20px;
   font-weight: 600;
   color: var(--colorNeutralForeground1);
 }
 
-.theme-grid {
+.account-level {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--colorBrandBackground);
+  font-weight: 500;
+}
+
+.account-join {
+  margin: 0;
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+/* 使用统计 */
+.usage-stats {
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow4);
+}
+
+.usage-stats h4 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+  text-align: center;
+}
+
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.theme-card {
-  border: 2px solid var(--colorNeutralStroke1);
-  border-radius: 12px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.theme-card:hover {
-  border-color: var(--colorBrandBackground);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow8);
-}
-
-.theme-card.active {
-  border-color: var(--colorBrandBackground);
+.stat-item {
+  text-align: center;
+  padding: 12px;
   background: var(--pink-light);
-}
-
-.theme-preview {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.theme-color {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
+  border-radius: 12px;
   border: 1px solid var(--colorNeutralStroke1);
 }
 
-.theme-info h3 {
-  margin: 0 0 4px;
+.stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--colorBrandBackground);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+/* 导航菜单 */
+.settings-nav {
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow4);
+}
+
+.nav-section h4 {
+  margin: 0 0 16px;
   font-size: 16px;
   font-weight: 600;
   color: var(--colorNeutralForeground1);
 }
 
-.theme-info p {
+.nav-list {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  font-size: 14px;
-  color: var(--colorNeutralForeground2);
 }
 
-.preference-list {
+.nav-list li {
+  margin-bottom: 8px;
+}
+
+.nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--colorNeutralForeground2);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-list a:hover {
+  background: var(--pink-light);
+  color: var(--colorNeutralForeground1);
+}
+
+.nav-list a.active {
+  background: var(--colorBrandBackground);
+  color: white;
+}
+
+.nav-icon {
+  font-size: 16px;
+}
+
+/* 右侧主内容区 */
+.settings-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.settings-main::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-main::-webkit-scrollbar-track {
+  background: var(--colorNeutralBackground2);
+  border-radius: 3px;
+}
+
+.settings-main::-webkit-scrollbar-thumb {
+  background: var(--colorNeutralStroke1);
+  border-radius: 3px;
+}
+
+.settings-main::-webkit-scrollbar-thumb:hover {
+  background: var(--colorBrandBackground);
+}
+
+/* 设置卡片 */
+.settings-card {
+  background: var(--colorNeutralBackground1);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: 20px;
+  box-shadow: var(--shadow4);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 24px 24px 0;
+  border-bottom: 1px solid var(--colorNeutralStroke1);
+  margin-bottom: 24px;
+}
+
+.card-header h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.card-header p {
+  margin: 0 0 24px;
+  color: var(--colorNeutralForeground2);
+  font-size: 14px;
+}
+
+.card-content {
+  padding: 0 24px 24px;
+}
+
+/* 设置组 */
+.setting-group {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.preference-item {
+.setting-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -413,23 +1159,24 @@ onMounted(() => {
   border-bottom: 1px solid var(--colorNeutralStroke1);
 }
 
-.preference-item:last-child {
+.setting-item:last-child {
   border-bottom: none;
 }
 
-.preference-info h3 {
+.setting-info h3 {
   margin: 0 0 4px;
   font-size: 16px;
   font-weight: 500;
   color: var(--colorNeutralForeground1);
 }
 
-.preference-info p {
+.setting-info p {
   margin: 0;
   font-size: 14px;
   color: var(--colorNeutralForeground2);
 }
 
+/* 开关控件 */
 .switch {
   position: relative;
   display: inline-block;
@@ -475,7 +1222,9 @@ onMounted(() => {
   transform: translateX(26px);
 }
 
-.language-select {
+/* 选择框和输入框 */
+.setting-select,
+.time-input {
   padding: 8px 12px;
   border: 1px solid var(--colorNeutralStroke1);
   border-radius: 8px;
@@ -483,21 +1232,93 @@ onMounted(() => {
   color: var(--colorNeutralForeground1);
   font-size: 14px;
   cursor: pointer;
+  min-width: 120px;
 }
 
-.language-select:focus {
+.setting-select:focus,
+.time-input:focus {
   outline: none;
   border-color: var(--colorBrandBackground);
 }
 
-.data-actions {
+/* 主题选择 */
+.theme-section {
+  padding: 20px 0;
+}
+
+.theme-section h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.theme-card {
+  border: 2px solid var(--colorNeutralStroke1);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--colorNeutralBackground1);
+}
+
+.theme-card:hover {
+  border-color: var(--colorBrandBackground);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow8);
+}
+
+.theme-card.active {
+  border-color: var(--colorBrandBackground);
+  background: var(--pink-light);
+}
+
+.theme-preview {
   display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.theme-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--colorNeutralStroke1);
+}
+
+.theme-info h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.theme-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+/* 数据操作按钮 */
+.data-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
-  flex-wrap: wrap;
+  margin: 20px 0;
 }
 
 .action-btn {
-  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
   border: 1px solid var(--colorNeutralStroke1);
   background: var(--colorNeutralBackground1);
   color: var(--colorNeutralForeground1);
@@ -506,11 +1327,23 @@ onMounted(() => {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 .action-btn:hover {
   border-color: var(--colorBrandBackground);
   background: var(--pink-light);
+}
+
+.action-btn.primary {
+  background: var(--colorBrandBackground);
+  color: white;
+  border-color: var(--colorBrandBackground);
+}
+
+.action-btn.primary:hover {
+  background: var(--colorBrandBackgroundHover);
+  border-color: var(--colorBrandBackgroundHover);
 }
 
 .action-btn.danger {
@@ -523,66 +1356,220 @@ onMounted(() => {
   border-color: #dc2626;
 }
 
-.about-info {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.btn-icon {
+  font-size: 16px;
 }
 
-.app-info h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
+/* 存储信息 */
+.storage-info {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--pink-light);
+  border-radius: 12px;
+  border: 1px solid var(--colorNeutralStroke1);
+}
+
+.storage-info h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--colorNeutralForeground1);
 }
 
-.app-info p {
+.storage-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--colorNeutralStroke1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.storage-used {
+  height: 100%;
+  background: var(--colorBrandBackground);
+  transition: width 0.3s ease;
+}
+
+.storage-text {
+  margin: 0;
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+/* 关于页面 */
+.app-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--colorNeutralStroke1);
+  margin-bottom: 20px;
+}
+
+.app-logo img {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+}
+
+.app-details h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.version {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--colorBrandBackground);
+  font-weight: 500;
+}
+
+.description {
   margin: 0 0 4px;
   font-size: 14px;
   color: var(--colorNeutralForeground2);
 }
 
-.links {
+.copyright {
+  margin: 0;
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+.app-links h4 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.link-item {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.link {
-  color: var(--colorBrandBackground);
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--pink-light);
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: 12px;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  color: var(--colorNeutralForeground1);
+  transition: all 0.2s ease;
 }
 
-.link:hover {
-  color: var(--colorBrandBackgroundHover);
-  text-decoration: underline;
+.link-item:hover {
+  border-color: var(--colorBrandBackground);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow4);
+}
+
+.link-icon {
+  font-size: 20px;
+}
+
+.link-content h5 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--colorNeutralForeground1);
+}
+
+.link-content p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--colorNeutralForeground2);
+}
+
+.update-info {
+  padding-top: 20px;
+  border-top: 1px solid var(--colorNeutralStroke1);
 }
 
 /* 响应式设计 */
-@media (max-width: 768px) {
-  .settings-page {
-    padding: 16px;
+@media (max-width: 1024px) {
+  .settings-layout {
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
   
   .theme-grid {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 16px;
+  }
   
-  .preference-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  .settings-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .settings-sidebar {
+    position: static;
+    order: 2;
+  }
+  
+  .settings-main {
+    order: 1;
+    max-height: none;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
   }
   
   .data-actions {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
   
-  .action-btn {
-    width: 100%;
+  .links-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .app-info {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .account-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .avatar-badge {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .badge-icon {
+    font-size: 12px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
