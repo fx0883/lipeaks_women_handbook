@@ -345,23 +345,32 @@ const clearFilters = (): void => {
 .filter-options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .filter-option {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   cursor: pointer;
   font-size: 14px;
   color: var(--colorNeutralForeground1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.filter-option:hover {
+  background: var(--pink-light);
 }
 
 .filter-option input[type="radio"],
 .filter-option input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   accent-color: var(--colorBrandBackground);
+  flex-shrink: 0;
 }
 
 .clear-filters {
@@ -603,10 +612,78 @@ const clearFilters = (): void => {
 @media (max-width: 768px) {
   .create-page {
     padding: 16px;
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    position: static;
+    margin-bottom: 24px;
+  }
+  
+  .filter-options {
+    gap: 16px;
+  }
+  
+  .filter-option {
+    padding: 12px 16px;
+    min-height: 48px;
+    font-size: 16px;
+  }
+  
+  .filter-option input[type="radio"],
+  .filter-option input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .clear-filters {
+    padding: 16px;
+    font-size: 16px;
+    min-height: 48px;
   }
   
   .templates-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-page {
+    padding: 12px;
+  }
+  
+  .sidebar {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-option {
+    padding: 16px 20px;
+    min-height: 52px;
+    font-size: 16px;
+  }
+  
+  .filter-option input[type="radio"],
+  .filter-option input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .clear-filters {
+    padding: 18px;
+    font-size: 16px;
+    min-height: 52px;
+  }
+  
+  .sidebar h3 {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .filter-group h4 {
+    font-size: 16px;
+    margin-bottom: 16px;
   }
 }
 </style>
