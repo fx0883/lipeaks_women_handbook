@@ -15,36 +15,42 @@
       <router-link 
         to="/create" 
         :class="{ active: isActive('/create') }"
+        @click="closeMobileMenu"
       >
         出片
       </router-link>
       <router-link 
         to="/mood" 
         :class="{ active: isActive('/mood') }"
+        @click="closeMobileMenu"
       >
         打卡
       </router-link>
       <router-link 
         to="/album" 
         :class="{ active: isActive('/album') }"
+        @click="closeMobileMenu"
       >
         相册
       </router-link>
       <router-link 
         to="/tutorial" 
         :class="{ active: isActive('/tutorial') }"
+        @click="closeMobileMenu"
       >
         教程
       </router-link>
       <router-link 
         to="/faq" 
         :class="{ active: isActive('/faq') }"
+        @click="closeMobileMenu"
       >
         帮助
       </router-link>
       <router-link 
         to="/settings" 
         :class="{ active: isActive('/settings') }"
+        @click="closeMobileMenu"
       >
         我的
       </router-link>
@@ -153,6 +159,11 @@ const isActive = (path: string): boolean => {
 // 切换移动端菜单
 const toggleMobileMenu = (): void => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+// 关闭移动端菜单
+const closeMobileMenu = (): void => {
+  isMobileMenuOpen.value = false
 }
 
 // 切换主题下拉
