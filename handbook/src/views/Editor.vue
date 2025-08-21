@@ -1,10 +1,22 @@
 <template>
   <div class="editor-page">
+
+    
     <div class="editor-container" v-if="hasTemplateId">
       <!-- 左侧：预览区域（按原型） -->
       <div class="preview-area">
         <div class="preview-header">
-          <h2>预览</h2>
+          <div class="header-left">
+            <h2>预览</h2>
+            <div class="project-name-edit">
+              <input 
+                v-model="projectName" 
+                class="project-name-input" 
+                placeholder="输入项目名称"
+                @blur="onProjectNameChange"
+              />
+            </div>
+          </div>
           <router-link to="/create" class="btn">返回模板</router-link>
         </div>
 
@@ -23,13 +35,52 @@
           >
             <!-- 画布加载前的预览占位 -->
             <img
-              v-if="currentBackgroundUrl && !isCanvasReady"
+              v-if="currentBackgroundUrl && (!isCanvasReady || !isBackgroundImageLoaded) && !isBackgroundImageLoading"
               class="canvas-preview"
               :src="currentBackgroundUrl"
               :alt="resolvedTemplateName"
             />
-            <div v-if="!currentBackgroundUrl && !isCanvasReady" class="canvas-empty">空白画布</div>
-            <canvas ref="fabricCanvasEl" v-show="isCanvasReady"></canvas>
+            
+            <!-- 背景图加载动画 -->
+            <div v-if="isBackgroundImageLoading" class="background-loading">
+              <div class="loading-container">
+                <div class="loading-progress-ring">
+                  <svg class="progress-ring" width="80" height="80">
+                    <circle
+                      class="progress-ring-circle-bg"
+                      stroke="rgba(0, 0, 0, 0.1)"
+                      stroke-width="4"
+                      fill="transparent"
+                      r="36"
+                      cx="40"
+                      cy="40"
+                    />
+                    <circle
+                      class="progress-ring-circle"
+                      stroke="var(--colorBrandBackground)"
+                      stroke-width="4"
+                      fill="transparent"
+                      r="36"
+                      cx="40"
+                      cy="40"
+                      :stroke-dasharray="`${2 * Math.PI * 36}`"
+                      :stroke-dashoffset="`${2 * Math.PI * 36 * (1 - backgroundImageLoadProgress / 100)}`"
+                    />
+                  </svg>
+                  <!-- 在进度环中心添加一个脉冲点作为视觉中心 -->
+                  <div class="progress-center-dot"></div>
+                </div>
+                <div class="loading-text">背景图加载中...</div>
+              </div>
+            </div>
+            
+            <div v-if="!currentBackgroundUrl && !isCanvasReady" class="canvas-empty">
+              {{ isCanvasInitializing ? '画布初始化中...' : '空白画布' }}
+            </div>
+            <canvas 
+              ref="fabricCanvasEl" 
+              :style="{ visibility: isCanvasReady ? 'visible' : 'hidden' }"
+            ></canvas>
 
             <!-- 文字覆盖（按原型 DOM 覆盖层） -->
             <div class="preview-overlay">
@@ -44,14 +95,26 @@
         <!-- 预览与导出主操作 -->
         <div class="preview-main-actions">
           <button class="btn ghost" @click="togglePreviewMode">{{ previewMode ? '编辑' : '预览' }}</button>
+          <button class="btn primary" @click="saveProject" :disabled="isSaving">
+            {{ isSaving ? '保存中...' : '保存' }}
+          </button>
           <button class="btn primary" @click="exportProject">导出</button>
+        </div>
+        
+        <!-- 保存状态提示 -->
+        <div v-if="lastSavedAt" class="save-status">
+          <span class="save-time">上次保存: {{ formatSaveTime(lastSavedAt) }}</span>
         </div>
 
         <!-- 次级操作：替换/添加/尺寸 -->
         <div class="preview-actions">
-          <button class="btn ghost" @click="triggerReplace">替换图片</button>
-          <button class="btn ghost" @click="triggerAddImage">添加图片</button>
-          <button class="btn ghost" @click="cycleAspectRatio">调整尺寸</button>
+          <button class="btn ghost" @click="triggerReplace" :disabled="!isCanvasReady">
+            {{ isCanvasInitializing ? '初始化中...' : '替换图片' }}
+          </button>
+          <button class="btn ghost" @click="triggerAddImage" :disabled="!isCanvasReady">
+            {{ isCanvasInitializing ? '初始化中...' : '添加图片' }}
+          </button>
+          <button class="btn ghost" @click="cycleAspectRatio" :disabled="!isCanvasReady">调整尺寸</button>
           <input ref="bgFileInput" type="file" accept="image/*" class="file-input" @change="onPickBackground" />
           <input ref="fgFileInput" type="file" accept="image/*" class="file-input" @change="onPickForeground" />
         </div>
@@ -214,35 +277,80 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useProjectStore } from '@/stores/project'
+import type { Project, Template } from '@/types/project'
+import templatesData from '@/data/templates.json'
 
 let fabricNS: any = null
 async function getFabric() {
   if (fabricNS) return fabricNS
-  const mod: any = await import('fabric')
-  fabricNS = mod?.fabric || mod
-  return fabricNS
+  
+  try {
+    console.log('开始导入Fabric.js...')
+    const mod: any = await import('fabric')
+    console.log('Fabric.js模块导入结果:', mod)
+    
+    // Fabric.js v6的导入方式
+    if (mod?.fabric) {
+      fabricNS = mod.fabric
+      console.log('✅ 使用mod.fabric')
+    } else if (mod?.default) {
+      fabricNS = mod.default
+      console.log('✅ 使用mod.default')
+    } else if (mod?.Canvas) {
+      fabricNS = mod
+      console.log('✅ 使用mod直接导入')
+    } else {
+      throw new Error('无法识别Fabric.js模块结构')
+    }
+    
+    // 验证Fabric.js对象
+    if (!fabricNS?.Canvas) {
+      throw new Error('Fabric.js Canvas构造函数未找到')
+    }
+    
+    console.log('Fabric.js导入成功:', {
+      hasCanvas: !!fabricNS.Canvas,
+      hasImage: !!fabricNS.Image,
+      version: fabricNS.version || 'unknown'
+    })
+    
+    return fabricNS
+  } catch (error) {
+    console.error('Fabric.js导入失败:', error)
+    throw new Error(`Fabric.js导入失败: ${error}`)
+  }
 }
 
 const route = useRoute()
 const router = useRouter()
+const projectStore = useProjectStore()
+
+// 项目相关状态
+const projectId = ref<string>('')
+const projectName = ref('')
+const isSaving = ref(false)
+const lastSavedAt = ref<Date | null>(null)
 
 // 模板信息
 const templateId = computed(() => (route.params.id as string) || '')
 const hasTemplateId = computed(() => !!templateId.value)
 
-const templateMetaMap: Record<string, { name: string; ratio: string; preview: string }> = {
-  'campus-collage': { name: '校园日常拼贴', ratio: '4:5', preview: 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=1200&q=80' },
-  'club-poster': { name: '社团招新海报', ratio: '9:16', preview: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=1200&q=80' },
-  'citywalk': { name: 'Citywalk/旅行', ratio: '9:16', preview: 'https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=1200&q=80' },
-  'dorm-food': { name: '宿舍日常/美食', ratio: '1:1', preview: 'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=1200&q=80' },
-  'exam-countdown': { name: '学习计划表', ratio: '4:5', preview: 'https://images.unsplash.com/photo-1553729784-e91953dec042?w=1200&q=80' }
-}
+// 从templates.json加载模板数据
+const templates = templatesData.templates as Template[]
+const templateMap = new Map(templates.map(t => [t.id, t]))
 
-const resolvedTemplateName = computed(() => templateMetaMap[templateId.value]?.name || '编辑器')
-const templateRatio = ref(templateMetaMap[templateId.value]?.ratio || '4:5')
-watch(templateId, (v) => { templateRatio.value = templateMetaMap[v]?.ratio || '4:5' })
+// 获取当前模板数据
+const currentTemplate = computed(() => templateMap.get(templateId.value))
 
-const defaultPreviewUrl = computed(() => templateMetaMap[templateId.value]?.preview || '')
+const resolvedTemplateName = computed(() => currentTemplate.value?.name || '编辑器')
+const templateRatio = ref(currentTemplate.value?.ratio || '4:5')
+watch(templateId, (v) => { 
+  const template = templateMap.get(v)
+  templateRatio.value = template?.ratio || '4:5'
+})
+
+const defaultPreviewUrl = computed(() => currentTemplate.value?.preview || '')
 const customBackgroundUrl = ref('')
 const currentBackgroundUrl = computed(() => customBackgroundUrl.value || defaultPreviewUrl.value)
 
@@ -258,11 +366,15 @@ const canvasContainer = ref<HTMLDivElement>()
 const fabricCanvasEl = ref<HTMLCanvasElement>()
 const previewMode = ref(false)
 const isCanvasReady = ref(false)
+const isCanvasInitializing = ref(false)
+const isBackgroundImageLoaded = ref(false) // 新增：背景图加载状态
+const isBackgroundImageLoading = ref(false) // 新增：背景图加载中状态
+const backgroundImageLoadProgress = ref(0) // 新增：加载进度
 let canvas: any | null = null
 
-// 预览覆盖文本（按原型）
-const titleText = ref('我的美好时光')
-const subtitleText = ref('记录生活中的小确幸')
+// 预览覆盖文本（使用模板默认值）
+const titleText = ref('')
+const subtitleText = ref('')
 const fontSize = ref(24)
 const selectedColor = ref('#333333')
 const colorPalette = ['#333333', '#8fd3c8', '#f7c3d3', '#ffe79a', '#bcd9ff', '#ff6b6b', '#4ecdc4', '#45b7d1']
@@ -351,36 +463,366 @@ const borderStyleCss = computed(() => (borderStyle.value === 'none' || borderWid
 // 初始化画布
 const initCanvas = async (): Promise<void> => {
   try {
+    console.log('开始初始化画布...')
     isCanvasReady.value = false
-    await nextTick()
+    isCanvasInitializing.value = true
+    
+    // 确保Canvas元素可见，以便Fabric.js能够正确初始化
+    console.log('设置Canvas元素为可见状态...')
+    
+    console.log('加载Fabric.js...')
     const f = await getFabric()
-    if (!fabricCanvasEl.value) return
+    console.log('Fabric.js加载完成')
+    
+    console.log('检查Canvas元素...', !!fabricCanvasEl.value)
+    if (!fabricCanvasEl.value) {
+      console.error('Canvas元素未找到')
+      isCanvasReady.value = true // 设置为ready避免按钮永远禁用
+      isCanvasInitializing.value = false
+      return
+    }
 
-    canvas = new f.Canvas(fabricCanvasEl.value, {
-      selection: !previewMode.value,
-      preserveObjectStacking: true,
-      backgroundColor: '#ffffff'
-    })
+         console.log('创建Fabric Canvas...')
+     console.log('Fabric.js对象检查:', {
+       fabric: !!f,
+       Canvas: !!f.Canvas,
+       Image: !!f.Image,
+       version: f.version || 'unknown'
+     })
+     
+     // 确保Fabric.js正确加载
+     if (!f.Canvas) {
+       throw new Error('Fabric.js Canvas构造函数未找到')
+     }
+     
+           try {
+        canvas = new f.Canvas(fabricCanvasEl.value, {
+          selection: !previewMode.value,
+          preserveObjectStacking: true,
+          backgroundColor: '#ffffff'
+        })
+        console.log('Canvas创建成功')
+        
+        // 深度验证Canvas对象
+        console.log('Canvas对象验证:', {
+          canvas: !!canvas,
+          canvasType: typeof canvas,
+          constructor: canvas.constructor?.name,
+          prototype: Object.getPrototypeOf(canvas)?.constructor?.name
+        })
+        
+        // 检查关键方法
+        const requiredMethods = ['setBackgroundImage', 'add', 'renderAll', 'setWidth', 'setHeight']
+        const methodCheck = requiredMethods.reduce((acc, method) => {
+          acc[method] = typeof canvas[method]
+          return acc
+        }, {} as Record<string, string>)
+        
+        console.log('Canvas方法检查:', methodCheck)
+        
+        // 验证Canvas是否真正可用 - 添加重试机制
+        let validationRetryCount = 0
+        const maxValidationRetries = 3
+        
+        const validateCanvas = async (): Promise<boolean> => {
+          if (validationRetryCount >= maxValidationRetries) {
+            return false
+          }
+          
+          // 等待Canvas对象完全初始化
+          await new Promise(resolve => setTimeout(resolve, 200 * (validationRetryCount + 1)))
+          
+          // 重新检查方法
+          const hasRequiredMethods = requiredMethods.every(method => 
+            typeof canvas[method] === 'function'
+          )
+          
+          if (hasRequiredMethods) {
+            console.log('✅ Canvas对象验证通过')
+            return true
+          }
+          
+          console.warn(`Canvas对象方法不完整，重试 ${validationRetryCount + 1}/${maxValidationRetries}...`)
+          validationRetryCount++
+          
+          // 尝试重新创建Canvas
+          try {
+            if (canvas.dispose) {
+              canvas.dispose()
+            }
+            canvas = new f.Canvas(fabricCanvasEl.value, {
+              selection: !previewMode.value,
+              preserveObjectStacking: true,
+              backgroundColor: '#ffffff'
+            })
+            console.log('Canvas重新创建成功，重新验证...')
+            return await validateCanvas()
+          } catch (retryError) {
+            console.error('Canvas重新创建失败:', retryError)
+            return false
+          }
+        }
+        
+        // 开始验证
+        const isValid = await validateCanvas()
+        if (!isValid) {
+          throw new Error('Canvas对象创建不完整，缺少关键方法')
+        }
+        
+      } catch (canvasError) {
+        console.error('Canvas创建失败:', canvasError)
+        throw canvasError
+      }
+    
+    console.log('调整Canvas尺寸...')
     resizeCanvas()
 
     // 背景图
     const preview = currentBackgroundUrl.value
+    console.log('背景图URL:', preview)
     if (preview) {
       try {
-        f.Image.fromURL(preview, (img: any) => {
-          if (!canvas) return
-          fitBackground(img, canvas.getWidth(), canvas.getHeight())
-          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
-        }, { crossOrigin: 'anonymous' })
+        console.log('开始加载背景图...')
+        isBackgroundImageLoaded.value = false // 重置背景图加载状态
+        isBackgroundImageLoading.value = true // 开始加载动画
+        backgroundImageLoadProgress.value = 0
+        
+        await new Promise<void>((resolve, reject) => {
+          console.log('=== 开始Promise包装的背景图加载 ===')
+          let isResolved = false // 防止重复resolve
+          
+          // 增加超时时间到30秒，给复杂图片更多加载时间
+          const timeout = setTimeout(() => {
+            if (!isResolved) {
+              console.warn('背景图加载超时，跳过背景图')
+              isResolved = true
+              isBackgroundImageLoaded.value = false
+              isBackgroundImageLoading.value = false
+              backgroundImageLoadProgress.value = 0
+              resolve()
+            }
+          }, 30000) // 30秒超时
+          
+          // 改进的进度模拟 - 更平滑自然
+          let progress = 0
+          const progressInterval = setInterval(() => {
+            if (progress < 85 && !isResolved) { // 只模拟到85%，留15%给实际加载完成
+              // 使用缓动函数，让进度增长越来越慢
+              const remaining = 85 - progress
+              const increment = Math.max(0.5, remaining * 0.1)
+              progress += increment
+              backgroundImageLoadProgress.value = Math.min(85, progress)
+              console.log('进度模拟:', backgroundImageLoadProgress.value.toFixed(1) + '%')
+            }
+          }, 100) // 更频繁的更新，让动画更流畅
+          
+          console.log('调用 f.Image.fromURL，URL:', preview)
+          
+          // 使用更可靠的图片加载方案
+          const loadImageWithFallback = () => {
+            console.log('开始加载图片，使用fallback方案...')
+            
+            // 方案1: 直接使用已加载的Image对象
+            const img = new Image()
+            img.crossOrigin = 'anonymous'
+            
+            img.onload = () => {
+              console.log('✅ 图片直接加载成功，尺寸:', img.width, 'x', img.height)
+              
+              if (!isResolved && canvas) {
+                                 try {
+                   console.log('创建Fabric.js Image对象...')
+                   
+                   // 检查Fabric.js Image构造函数
+                   if (!f.Image) {
+                     throw new Error('Fabric.js Image构造函数未找到')
+                   }
+                   
+                   const fabricImg = new f.Image(img)
+                   console.log('Fabric Image创建成功:', fabricImg)
+                   
+                   // 检查Canvas对象和方法
+                   if (!canvas) {
+                     throw new Error('Canvas对象未找到')
+                   }
+                   
+                   // 深度检查Canvas对象
+                   console.log('Canvas对象深度检查:', {
+                     canvas: !!canvas,
+                     canvasType: typeof canvas,
+                     canvasConstructor: canvas.constructor?.name,
+                     hasSetBackgroundImage: 'setBackgroundImage' in canvas,
+                     setBackgroundImageType: typeof canvas.setBackgroundImage,
+                     canvasPrototype: Object.getPrototypeOf(canvas)?.constructor?.name,
+                     canvasMethods: Object.getOwnPropertyNames(Object.getPrototypeOf(canvas))
+                   })
+                   
+                   // 尝试多种方式设置背景图
+                   let backgroundSetSuccess = false
+                   
+                   // 方法1: 直接设置背景图
+                   if (typeof canvas.setBackgroundImage === 'function') {
+                     console.log('使用setBackgroundImage方法...')
+                     try {
+                       canvas.setBackgroundImage(fabricImg, () => {
+                         console.log('背景图设置到Canvas完成')
+                         if (!isResolved) {
+                           console.log('✅ 背景图加载成功，resolving promise')
+                           isResolved = true
+                           isBackgroundImageLoaded.value = true
+                           isBackgroundImageLoading.value = false
+                           backgroundImageLoadProgress.value = 0
+                           canvas.renderAll()
+                           resolve()
+                         }
+                       })
+                       backgroundSetSuccess = true
+                     } catch (setError) {
+                       console.warn('setBackgroundImage方法失败:', setError)
+                     }
+                   }
+                   
+                   // 方法2: 使用set方法
+                   if (!backgroundSetSuccess && typeof canvas.set === 'function') {
+                     console.log('尝试使用canvas.set方法...')
+                     try {
+                       canvas.set('backgroundImage', fabricImg)
+                       canvas.renderAll()
+                       console.log('✅ 使用set方法设置背景图成功')
+                       backgroundSetSuccess = true
+                       if (!isResolved) {
+                         isResolved = true
+                         isBackgroundImageLoaded.value = true
+                         isBackgroundImageLoading.value = false
+                         backgroundImageLoadProgress.value = 0
+                         resolve()
+                       }
+                     } catch (setError) {
+                       console.warn('canvas.set方法失败:', setError)
+                     }
+                   }
+                   
+                   // 方法3: 直接赋值
+                   if (!backgroundSetSuccess) {
+                     console.log('尝试直接赋值backgroundImage属性...')
+                     try {
+                       (canvas as any).backgroundImage = fabricImg
+                       canvas.renderAll()
+                       console.log('✅ 直接赋值backgroundImage成功')
+                       backgroundSetSuccess = true
+                       if (!isResolved) {
+                         isResolved = true
+                         isBackgroundImageLoaded.value = true
+                         isBackgroundImageLoading.value = false
+                         backgroundImageLoadProgress.value = 0
+                         resolve()
+                       }
+                     } catch (assignError) {
+                       console.warn('直接赋值失败:', assignError)
+                     }
+                   }
+                   
+                   // 如果所有方法都失败
+                   if (!backgroundSetSuccess) {
+                     throw new Error('所有设置背景图的方法都失败了')
+                   }
+                   
+                 } catch (err: any) {
+                   console.error('处理背景图时出错:', err)
+                   console.error('错误详情:', {
+                     error: err,
+                     message: err?.message || 'Unknown error',
+                     stack: err?.stack || 'No stack trace',
+                     canvas: !!canvas,
+                     canvasType: typeof canvas,
+                     fabricImage: !!f.Image
+                   })
+                   
+                   if (!isResolved) {
+                     isResolved = true
+                     isBackgroundImageLoaded.value = false
+                     isBackgroundImageLoading.value = false
+                     backgroundImageLoadProgress.value = 0
+                     resolve() // 使用resolve而不是reject，避免卡住
+                   }
+                 }
+              }
+            }
+            
+            img.onerror = (e) => {
+              console.error('❌ 图片加载失败:', e)
+              if (!isResolved) {
+                console.log('图片加载失败，跳过背景图')
+                isResolved = true
+                isBackgroundImageLoaded.value = false
+                isBackgroundImageLoading.value = false
+                backgroundImageLoadProgress.value = 0
+                resolve()
+              }
+            }
+            
+            img.src = preview
+          }
+          
+          // 启动加载
+          loadImageWithFallback()
+          
+          // 添加额外的监控，检查是否有onerror回调
+          setTimeout(() => {
+            if (!isResolved) {
+              console.log('⚠️ 5秒后检查：Promise仍未resolved，当前进度:', backgroundImageLoadProgress.value)
+            }
+          }, 5000)
+        })
+        console.log('背景图加载完成，状态:', isBackgroundImageLoaded.value)
       } catch (err) {
         console.warn('背景图加载失败，已忽略', err)
+        isBackgroundImageLoaded.value = false
+        isBackgroundImageLoading.value = false
+        backgroundImageLoadProgress.value = 0
       }
+    } else {
+      console.log('没有背景图需要加载')
+      isBackgroundImageLoaded.value = true // 没有背景图时设为true
+      isBackgroundImageLoading.value = false
+      backgroundImageLoadProgress.value = 0
     }
 
+    console.log('设置画布状态为就绪')
     isCanvasReady.value = true
+    isCanvasInitializing.value = false
     canvas.renderAll()
+    console.log('画布初始化完成!')
   } catch (e) {
     console.error('初始化画布失败', e)
+    
+    // 增强错误处理
+    if (e instanceof Error) {
+      console.error('错误详情:', {
+        message: e.message,
+        stack: e.stack,
+        name: e.name
+      })
+    }
+    
+    // 尝试清理Canvas对象
+    if (canvas) {
+      try {
+        if (typeof canvas.dispose === 'function') {
+          canvas.dispose()
+        }
+        canvas = null
+      } catch (disposeError) {
+        console.error('清理Canvas对象失败:', disposeError)
+      }
+    }
+    
+    // 设置状态，避免无限等待
+    isCanvasReady.value = true
+    isCanvasInitializing.value = false
+    
+    // 显示用户友好的错误信息
+    console.warn('Canvas初始化失败，但已设置为就绪状态以避免阻塞')
   }
 }
 
@@ -393,21 +835,47 @@ const stickers = [
 ]
 
 const addSticker = async (sticker: any): Promise<void> => {
-  if (!canvas) return
-  const f = await getFabric()
-  f.Image.fromURL(sticker.url, (img: any) => {
-    const targetWidth = Math.min(160, canvas!.getWidth() * 0.25)
-    const scale = targetWidth / img.width!
-    img.set({ left: canvas!.getWidth() / 2, top: canvas!.getHeight() / 2, originX: 'center', originY: 'center', scaleX: scale, scaleY: scale })
-    canvas!.add(img)
-    canvas!.setActiveObject(img)
-    canvas!.renderAll()
-  }, { crossOrigin: 'anonymous' })
+  if (!canvas) {
+    alert('画布未初始化，请稍后再试')
+    return
+  }
+  
+  try {
+    const f = await getFabric()
+    await new Promise<void>((resolve, reject) => {
+      f.Image.fromURL(sticker.url, (img: any) => {
+        if (!canvas) {
+          reject(new Error('画布未初始化'))
+          return
+        }
+        
+        const targetWidth = Math.min(160, canvas.getWidth() * 0.25)
+        const scale = targetWidth / img.width!
+        img.set({ 
+          left: canvas.getWidth() / 2, 
+          top: canvas.getHeight() / 2, 
+          originX: 'center', 
+          originY: 'center', 
+          scaleX: scale, 
+          scaleY: scale 
+        })
+        canvas.add(img)
+        canvas.setActiveObject(img)
+        canvas.renderAll()
+        resolve()
+      }, { crossOrigin: 'anonymous' })
+    })
+    
+    console.log('贴纸添加成功')
+  } catch (error) {
+    console.error('添加贴纸失败:', error)
+    alert('添加贴纸失败，请重试')
+  }
 }
 
 // 滤镜选择（CSS 视觉）
-function selectFilter(id: 'origin' | 'cream' | 'film' | 'clean' | 'bw' | 'warm') {
-  selectedFilter.value = id
+function selectFilter(id: string) {
+  selectedFilter.value = id as 'origin' | 'cream' | 'film' | 'clean' | 'bw' | 'warm'
 }
 
 // 颜色/对齐/字体
@@ -427,39 +895,151 @@ function applyPreviewMode() {
 function togglePreviewMode() { previewMode.value = !previewMode.value; applyPreviewMode() }
 
 // 图片替换/添加/尺寸
-function triggerReplace() { bgFileInput.value?.click() }
-function triggerAddImage() { fgFileInput.value?.click() }
+function triggerReplace() { 
+  console.log('=== triggerReplace 被调用 ===')
+  console.log('isCanvasReady.value:', isCanvasReady.value)
+  console.log('bgFileInput.value:', bgFileInput.value)
+  
+  if (!isCanvasReady.value) {
+    console.log('❌ 画布未就绪，显示警告')
+    alert('画布正在初始化，请稍后再试')
+    return
+  }
+  
+  console.log('✅ 画布已就绪，触发文件选择器')
+  console.log('bgFileInput.value?.click() 执行前')
+  bgFileInput.value?.click()
+  console.log('bgFileInput.value?.click() 执行后')
+}
+function triggerAddImage() { 
+  console.log('=== triggerAddImage 被调用 ===')
+  console.log('isCanvasReady.value:', isCanvasReady.value)
+  console.log('fgFileInput.value:', fgFileInput.value)
+  console.log('fgFileInput.value?.disabled:', fgFileInput.value?.disabled)
+  console.log('fgFileInput.value?.style:', fgFileInput.value?.style.cssText)
+  
+  if (!isCanvasReady.value) {
+    console.log('❌ 画布未就绪，显示警告')
+    alert('画布正在初始化，请稍后再试')
+    return
+  }
+  
+  console.log('✅ 画布已就绪，触发文件选择器')
+  console.log('fgFileInput.value?.click() 执行前')
+  fgFileInput.value?.click()
+  console.log('fgFileInput.value?.click() 执行后')
+}
 function onPickBackground(e: Event) {
+  console.log('=== onPickBackground 被调用 ===')
+  console.log('事件对象:', e)
+  console.log('目标元素:', e.target)
+  
   const file = (e.target as HTMLInputElement).files?.[0]
-  if (!file) return
+  console.log('选择的文件:', file)
+  if (!file) {
+    console.log('❌ 没有选择文件')
+    return
+  }
+  
+  console.log('✅ 文件信息:', {
+    name: file.name,
+    size: file.size,
+    type: file.type
+  })
+  
+  // 清空input，允许重复选择同一文件
+  ;(e.target as HTMLInputElement).value = ''
+  
   const reader = new FileReader()
   reader.onload = async () => {
+    console.log('文件读取完成，开始处理...')
     customBackgroundUrl.value = String(reader.result || '')
     if (canvas) {
-      const f = await getFabric()
-      f.Image.fromURL(customBackgroundUrl.value, (img: any) => {
-        if (!canvas) return
-        fitBackground(img, canvas.getWidth(), canvas.getHeight())
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
-      })
+      try {
+        const f = await getFabric()
+        await new Promise<void>((resolve, reject) => {
+          f.Image.fromURL(customBackgroundUrl.value, (img: any) => {
+            if (!canvas) {
+              reject(new Error('画布未初始化'))
+              return
+            }
+            fitBackground(img, canvas.getWidth(), canvas.getHeight())
+            canvas.setBackgroundImage(img, () => {
+              canvas.renderAll()
+              resolve()
+            })
+          }, { crossOrigin: 'anonymous' })
+        })
+        console.log('背景图片替换成功')
+      } catch (error) {
+        console.error('替换背景图片失败:', error)
+        alert('替换背景图片失败，请重试')
+      }
     }
   }
   reader.readAsDataURL(file)
 }
 function onPickForeground(e: Event) {
+  console.log('=== onPickForeground 被调用 ===')
+  console.log('事件对象:', e)
+  console.log('目标元素:', e.target)
+  
   const file = (e.target as HTMLInputElement).files?.[0]
-  if (!file) return
+  console.log('选择的文件:', file)
+  if (!file) {
+    console.log('❌ 没有选择文件')
+    return
+  }
+  
+  console.log('✅ 文件信息:', {
+    name: file.name,
+    size: file.size,
+    type: file.type
+  })
+  
+  // 清空input，允许重复选择同一文件
+  ;(e.target as HTMLInputElement).value = ''
+  
   const reader = new FileReader()
   reader.onload = async () => {
-    if (!canvas) return
-    const f = await getFabric()
-    f.Image.fromURL(String(reader.result || ''), (img: any) => {
-      const targetWidth = Math.min(200, canvas!.getWidth() * 0.3)
-      const scale = targetWidth / img.width!
-      img.set({ left: canvas!.getWidth() / 2, top: canvas!.getHeight() / 2, originX: 'center', originY: 'center', scaleX: scale, scaleY: scale })
-      canvas!.add(img)
-      canvas!.renderAll()
-    })
+    console.log('文件读取完成，开始处理...')
+    if (!canvas) {
+      console.log('❌ 画布未初始化')
+      alert('画布未初始化，请稍后再试')
+      return
+    }
+    
+    try {
+      const f = await getFabric()
+      await new Promise<void>((resolve, reject) => {
+        f.Image.fromURL(String(reader.result || ''), (img: any) => {
+          if (!canvas) {
+            reject(new Error('画布未初始化'))
+            return
+          }
+          
+          const targetWidth = Math.min(200, canvas.getWidth() * 0.3)
+          const scale = targetWidth / img.width!
+          img.set({ 
+            left: canvas.getWidth() / 2, 
+            top: canvas.getHeight() / 2, 
+            originX: 'center', 
+            originY: 'center', 
+            scaleX: scale, 
+            scaleY: scale 
+          })
+          canvas.add(img)
+          canvas.setActiveObject(img)
+          canvas.renderAll()
+          resolve()
+        }, { crossOrigin: 'anonymous' })
+      })
+      
+      console.log('图片添加成功')
+    } catch (error) {
+      console.error('添加图片失败:', error)
+      alert('添加图片失败，请重试')
+    }
   }
   reader.readAsDataURL(file)
 }
@@ -473,21 +1053,248 @@ function cycleAspectRatio() {
 // 更多贴纸（占位）
 function moreStickers() { alert('更多贴纸即将上线') }
 
-// 导出项目（占位）
-const exportProject = (): void => { router.push('/export') }
+// 保存项目
+const saveProject = async (): Promise<void> => {
+  if (isSaving.value) return
+  
+  isSaving.value = true
+  try {
+    // 生成项目数据
+    const projectData: Partial<Project> = {
+      name: projectName.value || `我的${resolvedTemplateName.value}`,
+      description: `使用${resolvedTemplateName.value}模板创建的作品`,
+      templateId: templateId.value,
+      thumbnail: currentBackgroundUrl.value,
+      content: {
+        title: titleText.value,
+        subtitle: subtitleText.value,
+        images: [], // TODO: 从画布获取图片数据
+        stickers: [], // TODO: 从画布获取贴纸数据
+        filters: [selectedFilter.value],
+        text: '',
+        mood: 'happy' as any, // 默认心情
+        colors: {
+          primary: selectedColor.value,
+          secondary: selectedColor.value,
+          text: selectedColor.value
+        },
+        ratio: templateRatio.value as any,
+        fontSize: fontSize.value,
+        fontStyle: fontStyle.value,
+        textAlign: textAlign.value,
+        borderStyle: borderStyle.value,
+        borderWidth: borderWidth.value,
+        borderColor: borderColor.value,
+        borderRadius: borderRadius.value,
+        adjustments: {
+          brightness: adjBrightness.value,
+          contrast: adjContrast.value,
+          saturation: adjSaturation.value,
+          sharpen: adjSharpen.value
+        }
+      },
+      tags: [currentTemplate.value?.category || '其他'],
+      isPublic: false,
+      updatedAt: new Date().toISOString()
+    }
+    
+    if (projectId.value) {
+      // 更新现有项目
+      projectStore.updateProject(projectId.value, projectData)
+    } else {
+      // 创建新项目
+      const newProject = projectStore.addProject({
+        ...projectData,
+        id: `project-${Date.now()}`,
+        createdAt: new Date().toISOString()
+      } as Project)
+      projectId.value = newProject.id
+    }
+    
+    lastSavedAt.value = new Date()
+    showSuccessMessage('项目保存成功')
+  } catch (error) {
+    console.error('保存项目失败:', error)
+    showErrorMessage('保存失败，请重试')
+  } finally {
+    isSaving.value = false
+  }
+}
+
+// 项目名称变更处理
+const onProjectNameChange = () => {
+  if (projectName.value.trim()) {
+    // 可以在这里添加自动保存逻辑
+  }
+}
+
+// 显示成功消息
+const showSuccessMessage = (message: string) => {
+  // 简单的成功提示，后续可以优化为Toast组件
+  alert(message)
+}
+
+// 显示错误消息
+const showErrorMessage = (message: string) => {
+  // 简单的错误提示，后续可以优化为Toast组件
+  alert(message)
+}
+
+// 格式化保存时间
+const formatSaveTime = (date: Date): string => {
+  const now = new Date()
+  const diff = now.getTime() - date.getTime()
+  const minutes = Math.floor(diff / (1000 * 60))
+  
+  if (minutes < 1) return '刚刚'
+  if (minutes < 60) return `${minutes}分钟前`
+  
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}小时前`
+  
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}天前`
+  
+  return date.toLocaleDateString()
+}
+
+// 导出项目（跳转到Export页面）
+const exportProject = (): void => { 
+  if (!projectId.value) {
+    alert('请先保存项目再导出')
+    return
+  }
+  router.push({
+    path: '/export',
+    query: { 
+      project: projectId.value,
+      template: templateId.value 
+    }
+  })
+}
 
 // 快速开始（无 id）
 const quickStart = (): void => { router.push('/editor/quick-start') }
 
 onMounted(() => {
+  console.log('=== Editor.vue onMounted 开始 ===')
+  console.log('hasTemplateId:', hasTemplateId.value)
+  console.log('templateId:', templateId.value)
+  console.log('currentTemplate:', currentTemplate.value)
+  
   if (hasTemplateId.value) {
-    initCanvas()
+    console.log('✅ 有模板ID，开始初始化流程')
+    
+    // 应用模板默认值
+    console.log('📝 应用模板默认值...')
+    applyTemplateDefaults()
+    
+    // 立即开始初始化，Canvas元素现在始终存在于DOM中
+    console.log('📝 开始Canvas初始化流程...')
+    
+    // 检查关键元素是否存在
+    console.log('检查DOM元素:')
+    console.log('- fabricCanvasEl.value:', !!fabricCanvasEl.value)
+    console.log('- canvasContainer.value:', !!canvasContainer.value)
+    console.log('- 编辑器容器:', !!document.querySelector('.editor-container'))
+    console.log('- canvas元素:', !!document.querySelector('canvas'))
+    
+    // 如果Canvas元素存在，立即开始初始化
+    if (fabricCanvasEl.value) {
+      console.log('✅ Canvas元素已就绪，开始初始化画布...')
+      initCanvas().then(() => {
+        console.log('✅ Canvas初始化成功')
+      }).catch((error) => {
+        console.error('❌ Canvas初始化失败:', error)
+      })
+    } else {
+      console.error('❌ Canvas元素未找到，等待DOM更新...')
+      // 等待DOM更新
+      nextTick(() => {
+        if (fabricCanvasEl.value) {
+          console.log('✅ Canvas元素在DOM更新后找到，开始初始化...')
+          initCanvas().then(() => {
+            console.log('✅ Canvas初始化成功')
+          }).catch((error) => {
+            console.error('❌ Canvas初始化失败:', error)
+          })
+        } else {
+          console.error('❌ Canvas元素仍未找到，设置为就绪状态避免阻塞')
+          isCanvasReady.value = true
+        }
+      })
+    }
+    
     window.addEventListener('resize', resizeCanvas)
+    
+    // 尝试加载现有项目
+    console.log('📝 加载现有项目...')
+    loadExistingProject()
+  } else {
+    console.log('❌ 没有模板ID，跳过初始化')
   }
+  
+  console.log('=== Editor.vue onMounted 结束 ===')
 })
+
+// 应用模板默认值
+const applyTemplateDefaults = () => {
+  if (currentTemplate.value) {
+    titleText.value = currentTemplate.value.defaultTitle || '我的美好时光'
+    subtitleText.value = currentTemplate.value.defaultSubtitle || '记录生活中的小确幸'
+    selectedColor.value = currentTemplate.value.defaultColors?.text || '#333333'
+  }
+}
+
+// 加载现有项目
+const loadExistingProject = () => {
+  // 从localStorage恢复项目数据
+  projectStore.restoreFromLocal()
+  
+  // 查找是否有使用当前模板的现有项目
+  const existingProjects = projectStore.projectsByTemplate(templateId.value)
+  if (existingProjects.length > 0) {
+    // 加载最新的项目
+    const latestProject = existingProjects[0]
+    projectId.value = latestProject.id
+    projectName.value = latestProject.name
+    
+    // 恢复编辑内容
+    if (latestProject.content) {
+      titleText.value = latestProject.content.title || titleText.value
+      subtitleText.value = latestProject.content.subtitle || subtitleText.value
+      selectedColor.value = latestProject.content.colors?.text || selectedColor.value
+      fontSize.value = latestProject.content.fontSize || fontSize.value
+      fontStyle.value = latestProject.content.fontStyle || fontStyle.value
+      textAlign.value = latestProject.content.textAlign || textAlign.value
+      borderStyle.value = latestProject.content.borderStyle || borderStyle.value
+      borderWidth.value = latestProject.content.borderWidth || borderWidth.value
+      borderColor.value = latestProject.content.borderColor || borderColor.value
+      borderRadius.value = latestProject.content.borderRadius || borderRadius.value
+      
+      if (latestProject.content.adjustments) {
+        adjBrightness.value = latestProject.content.adjustments.brightness || 0
+        adjContrast.value = latestProject.content.adjustments.contrast || 0
+        adjSaturation.value = latestProject.content.adjustments.saturation || 0
+        adjSharpen.value = latestProject.content.adjustments.sharpen || 0
+      }
+      
+      if (latestProject.content.filters && latestProject.content.filters.length > 0) {
+        selectedFilter.value = latestProject.content.filters[0] as any || 'origin'
+      }
+    }
+  } else {
+    // 设置默认项目名称
+    projectName.value = `我的${resolvedTemplateName.value}`
+    // 如果没有现有项目，应用模板默认值
+    applyTemplateDefaults()
+  }
+}
 
 watch([templateId], async () => {
   if (canvas) { canvas.dispose(); canvas = null }
+  // 应用新模板的默认值
+  applyTemplateDefaults()
   await initCanvas()
 })
 
@@ -519,6 +1326,38 @@ onUnmounted(() => {
 .preview-title { margin: 0 0 6px; font-weight: 600; }
 .preview-subtitle { margin: 0; color: var(--colorNeutralForeground2); }
 .preview-main-actions { display: flex; gap: 12px; justify-content: center; margin: 24px 0; padding: 12px; background: var(--pink-light); border-radius: 12px; border: 1px solid var(--pink-medium); }
+
+/* 项目名称编辑 */
+.header-left { display: flex; flex-direction: column; gap: 8px; }
+.project-name-edit { margin-top: 4px; }
+.project-name-input { 
+  width: 200px; 
+  padding: 8px 12px; 
+  border: 1px solid var(--colorNeutralStroke1); 
+  border-radius: 8px; 
+  background: var(--colorNeutralBackground1); 
+  font-size: 14px; 
+  color: var(--colorNeutralForeground1);
+}
+.project-name-input:focus { 
+  outline: none; 
+  border-color: var(--colorBrandBackground); 
+  box-shadow: 0 0 0 2px var(--colorBrandBackgroundAlpha10);
+}
+
+/* 保存状态 */
+.save-status { 
+  text-align: center; 
+  margin: 8px 0; 
+  padding: 8px; 
+  background: var(--colorNeutralBackground2); 
+  border-radius: 8px; 
+  border: 1px solid var(--colorNeutralStroke2);
+}
+.save-time { 
+  font-size: 12px; 
+  color: var(--colorNeutralForeground3); 
+}
 .preview-actions { margin-top: 16px; display: flex; gap: 12px; justify-content: center; }
 .file-input { display: none; }
 
@@ -535,6 +1374,8 @@ onUnmounted(() => {
 .btn.primary { background: var(--colorBrandBackground); color: var(--colorBrandForeground); border-color: var(--colorBrandBackground); }
 .btn.primary:hover { background: var(--colorBrandBackgroundHover); }
 .btn.ghost { background: transparent; border-color: transparent; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled:hover { transform: none; box-shadow: none; }
 .btn.pill { padding: 8px 16px; border-radius: 999px; font-size: 12px; }
 .btn.pill.selected { background: var(--pink-light); color: var(--pink-dark); border-color: var(--pink-medium); }
 .slider { width: 100%; height: 6px; border-radius: 3px; background: var(--colorNeutralStroke1); outline: none; accent-color: var(--colorBrandBackground); }
@@ -561,9 +1402,99 @@ onUnmounted(() => {
 /* 画布占位层 */
 .canvas-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
+/* 背景图加载动画 */
+.background-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.loading-container { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 16px;
+}
+
+.loading-progress-ring {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 8px 0;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring-circle-bg {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+  stroke-width: 4;
+  opacity: 0.6;
+}
+
+.progress-ring-circle {
+  fill: none;
+  stroke: var(--colorBrandBackground);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s ease-out;
+  filter: drop-shadow(0 0 4px rgba(var(--colorBrandBackground), 0.3));
+}
+
+.progress-center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--colorBrandBackground);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+.loading-text {
+  font-size: 14px;
+  color: var(--colorNeutralForeground1);
+  font-weight: 500;
+  opacity: 0.8;
+  text-align: center;
+}
+
+
+
 /* 响应式 */
 @media (max-width: 1024px) {
   .editor-container { grid-template-columns: 1fr; }
   .controls-panel { position: static; max-height: none; }
 }
 </style>
+

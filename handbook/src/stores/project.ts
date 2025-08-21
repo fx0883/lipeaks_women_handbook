@@ -39,11 +39,12 @@ export const useProjectStore = defineStore('project', () => {
     return byId.value[id]
   }
 
-  const addProject = (project: Project): void => {
+  const addProject = (project: Project): Project => {
     projects.value.push(project)
     byId.value[project.id] = project
     // 保存到本地存储
     localStorage.setItem('handbook-projects', JSON.stringify(projects.value))
+    return project
   }
 
   const updateProject = (id: string, updates: Partial<Project>): void => {

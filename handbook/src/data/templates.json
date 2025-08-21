@@ -1,0 +1,116 @@
+{
+  "templates": [
+    {
+      "id": "campus-collage",
+      "name": "校园日常拼贴",
+      "category": "校园",
+      "ratio": "4:5",
+      "preview": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI5NjAiIHZpZXdCb3g9IjAgMCAxMjAwIDk2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZkNmI5Ii8+PGNpcmNsZSBjeD0iNjAwIiBjeT0iNDgwIiByPSIyMDAiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==",
+      "description": "记录校园生活的美好瞬间",
+      "tags": ["校园", "日常", "拼贴"],
+      "defaultTitle": "我的美好时光",
+      "defaultSubtitle": "记录生活中的小确幸",
+      "defaultColors": {
+        "primary": "#8fd3c8",
+        "secondary": "#f7c3d3",
+        "text": "#333333"
+      }
+    },
+    {
+      "id": "club-poster",
+      "name": "社团招新海报",
+      "category": "社团",
+      "ratio": "9:16",
+      "preview": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=1200&q=80",
+      "description": "制作吸引人的社团招新海报",
+      "tags": ["社团", "招新", "海报"],
+      "defaultTitle": "加入我们",
+      "defaultSubtitle": "一起创造精彩",
+      "defaultColors": {
+        "primary": "#ff6b6b",
+        "secondary": "#4ecdc4",
+        "text": "#333333"
+      }
+    },
+    {
+      "id": "citywalk",
+      "name": "Citywalk/旅行",
+      "category": "旅行",
+      "ratio": "9:16",
+      "preview": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=1200&q=80",
+      "description": "记录城市漫步和旅行见闻",
+      "tags": ["旅行", "城市", "漫步"],
+      "defaultTitle": "城市漫步",
+      "defaultSubtitle": "发现城市的美好",
+      "defaultColors": {
+        "primary": "#45b7d1",
+        "secondary": "#ffe79a",
+        "text": "#333333"
+      }
+    },
+    {
+      "id": "dorm-food",
+      "name": "宿舍日常/美食",
+      "category": "生活",
+      "ratio": "1:1",
+      "preview": "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=1200&q=80",
+      "description": "分享宿舍生活和美食记录",
+      "tags": ["宿舍", "美食", "日常"],
+      "defaultTitle": "宿舍美食",
+      "defaultSubtitle": "简单生活，美味相伴",
+      "defaultColors": {
+        "primary": "#f7c3d3",
+        "secondary": "#bcd9ff",
+        "text": "#333333"
+      }
+    },
+    {
+      "id": "exam-countdown",
+      "name": "学习计划表",
+      "category": "学习",
+      "ratio": "4:5",
+      "preview": "https://images.unsplash.com/photo-1553729784-e91953dec042?w=1200&q=80",
+      "description": "制定学习计划和考试倒计时",
+      "tags": ["学习", "计划", "考试"],
+      "defaultTitle": "学习计划",
+      "defaultSubtitle": "合理安排，高效学习",
+      "defaultColors": {
+        "primary": "#4ecdc4",
+        "secondary": "#ff6b6b",
+        "text": "#333333"
+      }
+    },
+    {
+      "id": "study-notes",
+      "name": "学习笔记",
+      "category": "学习",
+      "ratio": "4:5",
+      "preview": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80",
+      "description": "记录学习过程和知识点",
+      "tags": ["学习", "笔记", "知识"],
+      "defaultTitle": "我的学习笔记",
+      "defaultSubtitle": "知识积累，成长见证",
+      "defaultColors": {
+        "primary": "#6c5ce7",
+        "secondary": "#fd79a8",
+        "text": "#2d3436"
+      }
+    },
+    {
+      "id": "cafe-mood",
+      "name": "咖啡心情",
+      "category": "生活",
+      "ratio": "4:5",
+      "preview": "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=1200&q=80",
+      "description": "记录咖啡时光和心情",
+      "tags": ["咖啡", "心情", "生活"],
+      "defaultTitle": "咖啡时光",
+      "defaultSubtitle": "品味生活，享受当下",
+      "defaultColors": {
+        "primary": "#8B4513",
+        "secondary": "#D2691E",
+        "text": "#2F2F2F"
+      }
+    }
+  ]
+}

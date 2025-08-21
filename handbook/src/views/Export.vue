@@ -75,6 +75,30 @@
                 </div>
               </label>
             </div>
+            
+            <!-- 自定义尺寸输入 -->
+            <div v-if="showCustomSize" class="custom-size-inputs">
+              <div class="size-input-group">
+                <label>宽度 (px)</label>
+                <input 
+                  type="number" 
+                  v-model="customWidth" 
+                  min="100" 
+                  max="4000"
+                  class="size-input"
+                />
+              </div>
+              <div class="size-input-group">
+                <label>高度 (px)</label>
+                <input 
+                  type="number" 
+                  v-model="customHeight" 
+                  min="100" 
+                  max="4000"
+                  class="size-input"
+                />
+              </div>
+            </div>
           </div>
 
           <!-- 质量设置 -->
@@ -139,14 +163,20 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useProjectStore } from '@/stores/project'
+import type { Project } from '@/types/project'
+import { exportCanvas, downloadImage } from '@/utils/canvas-export'
 
 const route = useRoute()
 const router = useRouter()
+const projectStore = useProjectStore()
 
 // 项目信息
 const projectId = route.query.project as string
+const templateId = route.query.template as string
 const projectName = ref('我的作品')
 const projectThumbnail = ref('https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=600&q=80')
+const currentProject = ref<Project | null>(null)
 
 // 导出设置
 const exportFormat = ref('png')
@@ -178,6 +208,11 @@ const sizes = [
   { name: '自定义', width: 1080, height: 1350 }
 ]
 
+// 自定义尺寸
+const customWidth = ref(1080)
+const customHeight = ref(1350)
+const showCustomSize = ref(false)
+
 // 导出历史
 const exportHistory = ref([
   {
@@ -198,6 +233,9 @@ const exportHistory = ref([
 
 // 计算属性
 const exportSize = computed(() => {
+  if (selectedSize.value === '自定义') {
+    return { width: customWidth.value, height: customHeight.value }
+  }
   const size = sizes.find(s => s.name === selectedSize.value)
   return size || sizes[0]
 })
@@ -216,6 +254,11 @@ const updatePreview = (): void => {
 
 // 更新尺寸
 const updateSize = (): void => {
+  if (selectedSize.value === '自定义') {
+    showCustomSize.value = true
+  } else {
+    showCustomSize.value = false
+  }
   console.log('更新尺寸:', selectedSize.value, exportSize.value)
 }
 
@@ -226,57 +269,40 @@ const handleImageLoad = (): void => {
 
 // 导出图片
 const exportImage = async (): Promise<void> => {
+  if (!currentProject.value) {
+    alert('项目数据未加载，请重试')
+    return
+  }
+  
   isExporting.value = true
   
   try {
-    // 模拟导出过程
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    // 使用画布导出工具
+    const blob = await exportCanvas(
+      currentProject.value,
+      exportFormat.value as 'png' | 'jpg',
+      exportSize.value,
+      exportQuality.value
+    )
     
-    // 创建下载链接
-    const canvas = document.createElement('canvas')
-    canvas.width = exportSize.value.width
-    canvas.height = exportSize.value.height
+    // 生成文件名
+    const filename = `${projectName.value}-${exportSize.value.width}x${exportSize.value.height}.${exportFormat.value}`
     
-    const ctx = canvas.getContext('2d')
-    if (ctx) {
-      // 绘制背景
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      // 绘制图片（这里简化处理）
-      const img = new Image()
-      img.crossOrigin = 'anonymous'
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        
-        // 导出文件
-        const mimeType = exportFormat.value === 'png' ? 'image/png' : 'image/jpeg'
-        const quality = exportFormat.value === 'jpg' ? exportQuality.value : undefined
-        
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = `${projectName.value}.${exportFormat.value}`
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
-            URL.revokeObjectURL(url)
-            
-            // 添加到导出历史
-            exportHistory.value.unshift({
-              id: Date.now().toString(),
-              name: projectName.value,
-              format: exportFormat.value,
-              size: `${exportSize.value.width}×${exportSize.value.height}`,
-              date: new Date().toISOString()
-            })
-          }
-        }, mimeType, quality)
-      }
-      img.src = projectThumbnail.value
-    }
+    // 下载文件
+    downloadImage(blob, filename)
+    
+    // 添加到导出历史
+    exportHistory.value.unshift({
+      id: Date.now().toString(),
+      name: projectName.value,
+      format: exportFormat.value,
+      size: `${exportSize.value.width}×${exportSize.value.height}`,
+      date: new Date().toISOString()
+    })
+    
+    // 显示成功消息
+    alert('导出成功！')
+    
   } catch (error) {
     console.error('导出失败:', error)
     alert('导出失败，请重试')
@@ -307,11 +333,47 @@ const formatDate = (dateString: string): string => {
   })
 }
 
-onMounted(() => {
-  // 根据项目ID加载项目信息
-  if (projectId) {
-    console.log('加载项目:', projectId)
+// 加载项目数据
+const loadProjectData = async (): Promise<void> => {
+  if (!projectId) {
+    console.warn('没有项目ID')
+    return
   }
+  
+  try {
+    // 从localStorage恢复项目数据
+    projectStore.restoreFromLocal()
+    
+    // 获取项目数据
+    const project = projectStore.getById(projectId)
+    if (project) {
+      currentProject.value = project
+      projectName.value = project.name
+      projectThumbnail.value = project.thumbnail || projectThumbnail.value
+      
+      // 根据项目内容设置默认尺寸
+      if (project.content.ratio) {
+        const ratioMap: Record<string, string> = {
+          '4:5': '原始尺寸',
+          '1:1': '朋友圈',
+          '9:16': '抖音'
+        }
+        selectedSize.value = ratioMap[project.content.ratio] || '原始尺寸'
+      }
+      
+      console.log('项目数据加载成功:', project)
+    } else {
+      console.warn('项目不存在:', projectId)
+      alert('项目不存在，请返回重新编辑')
+    }
+  } catch (error) {
+    console.error('加载项目数据失败:', error)
+    alert('加载项目数据失败，请重试')
+  }
+}
+
+onMounted(() => {
+  loadProjectData()
 })
 </script>
 
@@ -447,6 +509,48 @@ onMounted(() => {
 .format-option input,
 .size-option input {
   margin: 0;
+}
+
+/* 自定义尺寸输入 */
+.custom-size-inputs {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--colorNeutralBackground2);
+  border-radius: 12px;
+  border: 1px solid var(--colorNeutralStroke2);
+}
+
+.size-input-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.size-input-group:last-child {
+  margin-bottom: 0;
+}
+
+.size-input-group label {
+  min-width: 80px;
+  font-size: 14px;
+  color: var(--colorNeutralForeground1);
+}
+
+.size-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--colorNeutralStroke1);
+  border-radius: 8px;
+  background: var(--colorNeutralBackground1);
+  font-size: 14px;
+  color: var(--colorNeutralForeground1);
+}
+
+.size-input:focus {
+  outline: none;
+  border-color: var(--colorBrandBackground);
+  box-shadow: 0 0 0 2px var(--colorBrandBackgroundAlpha10);
 }
 
 .format-info,

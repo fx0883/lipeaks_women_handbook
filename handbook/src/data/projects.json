@@ -1,0 +1,82 @@
+{
+  "projects": [
+    {
+      "id": "project-001",
+      "name": "我的校园时光",
+      "description": "记录校园生活的美好瞬间",
+      "templateId": "campus-collage",
+      "thumbnail": "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=400&q=80",
+      "content": {
+        "title": "我的美好时光",
+        "subtitle": "记录生活中的小确幸",
+        "images": [],
+        "stickers": [],
+        "filters": ["origin"],
+        "text": "",
+        "mood": "happy",
+        "colors": {
+          "primary": "#8fd3c8",
+          "secondary": "#f7c3d3",
+          "text": "#333333"
+        },
+        "ratio": "4:5"
+      },
+      "tags": ["校园", "日常", "拼贴"],
+      "isPublic": true,
+      "createdAt": "2024-01-20T10:00:00Z",
+      "updatedAt": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": "project-002",
+      "name": "社团招新海报",
+      "description": "制作吸引人的社团招新海报",
+      "templateId": "club-poster",
+      "thumbnail": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80",
+      "content": {
+        "title": "加入我们",
+        "subtitle": "一起创造精彩",
+        "images": [],
+        "stickers": [],
+        "filters": ["origin"],
+        "text": "",
+        "mood": "excited",
+        "colors": {
+          "primary": "#ff6b6b",
+          "secondary": "#4ecdc4",
+          "text": "#333333"
+        },
+        "ratio": "9:16"
+      },
+      "tags": ["社团", "招新", "海报"],
+      "isPublic": true,
+      "createdAt": "2024-01-20T11:00:00Z",
+      "updatedAt": "2024-01-20T11:00:00Z"
+    },
+    {
+      "id": "project-003",
+      "name": "城市漫步记录",
+      "description": "记录城市漫步和旅行见闻",
+      "templateId": "citywalk",
+      "thumbnail": "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=400&q=80",
+      "content": {
+        "title": "城市漫步",
+        "subtitle": "发现城市的美好",
+        "images": [],
+        "stickers": [],
+        "filters": ["origin"],
+        "text": "",
+        "mood": "peaceful",
+        "colors": {
+          "primary": "#45b7d1",
+          "secondary": "#ffe79a",
+          "text": "#333333"
+        },
+        "ratio": "9:16"
+      },
+      "tags": ["旅行", "城市", "漫步"],
+      "isPublic": true,
+      "createdAt": "2024-01-20T12:00:00Z",
+      "updatedAt": "2024-01-20T12:00:00Z"
+    }
+  ]
+}
