@@ -98,7 +98,7 @@ const moodNote = ref('')
 
 const showCelebration = computed(() => todoStore.showCelebration)
 const lastCompletedTodo = computed(() => todoStore.lastCompletedTodo)
-const newAchievements = computed(() => {
+const newAchievements = computed<Achievement[]>(() => {
   // This would typically check for newly unlocked achievements
   return []
 })
@@ -182,7 +182,7 @@ const closeCelebration = () => {
 }
 
 // Auto-close after 10 seconds
-let autoCloseTimer: NodeJS.Timeout | null = null
+let autoCloseTimer: number | null = null
 
 onMounted(() => {
   if (showCelebration.value) {

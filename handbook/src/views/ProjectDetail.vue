@@ -195,10 +195,10 @@ const formatDate = (dateString?: string): string => {
   })
 }
 
-// 获取情绪名称
-const getMoodName = (moodId?: MoodId): string => {
+// 获取情绪名称（兼容字符串）
+const getMoodName = (moodId?: MoodId | string): string => {
   if (!moodId) return '-'
-  return moodMap[moodId] || moodId
+  return moodMap[moodId as MoodId] || String(moodId)
 }
 
 // 获取模板名称

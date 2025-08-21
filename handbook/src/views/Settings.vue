@@ -137,7 +137,7 @@
                     <input 
                       type="checkbox" 
                       v-model="privacySettings.dataEncryption"
-                      @change="updatePrivacySetting('dataEncryption', $event.target.checked)"
+                      @change="updatePrivacySetting('dataEncryption', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -152,7 +152,7 @@
                     <input 
                       type="checkbox" 
                       v-model="privacySettings.anonymousStats"
-                      @change="updatePrivacySetting('anonymousStats', $event.target.checked)"
+                      @change="updatePrivacySetting('anonymousStats', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -167,7 +167,7 @@
                     <input 
                       type="checkbox" 
                       v-model="privacySettings.autoLogin"
-                      @change="updatePrivacySetting('autoLogin', $event.target.checked)"
+                      @change="updatePrivacySetting('autoLogin', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -180,7 +180,7 @@
                   </div>
                   <select 
                     v-model="privacySettings.dataSharing"
-                    @change="updatePrivacySetting('dataSharing', $event.target.value)"
+                    @change="updatePrivacySetting('dataSharing', ($event.target as HTMLInputElement).value)"
                     class="setting-select"
                   >
                     <option value="none">不共享</option>
@@ -209,7 +209,7 @@
                     <input 
                       type="checkbox" 
                       v-model="notificationSettings.pushEnabled"
-                      @change="updateNotificationSetting('pushEnabled', $event.target.checked)"
+                      @change="updateNotificationSetting('pushEnabled', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -224,7 +224,7 @@
                     <input 
                       type="checkbox" 
                       v-model="notificationSettings.dailyReminder"
-                      @change="updateNotificationSetting('dailyReminder', $event.target.checked)"
+                      @change="updateNotificationSetting('dailyReminder', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -238,7 +238,7 @@
                   <input 
                     type="time" 
                     v-model="notificationSettings.reminderTime"
-                    @change="updateNotificationSetting('reminderTime', $event.target.value)"
+                    @change="updateNotificationSetting('reminderTime', ($event.target as HTMLInputElement).value)"
                     class="time-input"
                   />
                 </div>
@@ -252,7 +252,7 @@
                     <input 
                       type="checkbox" 
                       v-model="notificationSettings.soundEnabled"
-                      @change="updateNotificationSetting('soundEnabled', $event.target.checked)"
+                      @change="updateNotificationSetting('soundEnabled', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -267,7 +267,7 @@
                     <input 
                       type="checkbox" 
                       v-model="notificationSettings.vibrationEnabled"
-                      @change="updateNotificationSetting('vibrationEnabled', $event.target.checked)"
+                      @change="updateNotificationSetting('vibrationEnabled', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -323,7 +323,7 @@
                   </div>
                   <select 
                     v-model="appearanceSettings.fontSize"
-                    @change="updateAppearanceSetting('fontSize', $event.target.value)"
+                    @change="updateAppearanceSetting('fontSize', ($event.target as HTMLInputElement).value)"
                     class="setting-select"
                   >
                     <option value="small">小</option>
@@ -341,7 +341,7 @@
                     <input 
                       type="checkbox" 
                       v-model="appearanceSettings.animations"
-                      @change="updateAppearanceSetting('animations', $event.target.checked)"
+                      @change="updateAppearanceSetting('animations', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -354,7 +354,7 @@
                   </div>
                   <select 
                     v-model="preferences.language"
-                    @change="updatePreference('language', $event.target.value)"
+                    @change="updatePreference('language', ($event.target as HTMLInputElement).value)"
                     class="setting-select"
                   >
                     <option value="zh-CN">简体中文</option>
@@ -383,7 +383,7 @@
                     <input 
                       type="checkbox" 
                       v-model="preferences.autoSave"
-                      @change="updatePreference('autoSave', $event.target.checked)"
+                      @change="updatePreference('autoSave', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -398,7 +398,7 @@
                     <input 
                       type="checkbox" 
                       v-model="dataSettings.cloudSync"
-                      @change="updateDataSetting('cloudSync', $event.target.checked)"
+                      @change="updateDataSetting('cloudSync', ($event.target as HTMLInputElement).checked)"
                     />
                     <span class="slider"></span>
                   </label>
@@ -507,7 +507,7 @@
                       <input 
                         type="checkbox" 
                         v-model="aboutSettings.autoUpdate"
-                        @change="updateAboutSetting('autoUpdate', $event.target.checked)"
+                        @change="updateAboutSetting('autoUpdate', ($event.target as HTMLInputElement).checked)"
                       />
                       <span class="slider"></span>
                     </label>
@@ -707,17 +707,26 @@ const handleScroll = (): void => {
 }
 
 // 设置更新方法
-const updatePrivacySetting = (key: string, value: any): void => {
-  privacySettings.value[key as keyof typeof privacySettings.value] = value
+const updatePrivacySetting = (
+  key: keyof typeof privacySettings.value,
+  value: (typeof privacySettings.value)[typeof key]
+): void => {
+  ;(privacySettings.value as any)[key] = value as any
   // 这里可以添加保存到本地存储或发送到服务器的逻辑
 }
 
-const updateNotificationSetting = (key: string, value: any): void => {
-  notificationSettings.value[key as keyof typeof notificationSettings.value] = value
+const updateNotificationSetting = (
+  key: keyof typeof notificationSettings.value,
+  value: (typeof notificationSettings.value)[typeof key]
+): void => {
+  ;(notificationSettings.value as any)[key] = value as any
 }
 
-const updateAppearanceSetting = (key: string, value: any): void => {
-  appearanceSettings.value[key as keyof typeof appearanceSettings.value] = value
+const updateAppearanceSetting = (
+  key: keyof typeof appearanceSettings.value,
+  value: (typeof appearanceSettings.value)[typeof key]
+): void => {
+  ;(appearanceSettings.value as any)[key] = value as any
   
   // 应用字体大小设置
   if (key === 'fontSize') {

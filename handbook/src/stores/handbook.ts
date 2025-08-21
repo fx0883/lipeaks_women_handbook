@@ -8,6 +8,7 @@ import type {
   HandbookStats
 } from '@/types/handbook'
 import type { TodoItem } from '@/types/todo'
+import { TodoCategory, MoodType } from '@/types/todo'
 
 // 预设的手账模板数据
 const defaultTemplates: TodoHandbookTemplate[] = [
@@ -16,7 +17,7 @@ const defaultTemplates: TodoHandbookTemplate[] = [
     name: '简约完成记录',
     description: '简洁优雅的任务完成记录模板',
     type: 'completion',
-    category: '学习',
+    category: TodoCategory.STUDY,
     layout: {
       type: 'grid',
       dimensions: { width: 800, height: 600 },
@@ -91,7 +92,7 @@ const defaultTemplates: TodoHandbookTemplate[] = [
         type: 'mood',
         position: { x: 400, y: 80 },
         size: { width: 100, height: 100 },
-        content: { moodType: '😊' },
+        content: { moodType: MoodType.HAPPY },
         style: {
           fontFamily: 'PingFang SC',
           fontSize: 48,
@@ -137,7 +138,7 @@ const defaultTemplates: TodoHandbookTemplate[] = [
     name: '周进度报告',
     description: '展示一周任务完成进度的可视化模板',
     type: 'progress',
-    category: '学习',
+    category: TodoCategory.STUDY,
     layout: {
       type: 'grid',
       dimensions: { width: 900, height: 700 },

@@ -77,10 +77,14 @@
             <div v-if="!currentBackgroundUrl && !isCanvasReady" class="canvas-empty">
               {{ isCanvasInitializing ? '画布初始化中...' : '空白画布' }}
             </div>
-            <canvas 
-              ref="fabricCanvasEl" 
-              :style="{ visibility: isCanvasReady ? 'visible' : 'hidden' }"
-            ></canvas>
+            <KonvaCanvas
+              ref="konvaCanvasRef"
+              :width="konvaSize.width"
+              :height="konvaSize.height"
+              :backgroundUrl="currentBackgroundUrl"
+              :previewMode="previewMode"
+              @background-load="onBackgroundLoadFromCanvas"
+            />
 
             <!-- 文字覆盖（按原型 DOM 覆盖层） -->
             <div class="preview-overlay">
@@ -280,47 +284,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useProjectStore } from '@/stores/project'
 import type { Project, Template } from '@/types/project'
 import templatesData from '@/data/templates.json'
+import KonvaCanvas from '@/components/editor/KonvaCanvas.vue'
 
-let fabricNS: any = null
-async function getFabric() {
-  if (fabricNS) return fabricNS
-  
-  try {
-    console.log('开始导入Fabric.js...')
-    const mod: any = await import('fabric')
-    console.log('Fabric.js模块导入结果:', mod)
-    
-    // Fabric.js v6的导入方式
-    if (mod?.fabric) {
-      fabricNS = mod.fabric
-      console.log('✅ 使用mod.fabric')
-    } else if (mod?.default) {
-      fabricNS = mod.default
-      console.log('✅ 使用mod.default')
-    } else if (mod?.Canvas) {
-      fabricNS = mod
-      console.log('✅ 使用mod直接导入')
-    } else {
-      throw new Error('无法识别Fabric.js模块结构')
-    }
-    
-    // 验证Fabric.js对象
-    if (!fabricNS?.Canvas) {
-      throw new Error('Fabric.js Canvas构造函数未找到')
-    }
-    
-    console.log('Fabric.js导入成功:', {
-      hasCanvas: !!fabricNS.Canvas,
-      hasImage: !!fabricNS.Image,
-      version: fabricNS.version || 'unknown'
-    })
-    
-    return fabricNS
-  } catch (error) {
-    console.error('Fabric.js导入失败:', error)
-    throw new Error(`Fabric.js导入失败: ${error}`)
-  }
-}
+// 使用 KonvaCanvas 组件，无需 Fabric.js 动态导入
 
 const route = useRoute()
 const router = useRouter()
@@ -361,16 +327,16 @@ const canvasAspect = computed(() => {
 })
 const canvasWidth = 'min(70vw, 80vh)'
 
-// 画布相关
+// 画布相关（Konva）
 const canvasContainer = ref<HTMLDivElement>()
-const fabricCanvasEl = ref<HTMLCanvasElement>()
+const konvaCanvasRef = ref<any>()
 const previewMode = ref(false)
-const isCanvasReady = ref(false)
+const isCanvasReady = ref(true)
 const isCanvasInitializing = ref(false)
-const isBackgroundImageLoaded = ref(false) // 新增：背景图加载状态
-const isBackgroundImageLoading = ref(false) // 新增：背景图加载中状态
-const backgroundImageLoadProgress = ref(0) // 新增：加载进度
-let canvas: any | null = null
+const isBackgroundImageLoaded = ref(false)
+const isBackgroundImageLoading = ref(false)
+const backgroundImageLoadProgress = ref(0)
+const konvaSize = ref<{ width: number; height: number }>({ width: 600, height: 750 })
 
 // 预览覆盖文本（使用模板默认值）
 const titleText = ref('')
@@ -416,19 +382,24 @@ function getContainerSize() {
   return { width, height }
 }
 
+function updateKonvaSize() {
+  const { width, height } = getContainerSize()
+  konvaSize.value = { width, height }
+}
+
 function fitBackground(img: any, width: number, height: number) {
   const scale = Math.max(width / img.width!, height / img.height!)
   img.set({ originX: 'left', originY: 'top', left: 0, top: 0, scaleX: scale, scaleY: scale })
 }
 
 const resizeCanvas = () => {
-  if (!canvas || !fabricCanvasEl.value) return
+  if (!konvaCanvasRef.value) return
   const { width, height } = getContainerSize()
-  canvas.setWidth(width)
-  canvas.setHeight(height)
-  const bg = canvas.backgroundImage as any
+  konvaCanvasRef.value.width = width
+  konvaCanvasRef.value.height = height
+  const bg = konvaCanvasRef.value.getLayer().getChildren()[0] as any // Assuming background is the first layer
   if (bg) fitBackground(bg, width, height)
-  canvas.renderAll()
+  konvaCanvasRef.value.renderAll()
 }
 
 // CSS 滤镜合成（视觉与原型一致）
@@ -460,412 +431,60 @@ const subtitleStyle = computed(() => ({ color: selectedColor.value, fontSize: Ma
 
 const borderStyleCss = computed(() => (borderStyle.value === 'none' || borderWidth.value === 0) ? 'none' : `${borderWidth.value}px ${borderStyle.value} ${borderColor.value}`)
 
-// 初始化画布
+// 初始化画布（Konva）
 const initCanvas = async (): Promise<void> => {
   try {
-    console.log('开始初始化画布...')
-    isCanvasReady.value = false
+    console.log('开始初始化画布(Konva)...')
     isCanvasInitializing.value = true
-    
-    // 确保Canvas元素可见，以便Fabric.js能够正确初始化
-    console.log('设置Canvas元素为可见状态...')
-    
-    console.log('加载Fabric.js...')
-    const f = await getFabric()
-    console.log('Fabric.js加载完成')
-    
-    console.log('检查Canvas元素...', !!fabricCanvasEl.value)
-    if (!fabricCanvasEl.value) {
-      console.error('Canvas元素未找到')
-      isCanvasReady.value = true // 设置为ready避免按钮永远禁用
-      isCanvasInitializing.value = false
-      return
-    }
-
-         console.log('创建Fabric Canvas...')
-     console.log('Fabric.js对象检查:', {
-       fabric: !!f,
-       Canvas: !!f.Canvas,
-       Image: !!f.Image,
-       version: f.version || 'unknown'
-     })
-     
-     // 确保Fabric.js正确加载
-     if (!f.Canvas) {
-       throw new Error('Fabric.js Canvas构造函数未找到')
-     }
-     
-           try {
-        canvas = new f.Canvas(fabricCanvasEl.value, {
-          selection: !previewMode.value,
-          preserveObjectStacking: true,
-          backgroundColor: '#ffffff'
-        })
-        console.log('Canvas创建成功')
-        
-        // 深度验证Canvas对象
-        console.log('Canvas对象验证:', {
-          canvas: !!canvas,
-          canvasType: typeof canvas,
-          constructor: canvas.constructor?.name,
-          prototype: Object.getPrototypeOf(canvas)?.constructor?.name
-        })
-        
-        // 检查关键方法
-        const requiredMethods = ['setBackgroundImage', 'add', 'renderAll', 'setWidth', 'setHeight']
-        const methodCheck = requiredMethods.reduce((acc, method) => {
-          acc[method] = typeof canvas[method]
-          return acc
-        }, {} as Record<string, string>)
-        
-        console.log('Canvas方法检查:', methodCheck)
-        
-        // 验证Canvas是否真正可用 - 添加重试机制
-        let validationRetryCount = 0
-        const maxValidationRetries = 3
-        
-        const validateCanvas = async (): Promise<boolean> => {
-          if (validationRetryCount >= maxValidationRetries) {
-            return false
-          }
-          
-          // 等待Canvas对象完全初始化
-          await new Promise(resolve => setTimeout(resolve, 200 * (validationRetryCount + 1)))
-          
-          // 重新检查方法
-          const hasRequiredMethods = requiredMethods.every(method => 
-            typeof canvas[method] === 'function'
-          )
-          
-          if (hasRequiredMethods) {
-            console.log('✅ Canvas对象验证通过')
-            return true
-          }
-          
-          console.warn(`Canvas对象方法不完整，重试 ${validationRetryCount + 1}/${maxValidationRetries}...`)
-          validationRetryCount++
-          
-          // 尝试重新创建Canvas
-          try {
-            if (canvas.dispose) {
-              canvas.dispose()
-            }
-            canvas = new f.Canvas(fabricCanvasEl.value, {
-              selection: !previewMode.value,
-              preserveObjectStacking: true,
-              backgroundColor: '#ffffff'
-            })
-            console.log('Canvas重新创建成功，重新验证...')
-            return await validateCanvas()
-          } catch (retryError) {
-            console.error('Canvas重新创建失败:', retryError)
-            return false
-          }
-        }
-        
-        // 开始验证
-        const isValid = await validateCanvas()
-        if (!isValid) {
-          throw new Error('Canvas对象创建不完整，缺少关键方法')
-        }
-        
-      } catch (canvasError) {
-        console.error('Canvas创建失败:', canvasError)
-        throw canvasError
-      }
-    
-    console.log('调整Canvas尺寸...')
-    resizeCanvas()
-
-    // 背景图
-    const preview = currentBackgroundUrl.value
-    console.log('背景图URL:', preview)
-    if (preview) {
-      try {
-        console.log('开始加载背景图...')
-        isBackgroundImageLoaded.value = false // 重置背景图加载状态
-        isBackgroundImageLoading.value = true // 开始加载动画
-        backgroundImageLoadProgress.value = 0
-        
-        await new Promise<void>((resolve, reject) => {
-          console.log('=== 开始Promise包装的背景图加载 ===')
-          let isResolved = false // 防止重复resolve
-          
-          // 增加超时时间到30秒，给复杂图片更多加载时间
-          const timeout = setTimeout(() => {
-            if (!isResolved) {
-              console.warn('背景图加载超时，跳过背景图')
-              isResolved = true
-              isBackgroundImageLoaded.value = false
-              isBackgroundImageLoading.value = false
-              backgroundImageLoadProgress.value = 0
-              resolve()
-            }
-          }, 30000) // 30秒超时
-          
-          // 改进的进度模拟 - 更平滑自然
-          let progress = 0
-          const progressInterval = setInterval(() => {
-            if (progress < 85 && !isResolved) { // 只模拟到85%，留15%给实际加载完成
-              // 使用缓动函数，让进度增长越来越慢
-              const remaining = 85 - progress
-              const increment = Math.max(0.5, remaining * 0.1)
-              progress += increment
-              backgroundImageLoadProgress.value = Math.min(85, progress)
-              console.log('进度模拟:', backgroundImageLoadProgress.value.toFixed(1) + '%')
-            }
-          }, 100) // 更频繁的更新，让动画更流畅
-          
-          console.log('调用 f.Image.fromURL，URL:', preview)
-          
-          // 使用更可靠的图片加载方案
-          const loadImageWithFallback = () => {
-            console.log('开始加载图片，使用fallback方案...')
-            
-            // 方案1: 直接使用已加载的Image对象
-            const img = new Image()
-            img.crossOrigin = 'anonymous'
-            
-            img.onload = () => {
-              console.log('✅ 图片直接加载成功，尺寸:', img.width, 'x', img.height)
-              
-              if (!isResolved && canvas) {
-                                 try {
-                   console.log('创建Fabric.js Image对象...')
-                   
-                   // 检查Fabric.js Image构造函数
-                   if (!f.Image) {
-                     throw new Error('Fabric.js Image构造函数未找到')
-                   }
-                   
-                   const fabricImg = new f.Image(img)
-                   console.log('Fabric Image创建成功:', fabricImg)
-                   
-                   // 检查Canvas对象和方法
-                   if (!canvas) {
-                     throw new Error('Canvas对象未找到')
-                   }
-                   
-                   // 深度检查Canvas对象
-                   console.log('Canvas对象深度检查:', {
-                     canvas: !!canvas,
-                     canvasType: typeof canvas,
-                     canvasConstructor: canvas.constructor?.name,
-                     hasSetBackgroundImage: 'setBackgroundImage' in canvas,
-                     setBackgroundImageType: typeof canvas.setBackgroundImage,
-                     canvasPrototype: Object.getPrototypeOf(canvas)?.constructor?.name,
-                     canvasMethods: Object.getOwnPropertyNames(Object.getPrototypeOf(canvas))
-                   })
-                   
-                   // 尝试多种方式设置背景图
-                   let backgroundSetSuccess = false
-                   
-                   // 方法1: 直接设置背景图
-                   if (typeof canvas.setBackgroundImage === 'function') {
-                     console.log('使用setBackgroundImage方法...')
-                     try {
-                       canvas.setBackgroundImage(fabricImg, () => {
-                         console.log('背景图设置到Canvas完成')
-                         if (!isResolved) {
-                           console.log('✅ 背景图加载成功，resolving promise')
-                           isResolved = true
-                           isBackgroundImageLoaded.value = true
-                           isBackgroundImageLoading.value = false
-                           backgroundImageLoadProgress.value = 0
-                           canvas.renderAll()
-                           resolve()
-                         }
-                       })
-                       backgroundSetSuccess = true
-                     } catch (setError) {
-                       console.warn('setBackgroundImage方法失败:', setError)
-                     }
-                   }
-                   
-                   // 方法2: 使用set方法
-                   if (!backgroundSetSuccess && typeof canvas.set === 'function') {
-                     console.log('尝试使用canvas.set方法...')
-                     try {
-                       canvas.set('backgroundImage', fabricImg)
-                       canvas.renderAll()
-                       console.log('✅ 使用set方法设置背景图成功')
-                       backgroundSetSuccess = true
-                       if (!isResolved) {
-                         isResolved = true
-                         isBackgroundImageLoaded.value = true
-                         isBackgroundImageLoading.value = false
-                         backgroundImageLoadProgress.value = 0
-                         resolve()
-                       }
-                     } catch (setError) {
-                       console.warn('canvas.set方法失败:', setError)
-                     }
-                   }
-                   
-                   // 方法3: 直接赋值
-                   if (!backgroundSetSuccess) {
-                     console.log('尝试直接赋值backgroundImage属性...')
-                     try {
-                       (canvas as any).backgroundImage = fabricImg
-                       canvas.renderAll()
-                       console.log('✅ 直接赋值backgroundImage成功')
-                       backgroundSetSuccess = true
-                       if (!isResolved) {
-                         isResolved = true
-                         isBackgroundImageLoaded.value = true
-                         isBackgroundImageLoading.value = false
-                         backgroundImageLoadProgress.value = 0
-                         resolve()
-                       }
-                     } catch (assignError) {
-                       console.warn('直接赋值失败:', assignError)
-                     }
-                   }
-                   
-                   // 如果所有方法都失败
-                   if (!backgroundSetSuccess) {
-                     throw new Error('所有设置背景图的方法都失败了')
-                   }
-                   
-                 } catch (err: any) {
-                   console.error('处理背景图时出错:', err)
-                   console.error('错误详情:', {
-                     error: err,
-                     message: err?.message || 'Unknown error',
-                     stack: err?.stack || 'No stack trace',
-                     canvas: !!canvas,
-                     canvasType: typeof canvas,
-                     fabricImage: !!f.Image
-                   })
-                   
-                   if (!isResolved) {
-                     isResolved = true
-                     isBackgroundImageLoaded.value = false
-                     isBackgroundImageLoading.value = false
-                     backgroundImageLoadProgress.value = 0
-                     resolve() // 使用resolve而不是reject，避免卡住
-                   }
-                 }
-              }
-            }
-            
-            img.onerror = (e) => {
-              console.error('❌ 图片加载失败:', e)
-              if (!isResolved) {
-                console.log('图片加载失败，跳过背景图')
-                isResolved = true
-                isBackgroundImageLoaded.value = false
-                isBackgroundImageLoading.value = false
-                backgroundImageLoadProgress.value = 0
-                resolve()
-              }
-            }
-            
-            img.src = preview
-          }
-          
-          // 启动加载
-          loadImageWithFallback()
-          
-          // 添加额外的监控，检查是否有onerror回调
-          setTimeout(() => {
-            if (!isResolved) {
-              console.log('⚠️ 5秒后检查：Promise仍未resolved，当前进度:', backgroundImageLoadProgress.value)
-            }
-          }, 5000)
-        })
-        console.log('背景图加载完成，状态:', isBackgroundImageLoaded.value)
-      } catch (err) {
-        console.warn('背景图加载失败，已忽略', err)
-        isBackgroundImageLoaded.value = false
-        isBackgroundImageLoading.value = false
-        backgroundImageLoadProgress.value = 0
-      }
-    } else {
-      console.log('没有背景图需要加载')
-      isBackgroundImageLoaded.value = true // 没有背景图时设为true
-      isBackgroundImageLoading.value = false
-      backgroundImageLoadProgress.value = 0
-    }
-
-    console.log('设置画布状态为就绪')
+    await nextTick()
+    updateKonvaSize()
     isCanvasReady.value = true
-    isCanvasInitializing.value = false
-    canvas.renderAll()
     console.log('画布初始化完成!')
   } catch (e) {
     console.error('初始化画布失败', e)
-    
-    // 增强错误处理
-    if (e instanceof Error) {
-      console.error('错误详情:', {
-        message: e.message,
-        stack: e.stack,
-        name: e.name
-      })
-    }
-    
-    // 尝试清理Canvas对象
-    if (canvas) {
-      try {
-        if (typeof canvas.dispose === 'function') {
-          canvas.dispose()
-        }
-        canvas = null
-      } catch (disposeError) {
-        console.error('清理Canvas对象失败:', disposeError)
-      }
-    }
-    
-    // 设置状态，避免无限等待
-    isCanvasReady.value = true
+  } finally {
     isCanvasInitializing.value = false
-    
-    // 显示用户友好的错误信息
-    console.warn('Canvas初始化失败，但已设置为就绪状态以避免阻塞')
   }
 }
 
 // 贴纸
 const stickers = [
-  { id: '1', name: '爱心', url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTUwIDg0TDE1IDQ4Yy0xNS0xNi03LTE5IDAtMjZjOS05IDIyLTYgMzUgNyAxMy0xMyAyNi0xNiAzNS03IDcgNyAxNSAxMCAwIDI2TDUwIDg0eiIgZmlsbD0iI2ZmNjliOSIgc3Ryb2tlPSIjZmY0YTdhIiBzdHJva2Utd2lkdGg9IjMiLz48L3N2Zz4=' },
-  { id: '2', name: '星星', url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSI1MCAxMCA2MSA0MCA5MCA0MCA2NiA1OSA3NiA4OCA1MCA3MCAyNCA4OCAzNCA1OSA5IDQwIDM5IDQwIiBmaWxsPSIjZmRiODAwIiBzdHJva2U9IiNmY2Q1MDAiIHN0cm9rZS13aWR0aD0iMyIvPjwvc3ZnPg==' },
-  { id: '3', name: '花朵', url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMTUiIGZpbGw9IiNmZjkwY2YiLz48Y2lyY2xlIGN4PSI3MCIgY3k9IjMwIiByPSIxMCIgZmlsbD0iI2Y4N2JlZiIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEwIiBmaWxsPSIjZTQ5MWZmIi8+PGNpcmNsZSBjeD0iNzAiIGN5PSI3MCIgcj0iMTAiIGZpbGw9IiNmZTRjYWYiLz48Y2lyY2xlIGN4PSIzMCIgY3k9IjcwIiByPSIxMCIgZmlsbD0iI2ZmY2Q1ZSIvPjwvc3ZnPg==' },
-  { id: '4', name: '彩虹', url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMTAwIDYwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iOCI+PHBhdGggZD0iTTUgNTVhNDUgNDUgMCAwIDEgOTAgMCIgc3Ryb2tlPSIjZmY3MzkwIi8+PHBhdGggZD0iTTE1IDU1YTM1IDM1IDAgMCAxIDcwIDAiIHN0cm9rZT0iI2ZmYTc5NSIvPjxwYXRoIGQ9Ik0yNSA1NWEyNSAyNSAwIDAgMSA1MCAwIiBzdHJva2U9IiNmZmQ0ODAiLz48L2c+PC9zdmc+' }
+  { id: '1', name: '爱心', url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2764.svg' },
+  { id: '2', name: '星星', url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2b50.svg' },
+  { id: '3', name: '花朵', url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33c.svg' },
+  { id: '4', name: '彩虹', url: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f308.svg' }
 ]
 
 const addSticker = async (sticker: any): Promise<void> => {
-  if (!canvas) {
+  if (!konvaCanvasRef.value) {
     alert('画布未初始化，请稍后再试')
     return
   }
   
   try {
-    const f = await getFabric()
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
     await new Promise<void>((resolve, reject) => {
-      f.Image.fromURL(sticker.url, (img: any) => {
-        if (!canvas) {
-          reject(new Error('画布未初始化'))
-          return
-        }
-        
-        const targetWidth = Math.min(160, canvas.getWidth() * 0.25)
-        const scale = targetWidth / img.width!
-        img.set({ 
-          left: canvas.getWidth() / 2, 
-          top: canvas.getHeight() / 2, 
-          originX: 'center', 
-          originY: 'center', 
-          scaleX: scale, 
-          scaleY: scale 
-        })
-        canvas.add(img)
-        canvas.setActiveObject(img)
-        canvas.renderAll()
-        resolve()
-      }, { crossOrigin: 'anonymous' })
+      img.onload = () => resolve()
+      img.onerror = () => reject(new Error('贴纸图片加载失败'))
+      img.src = sticker.url
     })
-    
+    const { width } = konvaSize.value
+    const targetWidth = Math.min(160, Math.round(width * 0.25))
+    const ratio = img.width ? targetWidth / img.width : 1
+    konvaCanvasRef.value?.addSticker({
+      id: `sticker-${Date.now()}`,
+      name: sticker.name,
+      config: {
+        image: img,
+        x: Math.round(konvaSize.value.width / 2),
+        y: Math.round(konvaSize.value.height / 2),
+        width: Math.round(img.width * ratio),
+        height: Math.round(img.height * ratio),
+        draggable: true,
+        selectable: true
+      }
+    })
     console.log('贴纸添加成功')
   } catch (error) {
     console.error('添加贴纸失败:', error)
@@ -885,12 +504,12 @@ function setFontStyle(s: 'rounded' | 'hand' | 'sans' | 'serif') { fontStyle.valu
 
 // 预览模式切换
 function applyPreviewMode() {
-  if (!canvas) return
+  if (!konvaCanvasRef.value) return
   const enable = !previewMode.value
-  canvas.selection = enable
-  canvas.forEachObject((obj: any) => { obj.selectable = enable; obj.evented = enable })
-  canvas.discardActiveObject()
-  canvas.renderAll()
+  konvaCanvasRef.value.selection = enable
+  konvaCanvasRef.value.forEachObject((obj: any) => { obj.selectable = enable; obj.evented = enable })
+  konvaCanvasRef.value.discardActiveObject()
+  konvaCanvasRef.value.batchDraw()
 }
 function togglePreviewMode() { previewMode.value = !previewMode.value; applyPreviewMode() }
 
@@ -954,28 +573,7 @@ function onPickBackground(e: Event) {
   reader.onload = async () => {
     console.log('文件读取完成，开始处理...')
     customBackgroundUrl.value = String(reader.result || '')
-    if (canvas) {
-      try {
-        const f = await getFabric()
-        await new Promise<void>((resolve, reject) => {
-          f.Image.fromURL(customBackgroundUrl.value, (img: any) => {
-            if (!canvas) {
-              reject(new Error('画布未初始化'))
-              return
-            }
-            fitBackground(img, canvas.getWidth(), canvas.getHeight())
-            canvas.setBackgroundImage(img, () => {
-              canvas.renderAll()
-              resolve()
-            })
-          }, { crossOrigin: 'anonymous' })
-        })
-        console.log('背景图片替换成功')
-      } catch (error) {
-        console.error('替换背景图片失败:', error)
-        alert('替换背景图片失败，请重试')
-      }
-    }
+    // KonvaCanvas 通过 backgroundUrl 响应
   }
   reader.readAsDataURL(file)
 }
@@ -1003,38 +601,30 @@ function onPickForeground(e: Event) {
   const reader = new FileReader()
   reader.onload = async () => {
     console.log('文件读取完成，开始处理...')
-    if (!canvas) {
-      console.log('❌ 画布未初始化')
-      alert('画布未初始化，请稍后再试')
-      return
-    }
-    
     try {
-      const f = await getFabric()
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
       await new Promise<void>((resolve, reject) => {
-        f.Image.fromURL(String(reader.result || ''), (img: any) => {
-          if (!canvas) {
-            reject(new Error('画布未初始化'))
-            return
-          }
-          
-          const targetWidth = Math.min(200, canvas.getWidth() * 0.3)
-          const scale = targetWidth / img.width!
-          img.set({ 
-            left: canvas.getWidth() / 2, 
-            top: canvas.getHeight() / 2, 
-            originX: 'center', 
-            originY: 'center', 
-            scaleX: scale, 
-            scaleY: scale 
-          })
-          canvas.add(img)
-          canvas.setActiveObject(img)
-          canvas.renderAll()
-          resolve()
-        }, { crossOrigin: 'anonymous' })
+        img.onload = () => resolve()
+        img.onerror = () => reject(new Error('前景图片加载失败'))
+        img.src = String(reader.result || '')
       })
-      
+      const { width } = konvaSize.value
+      const targetWidth = Math.min(200, Math.round(width * 0.3))
+      const ratio = img.width ? targetWidth / img.width : 1
+      konvaCanvasRef.value?.addSticker({
+        id: `sticker-${Date.now()}`,
+        name: 'custom',
+        config: {
+          image: img,
+          x: Math.round(konvaSize.value.width / 2),
+          y: Math.round(konvaSize.value.height / 2),
+          width: Math.round(img.width * ratio),
+          height: Math.round(img.height * ratio),
+          draggable: true,
+          selectable: true
+        }
+      })
       console.log('图片添加成功')
     } catch (error) {
       console.error('添加图片失败:', error)
@@ -1047,7 +637,7 @@ function cycleAspectRatio() {
   const list = ['4:5', '1:1', '9:16']
   const i = list.indexOf(templateRatio.value)
   templateRatio.value = list[(i + 1) % list.length]
-  resizeCanvas()
+  updateKonvaSize()
 }
 
 // 更多贴纸（占位）
@@ -1176,6 +766,13 @@ const exportProject = (): void => {
 // 快速开始（无 id）
 const quickStart = (): void => { router.push('/editor/quick-start') }
 
+// Konva 背景加载回调
+function onBackgroundLoadFromCanvas(success: boolean) {
+  isBackgroundImageLoaded.value = !!success
+  isBackgroundImageLoading.value = false
+  backgroundImageLoadProgress.value = 0
+}
+
 onMounted(() => {
   console.log('=== Editor.vue onMounted 开始 ===')
   console.log('hasTemplateId:', hasTemplateId.value)
@@ -1189,43 +786,12 @@ onMounted(() => {
     console.log('📝 应用模板默认值...')
     applyTemplateDefaults()
     
-    // 立即开始初始化，Canvas元素现在始终存在于DOM中
-    console.log('📝 开始Canvas初始化流程...')
-    
-    // 检查关键元素是否存在
-    console.log('检查DOM元素:')
-    console.log('- fabricCanvasEl.value:', !!fabricCanvasEl.value)
-    console.log('- canvasContainer.value:', !!canvasContainer.value)
-    console.log('- 编辑器容器:', !!document.querySelector('.editor-container'))
-    console.log('- canvas元素:', !!document.querySelector('canvas'))
-    
-    // 如果Canvas元素存在，立即开始初始化
-    if (fabricCanvasEl.value) {
-      console.log('✅ Canvas元素已就绪，开始初始化画布...')
-      initCanvas().then(() => {
-        console.log('✅ Canvas初始化成功')
-      }).catch((error) => {
-        console.error('❌ Canvas初始化失败:', error)
-      })
-    } else {
-      console.error('❌ Canvas元素未找到，等待DOM更新...')
-      // 等待DOM更新
-      nextTick(() => {
-        if (fabricCanvasEl.value) {
-          console.log('✅ Canvas元素在DOM更新后找到，开始初始化...')
-          initCanvas().then(() => {
-            console.log('✅ Canvas初始化成功')
-          }).catch((error) => {
-            console.error('❌ Canvas初始化失败:', error)
-          })
-        } else {
-          console.error('❌ Canvas元素仍未找到，设置为就绪状态避免阻塞')
-          isCanvasReady.value = true
-        }
-      })
-    }
-    
-    window.addEventListener('resize', resizeCanvas)
+    console.log('📝 初始化Konva尺寸...')
+    nextTick(() => {
+      updateKonvaSize()
+      initCanvas().catch(err => console.error('初始化失败:', err))
+    })
+    window.addEventListener('resize', updateKonvaSize)
     
     // 尝试加载现有项目
     console.log('📝 加载现有项目...')
@@ -1292,15 +858,16 @@ const loadExistingProject = () => {
 }
 
 watch([templateId], async () => {
-  if (canvas) { canvas.dispose(); canvas = null }
   // 应用新模板的默认值
   applyTemplateDefaults()
+  customBackgroundUrl.value = ''
+  await nextTick()
+  updateKonvaSize()
   await initCanvas()
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', resizeCanvas)
-  if (canvas) { canvas.dispose(); canvas = null }
+  window.removeEventListener('resize', updateKonvaSize)
 })
 </script>
 

@@ -7,13 +7,13 @@ export interface ProjectContent {
   stickers: string[]
   filters: string[]
   text: string
-  mood: MoodId
+  mood: MoodId | string
   colors: {
     primary: string
     secondary: string
     text: string
   }
-  ratio?: '1:1' | '4:5' | '9:16' | '3:4'
+  ratio?: '1:1' | '4:5' | '9:16' | '3:4' | string
   // 新增Editor相关的字段
   fontSize?: number
   fontStyle?: 'rounded' | 'hand' | 'sans' | 'serif'

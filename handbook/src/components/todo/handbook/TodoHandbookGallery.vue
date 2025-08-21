@@ -110,7 +110,7 @@
                 📅 {{ formatDate(handbook.createdAt) }}
               </span>
               <span class="meta-item">
-                📊 {{ handbook.generatedContent.elementCount }} 个元素
+                📊 {{ handbook.generatedContent.metadata.elementCount }} 个元素
               </span>
               <span class="meta-item">
                 📏 {{ handbook.exportSettings.dimensions.width }} × {{ handbook.exportSettings.dimensions.height }}

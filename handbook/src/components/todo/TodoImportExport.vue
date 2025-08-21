@@ -131,21 +131,21 @@
         </div>
         <div class="preview-content">
           <div class="preview-stats">
-            <span>总任务数: <strong>{{ previewData.total }}</strong></span>
-            <span>有效任务: <strong>{{ previewData.valid }}</strong></span>
-            <span>无效任务: <strong>{{ previewData.invalid }}</strong></span>
+            <span>总任务数: <strong>{{ previewData?.total ?? 0 }}</strong></span>
+            <span>有效任务: <strong>{{ previewData?.valid ?? 0 }}</strong></span>
+            <span>无效任务: <strong>{{ previewData?.invalid ?? 0 }}</strong></span>
           </div>
           <div class="preview-list">
             <div
-              v-for="(todo, index) in previewData.todos.slice(0, 5)"
+              v-for="(todo, index) in (previewData?.todos || []).slice(0, 5)"
               :key="index"
               class="preview-item"
             >
               <span class="todo-title">{{ todo.title }}</span>
               <span class="todo-category">{{ todo.category }}</span>
             </div>
-            <div v-if="previewData.todos.length > 5" class="preview-more">
-              ... 还有 {{ previewData.todos.length - 5 }} 个任务
+            <div v-if="(previewData?.todos?.length || 0) > 5" class="preview-more">
+              ... 还有 {{ (previewData?.todos?.length || 0) - 5 }} 个任务
             </div>
           </div>
         </div>

@@ -15,10 +15,9 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "konva": "^9.3.22",
+    "fabric": "^6.7.1",
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
-    "vue-konva": "^3.2.2",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {

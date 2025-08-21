@@ -12,7 +12,7 @@ export interface ThemeColor {
 export interface Theme {
   id: string
   name: string
-  category: 'pink' | 'purple' | 'mint' | 'peach' | 'lavender' | 'coral' | 'custom'
+  category: string
   description: string
   colors: ThemeColor
   isCustom: boolean

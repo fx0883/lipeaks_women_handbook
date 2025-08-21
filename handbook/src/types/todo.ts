@@ -146,7 +146,7 @@ export interface CreateTodoData {
   description?: string
   category: TodoCategory
   priority: TodoPriority
-  status: TodoStatus
+  status?: TodoStatus
   dueDate?: Date
   tags: string[]
 }
@@ -164,4 +164,7 @@ export interface UpdateTodoData {
   // New emotional fields
   achievementIds?: string[]
   moodNote?: string
+  // 兼容历史字段
+  handbookGenerated?: boolean
+  handbookGeneratedAt?: Date
 }

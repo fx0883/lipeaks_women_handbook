@@ -165,7 +165,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProjectStore } from '@/stores/project'
 import type { Project } from '@/types/project'
-import { exportCanvas, downloadImage } from '@/utils/canvas-export'
+import { exportCanvas, downloadImage } from '@/utils/konva-export'
 
 const route = useRoute()
 const router = useRouter()
@@ -277,21 +277,14 @@ const exportImage = async (): Promise<void> => {
   isExporting.value = true
   
   try {
-    // 使用画布导出工具
     const blob = await exportCanvas(
       currentProject.value,
       exportFormat.value as 'png' | 'jpg',
       exportSize.value,
       exportQuality.value
     )
-    
-    // 生成文件名
     const filename = `${projectName.value}-${exportSize.value.width}x${exportSize.value.height}.${exportFormat.value}`
-    
-    // 下载文件
     downloadImage(blob, filename)
-    
-    // 添加到导出历史
     exportHistory.value.unshift({
       id: Date.now().toString(),
       name: projectName.value,
@@ -299,10 +292,7 @@ const exportImage = async (): Promise<void> => {
       size: `${exportSize.value.width}×${exportSize.value.height}`,
       date: new Date().toISOString()
     })
-    
-    // 显示成功消息
     alert('导出成功！')
-    
   } catch (error) {
     console.error('导出失败:', error)
     alert('导出失败，请重试')
@@ -314,7 +304,6 @@ const exportImage = async (): Promise<void> => {
 // 下载历史项目
 const downloadHistoryItem = (item: any): void => {
   console.log('下载历史项目:', item)
-  // 这里应该从服务器或本地存储获取文件
 }
 
 // 返回编辑
@@ -339,19 +328,13 @@ const loadProjectData = async (): Promise<void> => {
     console.warn('没有项目ID')
     return
   }
-  
   try {
-    // 从localStorage恢复项目数据
     projectStore.restoreFromLocal()
-    
-    // 获取项目数据
     const project = projectStore.getById(projectId)
     if (project) {
       currentProject.value = project
       projectName.value = project.name
       projectThumbnail.value = project.thumbnail || projectThumbnail.value
-      
-      // 根据项目内容设置默认尺寸
       if (project.content.ratio) {
         const ratioMap: Record<string, string> = {
           '4:5': '原始尺寸',
@@ -360,8 +343,6 @@ const loadProjectData = async (): Promise<void> => {
         }
         selectedSize.value = ratioMap[project.content.ratio] || '原始尺寸'
       }
-      
-      console.log('项目数据加载成功:', project)
     } else {
       console.warn('项目不存在:', projectId)
       alert('项目不存在，请返回重新编辑')

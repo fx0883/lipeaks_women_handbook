@@ -54,8 +54,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -75,8 +75,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -96,8 +96,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -117,8 +117,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -138,8 +138,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -159,8 +159,8 @@
             </div>
             <div class="faq-answer" :class="{ active: item.isOpen }">
               <p v-if="item.answer">{{ item.answer }}</p>
-              <ol v-if="item.steps">
-                <li v-for="step in item.steps" :key="step">{{ step }}</li>
+              <ol v-if="(item as any).steps">
+                <li v-for="step in (item as any).steps" :key="step">{{ step }}</li>
               </ol>
               <ul v-if="item.points">
                 <li v-for="point in item.points" :key="point">{{ point }}</li>
@@ -453,7 +453,7 @@ const handleSearch = () => {
   allFaqs.forEach(faq => {
     const question = faq.question.toLowerCase()
     const answer = faq.answer.toLowerCase()
-    const steps = faq.steps?.join(' ').toLowerCase() || ''
+    const steps = (faq as any).steps?.join(' ').toLowerCase() || ''
     const points = faq.points?.join(' ').toLowerCase() || ''
     
     if (question.includes(searchLower) || answer.includes(searchLower) || steps.includes(searchLower) || points.includes(searchLower)) {
@@ -480,7 +480,7 @@ const handleScroll = () => {
   let current = ''
   
   sections.forEach(section => {
-    const sectionTop = section.offsetTop
+    const sectionTop = (section as HTMLElement).offsetTop
     if (window.pageYOffset >= sectionTop - 100) {
       current = section.getAttribute('id') || ''
     }
