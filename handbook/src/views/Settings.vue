@@ -891,15 +891,15 @@ onMounted(() => {
   min-height: 100vh;
   background: var(--colorNeutralBackground2);
   padding-top: 104px;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: 24px;
+  padding-right: 24px;
   padding-bottom: 24px;
   box-sizing: border-box;
 }
 
 .settings-container {
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .page-header {
@@ -922,14 +922,15 @@ onMounted(() => {
 
 /* 两栏布局 */
 .settings-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr;
+  display: flex;
   gap: 32px;
   align-items: start;
 }
 
 /* 左侧边栏 */
 .settings-sidebar {
+  width: 280px;
+  flex-shrink: 0;
   position: sticky;
   top: 24px;
   display: flex;
@@ -1094,8 +1095,9 @@ onMounted(() => {
   font-size: 16px;
 }
 
-/* 右侧主内容区（PC 使用页面滚动，避免内部容器裁切内容） */
+/* 右侧主内容区 */
 .settings-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -1488,7 +1490,6 @@ onMounted(() => {
 /* 响应式设计 */
 @media (max-width: 1024px) {
   .settings-layout {
-    grid-template-columns: 280px 1fr;
     gap: 24px;
   }
   
@@ -1502,17 +1503,49 @@ onMounted(() => {
   }
 }
 
+/* 大屏优化 */
+@media (min-width: 1200px) {
+  .settings-page {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  
+  .settings-layout {
+    gap: 40px;
+  }
+  
+  .settings-sidebar {
+    width: 300px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .settings-page {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  .settings-layout {
+    gap: 48px;
+  }
+  
+  .settings-sidebar {
+    width: 320px;
+  }
+}
+
 @media (max-width: 768px) {
   .settings-page {
     padding: 16px;
   }
   
   .settings-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 20px;
   }
   
   .settings-sidebar {
+    width: 100%;
     position: static;
     order: 2;
   }
