@@ -36,6 +36,7 @@
           @dragstart="onTextDragStart"
           @dragend="onTextDragEnd"
           @transform="onTextTransform"
+          @click="onTextClick"
         />
         
         <!-- 副标题文字 -->
@@ -47,13 +48,14 @@
           @dragstart="onTextDragStart"
           @dragend="onTextDragEnd"
           @transform="onTextTransform"
+          @click="onTextClick"
         />
         
         <!-- 贴纸图层 -->
         <v-image 
           v-for="sticker in stickers" 
           :key="sticker.id" 
-          :config="sticker.config"
+          :config="{ ...sticker.config, id: sticker.id }"
           :draggable="!previewMode"
           :selectable="!previewMode"
           @dragstart="onStickerDragStart"
@@ -115,6 +117,16 @@ interface Props {
   titleText?: string
   /** 副标题文字 */
   subtitleText?: string
+  /** 标题字号 */
+  titleFontSize?: number
+  /** 副标题字号 */
+  subtitleFontSize?: number
+  /** 文字颜色（标题/副标题共用） */
+  textColor?: string
+  /** 文字对齐（标题/副标题共用） */
+  textAlign?: 'left' | 'center' | 'right'
+  /** 字体族（标题/副标题共用） */
+  fontFamily?: string
   /** 预览模式 */
   previewMode?: boolean
   /** 画布比例 */
@@ -129,6 +141,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   previewMode: false,
   ratio: '4:5',
+  titleFontSize: 24,
+  subtitleFontSize: 18,
+  textColor: '#333333',
+  textAlign: 'center' as const,
+  fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial',
   performance: () => ({
     enableCache: true,
     batchUpdate: true
@@ -187,12 +204,13 @@ const backgroundConfig = computed<KonvaImageConfig>(() => ({
 // 标题配置
 const titleConfig = computed<KonvaTextConfig>(() => ({
   text: props.titleText || '',
-  x: props.width / 2,
+  x: 0,
   y: props.height / 2 - 30,
-  fontSize: 24,
-  fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial',
-  fill: '#333333',
-  align: 'center',
+  width: props.width,
+  fontSize: props.titleFontSize,
+  fontFamily: props.fontFamily,
+  fill: props.textColor,
+  align: props.textAlign,
   draggable: !props.previewMode,
   selectable: !props.previewMode,
   fontWeight: 'bold'
@@ -201,12 +219,13 @@ const titleConfig = computed<KonvaTextConfig>(() => ({
 // 副标题配置
 const subtitleConfig = computed<KonvaTextConfig>(() => ({
   text: props.subtitleText || '',
-  x: props.width / 2,
+  x: 0,
   y: props.height / 2 + 20,
-  fontSize: 18,
-  fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial',
-  fill: '#666666',
-  align: 'center',
+  width: props.width,
+  fontSize: props.subtitleFontSize,
+  fontFamily: props.fontFamily,
+  fill: props.textColor,
+  align: props.textAlign,
   draggable: !props.previewMode,
   selectable: !props.previewMode
 }))
@@ -259,9 +278,12 @@ const loadBackgroundImage = async (url: string): Promise<void> => {
     await new Promise<void>((resolve, reject) => {
       image.onload = () => {
         backgroundImage.value = image
+        // 明确通知父组件背景加载完成，避免依赖 v-image @load
+        emit('background-load', true)
         resolve()
       }
       image.onerror = () => {
+        emit('background-load', false)
         reject(new Error('背景图片加载失败'))
       }
       image.src = url
@@ -280,6 +302,13 @@ const loadBackgroundImage = async (url: string): Promise<void> => {
 // 背景图加载完成事件
 const onBackgroundLoad = () => {
   console.log('背景图片加载完成')
+  // 二次确认图片对象尺寸，避免占位层干扰
+  if (backgroundImage.value) {
+    const img = backgroundImage.value as HTMLImageElement
+    const w = img.naturalWidth || img.width
+    const h = img.naturalHeight || img.height
+    console.log('背景尺寸:', w, h)
+  }
   emit('background-load', true)
 }
 
@@ -341,6 +370,19 @@ const onTextTransform = (e: any) => {
     scale: { x: text.scaleX(), y: text.scaleY() },
     rotation: text.rotation()
   })
+}
+
+// 文字点击：选中并挂载变换器
+const onTextClick = (e: any) => {
+  const node = e.target
+  selectedElement.value = node
+  if (!props.previewMode) {
+    const transformer = transformerRef.value?.getNode?.()
+    if (transformer && typeof transformer.nodes === 'function') {
+      transformer.nodes([node])
+    }
+  }
+  emit('element-select', node)
 }
 
 // 贴纸拖拽开始
@@ -488,6 +530,14 @@ const removeSticker = (id: string): void => {
     const index = stickers.value.findIndex(s => s.id === id)
     if (index > -1) {
       stickers.value.splice(index, 1)
+      // 如果当前选中的是被删除的贴纸，清空选择与变换器
+      if (selectedElement.value && selectedElement.value.id && selectedElement.value.id() === id) {
+        selectedElement.value = null
+        const transformer = transformerRef.value?.getNode?.()
+        if (transformer && typeof transformer.nodes === 'function') {
+          transformer.nodes([])
+        }
+      }
       emit('sticker-update', stickers.value)
       emit('canvas-change', getCanvasState())
     }

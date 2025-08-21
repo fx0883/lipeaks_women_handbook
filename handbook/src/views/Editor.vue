@@ -82,17 +82,18 @@
               :width="konvaSize.width"
               :height="konvaSize.height"
               :backgroundUrl="currentBackgroundUrl"
+              :titleText="titleText"
+              :subtitleText="subtitleText"
+              :titleFontSize="fontSize"
+              :subtitleFontSize="Math.round(fontSize * 0.75)"
+              :textColor="selectedColor"
+              :textAlign="textAlign"
+              :fontFamily="fontFamilyCss"
               :previewMode="previewMode"
               @background-load="onBackgroundLoadFromCanvas"
             />
 
-            <!-- 文字覆盖（按原型 DOM 覆盖层） -->
-            <div class="preview-overlay">
-              <div class="preview-text" :style="{ textAlign: textAlignCss }">
-                <h3 class="preview-title" :style="titleStyle">{{ titleText }}</h3>
-                <p class="preview-subtitle" :style="subtitleStyle">{{ subtitleText }}</p>
-              </div>
-            </div>
+            
           </div>
         </div>
 
@@ -144,6 +145,7 @@
             <img v-for="s in stickers" :key="s.id" :src="s.url" :alt="s.name" class="sticker-item" @click="addSticker(s)" />
           </div>
           <div class="actions" style="margin-top:12px;">
+            <button class="btn" style="font-size:12px;" @click="removeSelectedSticker">删除选中贴纸</button>
             <button class="btn ghost" style="font-size:12px;" @click="moreStickers">更多贴纸</button>
             <button class="btn ghost" style="font-size:12px;" @click="triggerAddImage">上传贴纸</button>
           </div>
@@ -471,7 +473,9 @@ const addSticker = async (sticker: any): Promise<void> => {
     })
     const { width } = konvaSize.value
     const targetWidth = Math.min(160, Math.round(width * 0.25))
-    const ratio = img.width ? targetWidth / img.width : 1
+    const naturalW = (img as HTMLImageElement).naturalWidth || img.width
+    const naturalH = (img as HTMLImageElement).naturalHeight || img.height
+    const ratio = naturalW ? targetWidth / naturalW : 1
     konvaCanvasRef.value?.addSticker({
       id: `sticker-${Date.now()}`,
       name: sticker.name,
@@ -479,8 +483,8 @@ const addSticker = async (sticker: any): Promise<void> => {
         image: img,
         x: Math.round(konvaSize.value.width / 2),
         y: Math.round(konvaSize.value.height / 2),
-        width: Math.round(img.width * ratio),
-        height: Math.round(img.height * ratio),
+        width: Math.round(naturalW * ratio),
+        height: Math.round(naturalH * ratio),
         draggable: true,
         selectable: true
       }
@@ -489,6 +493,24 @@ const addSticker = async (sticker: any): Promise<void> => {
   } catch (error) {
     console.error('添加贴纸失败:', error)
     alert('添加贴纸失败，请重试')
+  }
+}
+
+// 删除选中贴纸（通过 Konva 选择器）
+function removeSelectedSticker() {
+  try {
+    // 从子组件暴露的状态中获取最后选中元素的 id（简化：直接尝试用变换器当前 nodes）
+    const transformer = konvaCanvasRef.value?.$refs?.transformerRef?.getNode?.()
+    const nodes: any[] = transformer && typeof transformer.nodes === 'function' ? transformer.nodes() : []
+    const current = Array.isArray(nodes) && nodes.length > 0 ? nodes[0] : null
+    const id = current && typeof current.id === 'function' ? current.id() : undefined
+    if (id) {
+      konvaCanvasRef.value?.removeSticker(id)
+    } else {
+      alert('请先选中一个贴纸')
+    }
+  } catch (e) {
+    console.error('删除贴纸失败', e)
   }
 }
 
@@ -504,12 +526,7 @@ function setFontStyle(s: 'rounded' | 'hand' | 'sans' | 'serif') { fontStyle.valu
 
 // 预览模式切换
 function applyPreviewMode() {
-  if (!konvaCanvasRef.value) return
-  const enable = !previewMode.value
-  konvaCanvasRef.value.selection = enable
-  konvaCanvasRef.value.forEachObject((obj: any) => { obj.selectable = enable; obj.evented = enable })
-  konvaCanvasRef.value.discardActiveObject()
-  konvaCanvasRef.value.batchDraw()
+  // 仅通过 props 传递给子组件控制交互，无需直接调用内部实例方法
 }
 function togglePreviewMode() { previewMode.value = !previewMode.value; applyPreviewMode() }
 
@@ -611,7 +628,9 @@ function onPickForeground(e: Event) {
       })
       const { width } = konvaSize.value
       const targetWidth = Math.min(200, Math.round(width * 0.3))
-      const ratio = img.width ? targetWidth / img.width : 1
+      const naturalW = (img as HTMLImageElement).naturalWidth || img.width
+      const naturalH = (img as HTMLImageElement).naturalHeight || img.height
+      const ratio = naturalW ? targetWidth / naturalW : 1
       konvaCanvasRef.value?.addSticker({
         id: `sticker-${Date.now()}`,
         name: 'custom',
@@ -619,8 +638,8 @@ function onPickForeground(e: Event) {
           image: img,
           x: Math.round(konvaSize.value.width / 2),
           y: Math.round(konvaSize.value.height / 2),
-          width: Math.round(img.width * ratio),
-          height: Math.round(img.height * ratio),
+          width: Math.round(naturalW * ratio),
+          height: Math.round(naturalH * ratio),
           draggable: true,
           selectable: true
         }
@@ -787,7 +806,7 @@ onMounted(() => {
     applyTemplateDefaults()
     
     console.log('📝 初始化Konva尺寸...')
-    nextTick(() => {
+      nextTick(() => {
       updateKonvaSize()
       initCanvas().catch(err => console.error('初始化失败:', err))
     })

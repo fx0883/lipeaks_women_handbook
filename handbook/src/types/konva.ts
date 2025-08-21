@@ -19,6 +19,8 @@ export interface KonvaStageConfig {
  * Konva图片配置类型
  */
 export interface KonvaImageConfig {
+  /** 节点ID（用于事件与查找） */
+  id?: string
   /** 图片对象 */
   image: HTMLImageElement | null
   /** X坐标位置 */
