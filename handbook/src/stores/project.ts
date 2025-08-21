@@ -2,6 +2,36 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Project } from '@/types/project'
 
+const STORAGE_KEY = 'handbook-projects'
+
+function trySaveProjectsToLocalStorage(projects: Project[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects))
+    return
+  } catch (err) {
+    // 可能为配额超限，进行瘦身后重试
+    try {
+      const slimProjects = projects.map(p => ({
+        ...p,
+        // dataURL 往往体积巨大，改为空字符串以降低占用（远程 URL 保留）
+        thumbnail: (typeof p.thumbnail === 'string' && p.thumbnail.startsWith('data:')) ? '' : p.thumbnail,
+        content: {
+          ...p.content,
+          // 这些字段可能存放大量 base64 或资源引用，本地存储中不保留
+          images: [],
+          stickers: []
+        }
+      }))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(slimProjects))
+      console.warn('Storage quota exceeded. Saved slimmed projects instead of full payload.')
+      return
+    } catch (err2) {
+      console.error('Failed to save projects to localStorage due to quota limits.', err2)
+      alert('本地存储空间不足，无法保存项目。请导出或清理部分项目后重试。')
+    }
+  }
+}
+
 export const useProjectStore = defineStore('project', () => {
   // 状态
   const projects = ref<Project[]>([])
@@ -43,7 +73,7 @@ export const useProjectStore = defineStore('project', () => {
     projects.value.push(project)
     byId.value[project.id] = project
     // 保存到本地存储
-    localStorage.setItem('handbook-projects', JSON.stringify(projects.value))
+    trySaveProjectsToLocalStorage(projects.value)
     return project
   }
 
@@ -58,7 +88,7 @@ export const useProjectStore = defineStore('project', () => {
       projects.value[index] = updatedProject
       byId.value[id] = updatedProject
       // 保存到本地存储
-      localStorage.setItem('handbook-projects', JSON.stringify(projects.value))
+      trySaveProjectsToLocalStorage(projects.value)
     }
   }
 
@@ -68,7 +98,7 @@ export const useProjectStore = defineStore('project', () => {
       projects.value.splice(index, 1)
       delete byId.value[id]
       // 保存到本地存储
-      localStorage.setItem('handbook-projects', JSON.stringify(projects.value))
+      trySaveProjectsToLocalStorage(projects.value)
     }
   }
 
@@ -107,7 +137,7 @@ export const useProjectStore = defineStore('project', () => {
   }
 
   const restoreFromLocal = (): void => {
-    const savedProjects = localStorage.getItem('handbook-projects')
+    const savedProjects = localStorage.getItem(STORAGE_KEY)
     if (savedProjects) {
       try {
         const parsed = JSON.parse(savedProjects)

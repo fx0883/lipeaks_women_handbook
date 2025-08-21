@@ -165,6 +165,10 @@ const hasError = ref(false)
 const backgroundImage = ref<HTMLImageElement | null>(null)
 const selectedElement = ref<any>(null)
 
+// 文字覆盖（仅对选中的文字生效）
+const titleOverride = ref<Partial<KonvaTextConfig>>({})
+const subtitleOverride = ref<Partial<KonvaTextConfig>>({})
+
 // 画布配置
 const stageConfig = computed<KonvaStageConfig>(() => ({
   width: props.width,
@@ -214,6 +218,8 @@ const titleConfig = computed<KonvaTextConfig>(() => ({
   draggable: !props.previewMode,
   selectable: !props.previewMode,
   fontWeight: 'bold'
+  ,
+  ...titleOverride.value
 }))
 
 // 副标题配置
@@ -228,6 +234,8 @@ const subtitleConfig = computed<KonvaTextConfig>(() => ({
   align: props.textAlign,
   draggable: !props.previewMode,
   selectable: !props.previewMode
+  ,
+  ...subtitleOverride.value
 }))
 
 // 选择变换器配置
@@ -571,10 +579,31 @@ const setBackgroundImage = (image: HTMLImageElement | string): void => {
 const updateText = (type: 'title' | 'subtitle', config: Partial<KonvaTextConfig>): void => {
   try {
     console.log('更新文字:', type, config)
-    // 这里可以通过emit通知父组件更新文字
+    if (type === 'title') {
+      titleOverride.value = { ...titleOverride.value, ...config }
+    } else if (type === 'subtitle') {
+      subtitleOverride.value = { ...subtitleOverride.value, ...config }
+    }
     emit('canvas-change', getCanvasState())
   } catch (error) {
     console.error('更新文字失败:', error)
+  }
+}
+
+// 仅更新当前选中的文字
+const updateSelectedText = (config: Partial<KonvaTextConfig>): void => {
+  try {
+    const node = selectedElement.value
+    if (!node || typeof node.text !== 'function') return
+    const txt = node.text()
+    if (txt === (props.titleText || '')) {
+      titleOverride.value = { ...titleOverride.value, ...config }
+    } else if (txt === (props.subtitleText || '')) {
+      subtitleOverride.value = { ...subtitleOverride.value, ...config }
+    }
+    emit('canvas-change', getCanvasState())
+  } catch (error) {
+    console.error('更新选中文本失败:', error)
   }
 }
 
@@ -665,6 +694,7 @@ defineExpose({
   updateSticker,
   setBackgroundImage,
   updateText,
+  updateSelectedText,
   exportCanvas,
   clearCanvas,
   resetCanvas,

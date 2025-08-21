@@ -668,12 +668,18 @@ const saveProject = async (): Promise<void> => {
   
   isSaving.value = true
   try {
+    // 如果缩略图为 dataURL，先压缩，降低 localStorage 占用
+    // 优先从当前Konva画布导出快照作为缩略图
+    let resolvedThumbnail = await exportCurrentCanvasSnapshot()
+    if (!resolvedThumbnail) {
+      resolvedThumbnail = await getOptimizedThumbnail(currentBackgroundUrl.value)
+    }
     // 生成项目数据
     const projectData: Partial<Project> = {
       name: projectName.value || `我的${resolvedTemplateName.value}`,
       description: `使用${resolvedTemplateName.value}模板创建的作品`,
       templateId: templateId.value,
-      thumbnail: currentBackgroundUrl.value,
+      thumbnail: resolvedThumbnail,
       content: {
         title: titleText.value,
         subtitle: subtitleText.value,
@@ -700,7 +706,8 @@ const saveProject = async (): Promise<void> => {
           contrast: adjContrast.value,
           saturation: adjSaturation.value,
           sharpen: adjSharpen.value
-        }
+        },
+        composited: !!resolvedThumbnail && resolvedThumbnail.startsWith('data:')
       },
       tags: [currentTemplate.value?.category || '其他'],
       isPublic: false,
@@ -888,6 +895,78 @@ watch([templateId], async () => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateKonvaSize)
 })
+
+// 工具：压缩 dataURL 缩略图，限制尺寸与质量
+async function getOptimizedThumbnail(src: string): Promise<string> {
+  if (!src || typeof src !== 'string') return src
+  if (!src.startsWith('data:')) return src
+  try {
+    const img = await loadImageForCompress(src)
+    const maxSide = 800
+    const { width, height } = getContainSize(img.width || 1, img.height || 1, maxSide)
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return src
+    ctx.drawImage(img, 0, 0, width, height)
+    // 使用 JPEG 导出并降低质量（0.72）
+    const compressed = canvas.toDataURL('image/jpeg', 0.72)
+    return compressed && compressed.length < src.length ? compressed : src
+  } catch (e) {
+    console.warn('thumbnail compress failed, use original.', e)
+    return src
+  }
+}
+
+function getContainSize(w: number, h: number, maxSide: number): { width: number; height: number } {
+  const scale = Math.min(maxSide / w, maxSide / h, 1)
+  return { width: Math.round(w * scale), height: Math.round(h * scale) }
+}
+
+function loadImageForCompress(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.crossOrigin = 'anonymous'
+    img.src = src
+  })
+}
+
+// 从 KonvaCanvas 子组件导出当前画布快照并进行尺寸与质量压缩
+async function exportCurrentCanvasSnapshot(): Promise<string | null> {
+  try {
+    if (!konvaCanvasRef.value) return null
+    // 以 JPG 导出，先得到 dataURL
+    const raw = konvaCanvasRef.value?.exportCanvas?.('jpg', 0.9)
+    if (!raw || typeof raw !== 'string') return null
+    // 再走统一压缩逻辑，控制最长边 1200、质量 0.85
+    return await recompressDataURL(raw, 1200, 0.85)
+  } catch (e) {
+    console.warn('exportCurrentCanvasSnapshot failed', e)
+    return null
+  }
+}
+
+async function recompressDataURL(src: string, maxSide: number, quality: number): Promise<string> {
+  if (!src || typeof src !== 'string') return src
+  try {
+    const img = await loadImageForCompress(src)
+    const { width, height } = getContainSize(img.width || 1, img.height || 1, maxSide)
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return src
+    ctx.drawImage(img, 0, 0, width, height)
+    const compressed = canvas.toDataURL('image/jpeg', quality)
+    return compressed && compressed.length <= src.length * 1.05 ? compressed : src
+  } catch (e) {
+    console.warn('recompressDataURL failed, use original.', e)
+    return src
+  }
+}
 </script>
 
 <style scoped>

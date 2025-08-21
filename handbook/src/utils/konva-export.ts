@@ -86,8 +86,11 @@ async function rebuildStage(
 
   const content = project.content || ({} as Project['content'])
 
+  // 若 content.composited 为真，说明缩略图已包含叠加内容，避免二次叠加
+  const skipOverlay = !!(content as any).composited
+
   // 2. 文字：标题
-  if (content.title) {
+  if (!skipOverlay && content.title) {
     const title = new Konva.Text({
       text: content.title,
       x: 0,
@@ -102,7 +105,7 @@ async function rebuildStage(
   }
 
   // 3. 文字：副标题
-  if (content.subtitle) {
+  if (!skipOverlay && content.subtitle) {
     const subtitle = new Konva.Text({
       text: content.subtitle,
       x: 0,
@@ -140,7 +143,7 @@ async function rebuildStage(
   }
 
   // 5. 边框
-  if (content.borderStyle && content.borderStyle !== 'none' && (content.borderWidth || 0) > 0) {
+  if (!skipOverlay && content.borderStyle && content.borderStyle !== 'none' && (content.borderWidth || 0) > 0) {
     const bw = content.borderWidth || 1
     const rect = new Konva.Rect({
       x: bw / 2,

@@ -28,6 +28,8 @@ export interface ProjectContent {
     saturation: number
     sharpen: number
   }
+  // 是否已将画布内容合成到缩略图中（用于导出时跳过再次叠加文字/边框）
+  composited?: boolean
 }
 
 export interface Project {
