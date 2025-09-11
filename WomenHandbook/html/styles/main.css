@@ -260,6 +260,12 @@
 }
 
 /* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+  .harmony-app {
+    padding-top: 56px; /* 移动端较小的导航栏 */
+  }
+}
+
 @media (max-width: 576px) {
   .main-content {
     padding: var(--harmony-space-lg);

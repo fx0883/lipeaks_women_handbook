@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板编辑器 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/editor.css">
+    <meta name="theme-color" content="#FF6B9D">
+</head>
+<body class="harmony-app">
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="harmony-navigation">
+            <div class="nav-content">
+                <div class="nav-left">
+                    <button class="harmony-button icon-button" onclick="goBack()">
+                        <span class="icon">←</span>
+                    </button>
+                    <div class="nav-title-section">
+                        <h1 id="editorTitle">模板编辑器</h1>
+                        <input type="text" id="projectName" class="project-name-input" placeholder="输入项目名称" />
+                    </div>
+                </div>
+                <div class="nav-actions">
+                    <button class="harmony-button secondary" onclick="togglePreview()" id="previewBtn">
+                        <span class="icon">👁</span>
+                        <span>预览</span>
+                    </button>
+                    <button class="harmony-button primary" onclick="saveProject()" id="saveBtn">
+                        <span class="icon">💾</span>
+                        <span>保存</span>
+                    </button>
+                    <button class="harmony-button primary" onclick="exportProject()">
+                        <span class="icon">📤</span>
+                        <span>导出</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 编辑器主体布局 -->
+        <main class="editor-layout">
+            <!-- 预览区域 -->
+            <section class="preview-section">
+                <div class="preview-header">
+                    <h2 class="harmony-text-subtitle">预览</h2>
+                    <div class="aspect-ratio-controls">
+                        <button class="harmony-button text aspect-btn active" data-ratio="4:5">4:5</button>
+                        <button class="harmony-button text aspect-btn" data-ratio="1:1">1:1</button>
+                        <button class="harmony-button text aspect-btn" data-ratio="9:16">9:16</button>
+                    </div>
+                </div>
+                
+                <div class="canvas-container">
+                    <!-- 画布区域 -->
+                    <div class="canvas-stage" id="canvasStage">
+                        <img id="backgroundImage" class="background-img" alt="背景图片" />
+                        <div class="text-overlay">
+                            <h3 class="title-text" id="titleDisplay">我的美好时光</h3>
+                            <p class="subtitle-text" id="subtitleDisplay">记录生活中的小确幸</p>
+                        </div>
+                        <div class="stickers-layer" id="stickersLayer"></div>
+                    </div>
+                    
+                    <!-- 加载状态 -->
+                    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                        <div class="loading-content">
+                            <div class="harmony-loading-spinner"></div>
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 预览操作按钮 -->
+                <div class="preview-actions">
+                    <button class="harmony-button secondary" onclick="replaceBackground()">
+                        <span class="icon">🖼</span>
+                        <span>替换背景</span>
+                    </button>
+                    <button class="harmony-button secondary" onclick="addImage()">
+                        <span class="icon">📷</span>
+                        <span>添加图片</span>
+                    </button>
+                    <button class="harmony-button secondary" onclick="resetCanvas()">
+                        <span class="icon">🔄</span>
+                        <span>重置</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 编辑工具面板 -->
+            <section class="tools-panel">
+                <div class="harmony-card">
+                    <div class="panel-header" onclick="togglePanel(this)">
+                        <h2 class="harmony-text-subtitle">编辑工具</h2>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="tool-sections">
+                        <!-- 文本编辑 -->
+                        <div class="tool-section">
+                            <h3 class="tool-title">文本内容</h3>
+                            <div class="form-group">
+                                <label class="form-label">标题</label>
+                                <input type="text" class="harmony-input" id="titleInput" 
+                                       placeholder="输入标题" value="我的美好时光" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">副标题</label>
+                                <input type="text" class="harmony-input" id="subtitleInput" 
+                                       placeholder="输入副标题" value="记录生活中的小确幸" />
+                            </div>
+                        </div>
+
+                        <!-- 贴纸选择 -->
+                        <div class="tool-section">
+                            <h3 class="tool-title">贴纸装饰</h3>
+                            <div class="sticker-grid">
+                                <div class="sticker-item" data-sticker="heart">❤️</div>
+                                <div class="sticker-item" data-sticker="star">⭐</div>
+                                <div class="sticker-item" data-sticker="flower">🌸</div>
+                                <div class="sticker-item" data-sticker="rainbow">🌈</div>
+                                <div class="sticker-item" data-sticker="sun">☀️</div>
+                                <div class="sticker-item" data-sticker="moon">🌙</div>
+                            </div>
+                            <div class="sticker-actions">
+                                <button class="harmony-button text" onclick="removeSelectedSticker()">删除选中</button>
+                                <button class="harmony-button text" onclick="moreStickers()">更多贴纸</button>
+                            </div>
+                        </div>
+
+                        <!-- 滤镜效果 -->
+                        <div class="tool-section">
+                            <h3 class="tool-title">滤镜效果</h3>
+                            <div class="filter-grid">
+                                <div class="filter-item active" data-filter="none">
+                                    <div class="filter-preview"></div>
+                                    <span>原图</span>
+                                </div>
+                                <div class="filter-item" data-filter="warm">
+                                    <div class="filter-preview warm-filter"></div>
+                                    <span>暖色</span>
+                                </div>
+                                <div class="filter-item" data-filter="cool">
+                                    <div class="filter-preview cool-filter"></div>
+                                    <span>冷色</span>
+                                </div>
+                                <div class="filter-item" data-filter="vintage">
+                                    <div class="filter-preview vintage-filter"></div>
+                                    <span>复古</span>
+                                </div>
+                                <div class="filter-item" data-filter="bw">
+                                    <div class="filter-preview bw-filter"></div>
+                                    <span>黑白</span>
+                                </div>
+                                <div class="filter-item" data-filter="bright">
+                                    <div class="filter-preview bright-filter"></div>
+                                    <span>明亮</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 高级设置面板 -->
+            <section class="settings-panel">
+                <div class="harmony-card">
+                    <div class="panel-header" onclick="togglePanel(this)">
+                        <h2 class="harmony-text-subtitle">高级设置</h2>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="settings-sections">
+                        <!-- 文字样式 -->
+                        <div class="setting-section">
+                            <h3 class="setting-title">文字样式</h3>
+                            <div class="font-controls">
+                                <div class="control-group">
+                                    <label class="control-label">字体大小</label>
+                                    <input type="range" class="harmony-slider" id="fontSizeSlider" 
+                                           min="12" max="48" value="24" />
+                                    <span class="slider-value" id="fontSizeValue">24px</span>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">字体颜色</label>
+                                    <div class="color-palette">
+                                        <div class="color-item active" data-color="#333333" style="background: #333333;"></div>
+                                        <div class="color-item" data-color="#8fd3c8" style="background: #8fd3c8;"></div>
+                                        <div class="color-item" data-color="#f7c3d3" style="background: #f7c3d3;"></div>
+                                        <div class="color-item" data-color="#ffe79a" style="background: #ffe79a;"></div>
+                                        <div class="color-item" data-color="#bcd9ff" style="background: #bcd9ff;"></div>
+                                        <div class="color-item" data-color="#ff6b6b" style="background: #ff6b6b;"></div>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">文字对齐</label>
+                                    <div class="alignment-controls">
+                                        <button class="harmony-button text align-btn active" data-align="center">居中</button>
+                                        <button class="harmony-button text align-btn" data-align="left">左对齐</button>
+                                        <button class="harmony-button text align-btn" data-align="right">右对齐</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 图片调整 -->
+                        <div class="setting-section">
+                            <h3 class="setting-title">图片调整</h3>
+                            <div class="adjustment-controls">
+                                <div class="control-group">
+                                    <label class="control-label">亮度</label>
+                                    <input type="range" class="harmony-slider" id="brightnessSlider" 
+                                           min="-50" max="50" value="0" />
+                                    <span class="slider-value" id="brightnessValue">0</span>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">对比度</label>
+                                    <input type="range" class="harmony-slider" id="contrastSlider" 
+                                           min="-50" max="50" value="0" />
+                                    <span class="slider-value" id="contrastValue">0</span>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">饱和度</label>
+                                    <input type="range" class="harmony-slider" id="saturationSlider" 
+                                           min="-50" max="50" value="0" />
+                                    <span class="slider-value" id="saturationValue">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 边框装饰 -->
+                        <div class="setting-section">
+                            <h3 class="setting-title">边框装饰</h3>
+                            <div class="border-controls">
+                                <div class="control-group">
+                                    <label class="control-label">边框样式</label>
+                                    <div class="border-style-controls">
+                                        <button class="harmony-button text border-btn active" data-border="none">无边框</button>
+                                        <button class="harmony-button text border-btn" data-border="solid">实线</button>
+                                        <button class="harmony-button text border-btn" data-border="dashed">虚线</button>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">边框宽度</label>
+                                    <input type="range" class="harmony-slider" id="borderWidthSlider" 
+                                           min="0" max="10" value="0" />
+                                    <span class="slider-value" id="borderWidthValue">0px</span>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">圆角大小</label>
+                                    <input type="range" class="harmony-slider" id="borderRadiusSlider" 
+                                           min="0" max="30" value="12" />
+                                    <span class="slider-value" id="borderRadiusValue">12px</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 文件选择器 -->
+    <input type="file" id="backgroundFileInput" accept="image/*" style="display: none;" />
+    <input type="file" id="imageFileInput" accept="image/*" style="display: none;" />
+
+    <!-- 保存成功提示 -->
+    <div class="harmony-toast" id="saveToast" style="display: none;">
+        <div class="toast-content">
+            <span class="toast-icon">✅</span>
+            <span class="toast-text">项目保存成功</span>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/editor.js"></script>
+    
+    <!-- 移动端面板折叠功能 -->
+    <script>
+        function togglePanel(header) {
+            const content = header.nextElementSibling;
+            const isCollapsed = content.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                header.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                header.classList.add('collapsed');
+            }
+        }
+        
+        // 移动端默认折叠高级设置面板
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth <= 768) {
+                const settingsPanel = document.querySelector('.settings-panel .panel-header');
+                if (settingsPanel) {
+                    togglePanel(settingsPanel);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

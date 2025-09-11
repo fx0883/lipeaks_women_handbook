@@ -336,14 +336,12 @@ function useTemplate() {
     if (!selectedTemplate) return;
     
     // 显示加载状态
-    window.HarmonyUtils?.showToast('正在加载编辑器...', 'info', 2000);
+    window.HarmonyUtils?.showToast('正在加载编辑器...', 'info', 1000);
     
-    // 模拟跳转到编辑器
+    // 跳转到编辑器页面
     setTimeout(() => {
-        window.HarmonyUtils?.showToast('编辑器加载完成！', 'success');
-        // 这里可以跳转到编辑器页面
-        // window.location.href = `editor.html?template=${selectedTemplate.id}`;
-    }, 2000);
+        window.location.href = `editor.html?template=${selectedTemplate.id}`;
+    }, 1000);
     
     closeTemplateDialog();
 }

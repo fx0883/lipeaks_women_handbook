@@ -37,11 +37,11 @@
                     </div>
                     <div class="quick-actions">
                         <div class="harmony-row action-buttons">
-                            <button class="harmony-button primary">
+                            <button class="harmony-button primary" onclick="navigateTo('create.html')">
                                 <span class="icon">🎨</span>
                                 <span>开始创作</span>
                             </button>
-                            <button class="harmony-button secondary">
+                            <button class="harmony-button secondary" onclick="navigateTo('mood.html')">
                                 <span class="icon">😊</span>
                                 <span>情绪打卡</span>
                             </button>
@@ -63,7 +63,7 @@
                             <p class="harmony-text-caption">选择喜欢的模板快速出片</p>
                         </div>
                         <div class="feature-action">
-                            <button class="harmony-button text">进入</button>
+                            <button class="harmony-button text" onclick="navigateTo('create.html')">进入</button>
                         </div>
                     </div>
                     
@@ -96,11 +96,11 @@
             <div class="harmony-card">
                 <div class="card-header">
                     <h2 class="harmony-text-subtitle">热门模板</h2>
-                    <button class="harmony-button text">查看全部</button>
+                    <button class="harmony-button text" onclick="navigateTo('create.html')">查看全部</button>
                 </div>
                 <div class="harmony-scroll horizontal">
                     <div class="template-list">
-                        <div class="template-item">
+                        <div class="template-item" onclick="navigateTo('editor.html?template=campus-daily')">
                             <div class="template-image">
                                 <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=300&q=80" alt="校园日常">
                                 <div class="template-badge">4:5</div>
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                         
-                        <div class="template-item">
+                        <div class="template-item" onclick="navigateTo('editor.html?template=club-poster')">
                             <div class="template-image">
                                 <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80" alt="社团招新">
                                 <div class="template-badge">9:16</div>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         
-                        <div class="template-item">
+                        <div class="template-item" onclick="navigateTo('editor.html?template=citywalk')">
                             <div class="template-image">
                                 <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=300&q=80" alt="Citywalk">
                                 <div class="template-badge">9:16</div>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         
-                        <div class="template-item">
+                        <div class="template-item" onclick="navigateTo('editor.html?template=food-diary')">
                             <div class="template-image">
                                 <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=300&q=80" alt="美食日记">
                                 <div class="template-badge">1:1</div>
@@ -151,7 +151,7 @@
             <div class="harmony-card">
                 <div class="card-header">
                     <h2 class="harmony-text-subtitle">最近作品</h2>
-                    <button class="harmony-button text">查看全部</button>
+                    <button class="harmony-button text" onclick="navigateTo('album.html')">查看全部</button>
                 </div>
                 <div class="harmony-grid recent-works">
                     <div class="work-item">
