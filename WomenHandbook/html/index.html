@@ -78,18 +78,8 @@
                         </div>
                     </div>
                     
-                    <div class="harmony-card feature-item">
-                        <div class="feature-icon">📸</div>
-                        <div class="feature-info">
-                            <h3 class="harmony-text-body-strong">我的相册</h3>
-                            <p class="harmony-text-caption">查看所有创作作品</p>
-                        </div>
-                        <div class="feature-action">
-                            <button class="harmony-button text">查看</button>
-                        </div>
-                    </div>
                     
-                    <div class="harmony-card feature-item">
+                    <div class="harmony-card feature-item" onclick="navigateTo('todo.html')">
                         <div class="feature-icon">📝</div>
                         <div class="feature-info">
                             <h3 class="harmony-text-body-strong">待办清单</h3>
@@ -194,9 +184,9 @@
                 <div class="tab-icon">😊</div>
                 <div class="tab-label">打卡</div>
             </div>
-            <div class="tab-item" onclick="navigateTo('album.html')">
-                <div class="tab-icon">📸</div>
-                <div class="tab-label">相册</div>
+            <div class="tab-item" onclick="navigateTo('todo.html')">
+                <div class="tab-icon">📝</div>
+                <div class="tab-label">待办</div>
             </div>
             <div class="tab-item" onclick="navigateTo('settings.html')">
                 <div class="tab-icon">👤</div>
@@ -205,10 +195,6 @@
         </div>
     </div>
 
-    <!-- 暗色模式切换浮动按钮 -->
-    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
-        <span class="icon">🌙</span>
-    </button>
 
     <script src="scripts/main.js"></script>
     <script>

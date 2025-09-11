@@ -70,6 +70,31 @@
                 </div>
             </div>
 
+            <!-- 快速功能入口 -->
+            <div class="harmony-card quick-functions">
+                <div class="section-header">
+                    <h3 class="harmony-text-subtitle">快速功能</h3>
+                </div>
+                <div class="function-grid">
+                    <button class="function-item" onclick="navigateTo('album.html')">
+                        <div class="function-icon">📸</div>
+                        <div class="function-info">
+                            <span class="function-name">我的相册</span>
+                            <span class="function-desc">查看所有创作作品</span>
+                        </div>
+                        <div class="function-arrow">→</div>
+                    </button>
+                    <button class="function-item" onclick="toggleTheme()">
+                        <div class="function-icon">🌙</div>
+                        <div class="function-info">
+                            <span class="function-name">深色模式</span>
+                            <span class="function-desc">切换应用主题颜色</span>
+                        </div>
+                        <div class="function-arrow">→</div>
+                    </button>
+                </div>
+            </div>
+
             <!-- 设置分类导航 -->
             <div class="harmony-card settings-nav">
                 <div class="settings-nav-header">
@@ -499,9 +524,9 @@
                 <div class="tab-icon">😊</div>
                 <div class="tab-label">打卡</div>
             </div>
-            <div class="tab-item" onclick="navigateTo('album.html')">
-                <div class="tab-icon">📸</div>
-                <div class="tab-label">相册</div>
+            <div class="tab-item" onclick="navigateTo('todo.html')">
+                <div class="tab-icon">📝</div>
+                <div class="tab-label">待办</div>
             </div>
             <div class="tab-item active">
                 <div class="tab-icon">👤</div>
@@ -526,10 +551,6 @@
         </div>
     </div>
 
-    <!-- 暗色模式切换浮动按钮 -->
-    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
-        <span class="icon">🌙</span>
-    </button>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/settings.js"></script>

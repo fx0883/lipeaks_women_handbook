@@ -314,9 +314,9 @@
                 <div class="tab-icon">😊</div>
                 <div class="tab-label">打卡</div>
             </div>
-            <div class="tab-item active">
-                <div class="tab-icon">📸</div>
-                <div class="tab-label">相册</div>
+            <div class="tab-item" onclick="navigateTo('todo.html')">
+                <div class="tab-icon">📝</div>
+                <div class="tab-label">待办</div>
             </div>
             <div class="tab-item" onclick="navigateTo('settings.html')">
                 <div class="tab-icon">👤</div>
@@ -374,10 +374,6 @@
         </div>
     </div>
 
-    <!-- 暗色模式切换浮动按钮 -->
-    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
-        <span class="icon">🌙</span>
-    </button>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/album.js"></script>

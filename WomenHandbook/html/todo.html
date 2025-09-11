@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待办清单 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/todo.css">
+</head>
+<body>
+    <!-- 鸿蒙应用主容器 -->
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">📝 我的待办</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button" onclick="toggleView()">
+                        <span class="icon">⚹</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 功能标签栏 -->
+            <div class="harmony-row features-tabs">
+                <button class="tab-button active" data-tab="tasks">
+                    <span class="tab-icon">📝</span>
+                    <span class="tab-label">任务</span>
+                </button>
+                <button class="tab-button" data-tab="achievements">
+                    <span class="tab-icon">🏆</span>
+                    <span class="tab-label">成就</span>
+                </button>
+                <button class="tab-button" data-tab="mood">
+                    <span class="tab-icon">😊</span>
+                    <span class="tab-label">心情</span>
+                </button>
+                <button class="tab-button" data-tab="suggestions">
+                    <span class="tab-icon">💡</span>
+                    <span class="tab-label">建议</span>
+                </button>
+            </div>
+
+            <!-- 任务管理标签页 -->
+            <div id="tasks-tab" class="tab-content active">
+                <!-- 统计卡片 -->
+                <div class="harmony-card stats-card">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-tasks">12</span>
+                            <span class="stat-label">总任务</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number completed" id="completed-tasks">7</span>
+                            <span class="stat-label">已完成</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number progress" id="progress-tasks">3</span>
+                            <span class="stat-label">进行中</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number pending" id="pending-tasks">2</span>
+                            <span class="stat-label">待办</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 58%"></div>
+                    </div>
+                    <p class="completion-text">完成率: 58%</p>
+                </div>
+
+                <!-- 操作栏 -->
+                <div class="harmony-row actions-bar">
+                    <button class="harmony-button primary" onclick="showCreateModal()">
+                        <span class="icon">✨</span>
+                        <span>新建任务</span>
+                    </button>
+                    <button class="harmony-button secondary" onclick="toggleFilters()">
+                        <span class="icon">🔍</span>
+                        <span>筛选</span>
+                    </button>
+                    <button class="harmony-button secondary" onclick="toggleSelectMode()">
+                        <span class="icon">☑️</span>
+                        <span>批量</span>
+                    </button>
+                </div>
+
+                <!-- 筛选区域 -->
+                <div id="filters-section" class="harmony-card filters-card" style="display: none;">
+                    <div class="filters-header">
+                        <h3>筛选条件</h3>
+                        <button class="harmony-button text" onclick="clearFilters()">清除</button>
+                    </div>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label>分类</label>
+                            <select class="harmony-select" id="category-filter">
+                                <option value="">全部分类</option>
+                                <option value="学习">📚 学习</option>
+                                <option value="工作">💼 工作</option>
+                                <option value="生活">🏠 生活</option>
+                                <option value="娱乐">🎮 娱乐</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>优先级</label>
+                            <select class="harmony-select" id="priority-filter">
+                                <option value="">全部优先级</option>
+                                <option value="高">🔥 高</option>
+                                <option value="中">⚡ 中</option>
+                                <option value="低">💧 低</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>状态</label>
+                            <select class="harmony-select" id="status-filter">
+                                <option value="">全部状态</option>
+                                <option value="待办">⭕ 待办</option>
+                                <option value="进行中">🔄 进行中</option>
+                                <option value="已完成">✅ 已完成</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 任务列表 -->
+                <div class="harmony-card tasks-container">
+                    <div class="section-header">
+                        <h3>任务列表</h3>
+                        <span class="task-count">12 个任务</span>
+                    </div>
+                    
+                    <div id="tasks-list" class="tasks-list">
+                        <!-- 任务项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成就系统标签页 -->
+            <div id="achievements-tab" class="tab-content">
+                <div class="harmony-card achievement-overview">
+                    <div class="achievement-header">
+                        <h2>🏆 成就系统</h2>
+                        <p>解锁徽章，记录你的成长轨迹</p>
+                    </div>
+                    
+                    <div class="achievement-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">已解锁</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">进行中</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">8</span>
+                            <span class="stat-label">总成就</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="achievements-list" class="achievements-grid">
+                    <!-- 成就项将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 心情追踪标签页 -->
+            <div id="mood-tab" class="tab-content">
+                <div class="harmony-card mood-overview">
+                    <h2>😊 心情追踪</h2>
+                    <p>记录完成任务时的心情变化</p>
+                    
+                    <div class="mood-stats">
+                        <div class="mood-item">
+                            <span class="mood-emoji">😄</span>
+                            <span class="mood-label">非常开心</span>
+                            <span class="mood-count">2次</span>
+                        </div>
+                        <div class="mood-item">
+                            <span class="mood-emoji">😊</span>
+                            <span class="mood-label">开心</span>
+                            <span class="mood-count">2次</span>
+                        </div>
+                        <div class="mood-item">
+                            <span class="mood-emoji">🤩</span>
+                            <span class="mood-label">兴奋</span>
+                            <span class="mood-count">1次</span>
+                        </div>
+                        <div class="mood-item">
+                            <span class="mood-emoji">😌</span>
+                            <span class="mood-label">平静</span>
+                            <span class="mood-count">1次</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mood-records" class="mood-records">
+                    <!-- 心情记录将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 智能建议标签页 -->
+            <div id="suggestions-tab" class="tab-content">
+                <div class="harmony-card suggestions-header">
+                    <h2>💡 智能建议</h2>
+                    <p>基于你的任务习惯，为你推荐新的任务</p>
+                </div>
+
+                <div id="suggestions-list" class="suggestions-list">
+                    <!-- 建议项将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">心情</div>
+            </div>
+            <div class="tab-item active">
+                <div class="tab-icon">📝</div>
+                <div class="tab-label">待办</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建任务弹窗 -->
+    <div id="create-modal" class="harmony-modal" style="display: none;">
+        <div class="modal-overlay" onclick="hideCreateModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>创建新任务</h3>
+                <button class="harmony-button icon-button" onclick="hideCreateModal()">
+                    <span class="icon">✕</span>
+                </button>
+            </div>
+            <form id="create-form" class="modal-body">
+                <div class="form-group">
+                    <label>任务标题 *</label>
+                    <input type="text" class="harmony-input" id="task-title" placeholder="输入任务标题" required>
+                </div>
+                <div class="form-group">
+                    <label>任务描述</label>
+                    <textarea class="harmony-textarea" id="task-description" placeholder="详细描述任务内容"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>分类 *</label>
+                        <select class="harmony-select" id="task-category" required>
+                            <option value="">选择分类</option>
+                            <option value="学习">📚 学习</option>
+                            <option value="工作">💼 工作</option>
+                            <option value="生活">🏠 生活</option>
+                            <option value="娱乐">🎮 娱乐</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>优先级 *</label>
+                        <select class="harmony-select" id="task-priority" required>
+                            <option value="">选择优先级</option>
+                            <option value="高">🔥 高</option>
+                            <option value="中">⚡ 中</option>
+                            <option value="低">💧 低</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>截止日期</label>
+                    <input type="date" class="harmony-input" id="task-due-date">
+                </div>
+                <div class="form-group">
+                    <label>标签</label>
+                    <input type="text" class="harmony-input" id="task-tags" placeholder="用逗号分隔多个标签">
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="harmony-button secondary" onclick="hideCreateModal()">取消</button>
+                <button type="submit" class="harmony-button primary" onclick="createTask()">创建任务</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务详情弹窗 -->
+    <div id="task-detail-modal" class="harmony-modal" style="display: none;">
+        <div class="modal-overlay" onclick="hideTaskDetailModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>任务详情</h3>
+                <button class="harmony-button icon-button" onclick="hideTaskDetailModal()">
+                    <span class="icon">✕</span>
+                </button>
+            </div>
+            <div class="modal-body" id="task-detail-content">
+                <!-- 任务详情内容将通过JavaScript动态生成 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="harmony-button secondary" onclick="hideTaskDetailModal()">关闭</button>
+                <button type="button" class="harmony-button primary" onclick="editCurrentTask()">编辑</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 完成任务庆祝弹窗 -->
+    <div id="celebration-modal" class="harmony-modal celebration" style="display: none;">
+        <div class="modal-overlay" onclick="hideCelebrationModal()"></div>
+        <div class="modal-content celebration-content">
+            <div class="celebration-animation">
+                <div class="celebration-emoji">🎉</div>
+                <h2>任务完成！</h2>
+                <p id="celebration-text">恭喜你完成了任务！</p>
+            </div>
+            <div class="mood-selection">
+                <h4>记录此刻的心情：</h4>
+                <div class="mood-buttons">
+                    <button class="mood-button" data-mood="😄" onclick="selectMood('😄')">😄</button>
+                    <button class="mood-button" data-mood="😊" onclick="selectMood('😊')">😊</button>
+                    <button class="mood-button" data-mood="🤩" onclick="selectMood('🤩')">🤩</button>
+                    <button class="mood-button" data-mood="😌" onclick="selectMood('😌')">😌</button>
+                    <button class="mood-button" data-mood="😐" onclick="selectMood('😐')">😐</button>
+                </div>
+                <textarea class="harmony-textarea" id="mood-note" placeholder="分享一下你的感受吧..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="harmony-button secondary" onclick="hideCelebrationModal()">跳过</button>
+                <button type="button" class="harmony-button primary" onclick="saveMoodRecord()">保存心情</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 悬浮主题切换按钮 -->
+
+    <!-- 吐司提示 -->
+    <div id="toast" class="harmony-toast">
+        <span class="toast-icon">ℹ</span>
+        <span class="toast-text"></span>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/todo.js"></script>
+</body>
+</html>
