@@ -314,10 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 页面加载完成动画
     document.body.classList.add('loaded');
     
-    // 显示欢迎信息
-    setTimeout(() => {
-        showToast('欢迎使用出片手账！', 'success');
-    }, 1000);
 });
 
 // ===== 监听系统主题变化 =====
