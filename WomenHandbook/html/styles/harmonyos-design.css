@@ -1,0 +1,534 @@
+/* HarmonyOS 设计系统基础样式 */
+
+/* ===== 色彩系统 ===== */
+:root {
+  /* 品牌色 - 粉色系列 */
+  --harmony-brand-primary: #FF6B9D;
+  --harmony-brand-primary-hover: #FF5A8C;
+  --harmony-brand-primary-pressed: #FF4A7A;
+  --harmony-brand-secondary: #FFE8F0;
+  --harmony-brand-accent: #FFB3D1;
+
+  /* 中性色 - 浅色模式 */
+  --harmony-neutral-background-1: #FFFFFF;
+  --harmony-neutral-background-2: #F8F9FA;
+  --harmony-neutral-background-3: #F1F3F4;
+  --harmony-neutral-background-hover: #F5F5F5;
+  
+  --harmony-neutral-foreground-1: #1A1A1A;
+  --harmony-neutral-foreground-2: #666666;
+  --harmony-neutral-foreground-3: #999999;
+  --harmony-neutral-foreground-disabled: #CCCCCC;
+  
+  --harmony-neutral-stroke-1: #E5E5E5;
+  --harmony-neutral-stroke-2: #D0D0D0;
+  --harmony-neutral-stroke-divider: #EEEEEE;
+
+  /* 状态色 */
+  --harmony-success: #52C41A;
+  --harmony-warning: #FAAD14;
+  --harmony-error: #FF4D4F;
+  --harmony-info: #1890FF;
+
+  /* 阴影 */
+  --harmony-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --harmony-shadow-2: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --harmony-shadow-4: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --harmony-shadow-8: 0 8px 16px rgba(0, 0, 0, 0.10);
+  --harmony-shadow-16: 0 16px 32px rgba(0, 0, 0, 0.12);
+
+  /* 圆角 */
+  --harmony-radius-xs: 4px;
+  --harmony-radius-sm: 8px;
+  --harmony-radius-md: 12px;
+  --harmony-radius-lg: 16px;
+  --harmony-radius-xl: 20px;
+  --harmony-radius-2xl: 24px;
+
+  /* 间距 */
+  --harmony-space-xs: 4px;
+  --harmony-space-sm: 8px;
+  --harmony-space-md: 12px;
+  --harmony-space-lg: 16px;
+  --harmony-space-xl: 20px;
+  --harmony-space-2xl: 24px;
+  --harmony-space-3xl: 32px;
+  --harmony-space-4xl: 40px;
+
+  /* 字体大小 */
+  --harmony-font-size-xs: 12px;
+  --harmony-font-size-sm: 14px;
+  --harmony-font-size-md: 16px;
+  --harmony-font-size-lg: 18px;
+  --harmony-font-size-xl: 20px;
+  --harmony-font-size-2xl: 24px;
+  --harmony-font-size-3xl: 28px;
+  --harmony-font-size-4xl: 32px;
+
+  /* 行高 */
+  --harmony-line-height-tight: 1.25;
+  --harmony-line-height-normal: 1.5;
+  --harmony-line-height-relaxed: 1.75;
+
+  /* 断点 */
+  --harmony-breakpoint-sm: 576px;
+  --harmony-breakpoint-md: 768px;
+  --harmony-breakpoint-lg: 992px;
+  --harmony-breakpoint-xl: 1200px;
+  --harmony-breakpoint-2xl: 1400px;
+}
+
+/* 深色模式 */
+[data-theme="dark"] {
+  --harmony-neutral-background-1: #1A1A1A;
+  --harmony-neutral-background-2: #262626;
+  --harmony-neutral-background-3: #333333;
+  --harmony-neutral-background-hover: #404040;
+  
+  --harmony-neutral-foreground-1: #FFFFFF;
+  --harmony-neutral-foreground-2: #CCCCCC;
+  --harmony-neutral-foreground-3: #999999;
+  --harmony-neutral-foreground-disabled: #666666;
+  
+  --harmony-neutral-stroke-1: #404040;
+  --harmony-neutral-stroke-2: #4D4D4D;
+  --harmony-neutral-stroke-divider: #333333;
+
+  --harmony-brand-secondary: #4D1A2B;
+}
+
+/* ===== HarmonyOS Sans 字体系统 ===== */
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: local('HarmonyOS Sans'), local('PingFang SC'), local('Microsoft YaHei'), sans-serif;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: local('HarmonyOS Sans Medium'), local('PingFang SC Medium'), local('Microsoft YaHei Bold'), sans-serif;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'HarmonyOS Sans';
+  src: local('HarmonyOS Sans Bold'), local('PingFang SC Semibold'), local('Microsoft YaHei Bold'), sans-serif;
+  font-weight: 700;
+}
+
+/* ===== 全局重置 ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  line-height: var(--harmony-line-height-normal);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'HarmonyOS Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--harmony-font-size-md);
+  line-height: var(--harmony-line-height-normal);
+  color: var(--harmony-neutral-foreground-1);
+  background-color: var(--harmony-neutral-background-2);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* ===== 文本样式 ===== */
+.harmony-text-title {
+  font-size: var(--harmony-font-size-4xl);
+  font-weight: 700;
+  line-height: var(--harmony-line-height-tight);
+  color: var(--harmony-neutral-foreground-1);
+}
+
+.harmony-text-subtitle {
+  font-size: var(--harmony-font-size-2xl);
+  font-weight: 600;
+  line-height: var(--harmony-line-height-tight);
+  color: var(--harmony-neutral-foreground-1);
+}
+
+.harmony-text-heading {
+  font-size: var(--harmony-font-size-xl);
+  font-weight: 600;
+  line-height: var(--harmony-line-height-normal);
+  color: var(--harmony-neutral-foreground-1);
+}
+
+.harmony-text-body {
+  font-size: var(--harmony-font-size-md);
+  font-weight: 400;
+  line-height: var(--harmony-line-height-normal);
+  color: var(--harmony-neutral-foreground-2);
+}
+
+.harmony-text-body-strong {
+  font-size: var(--harmony-font-size-md);
+  font-weight: 500;
+  line-height: var(--harmony-line-height-normal);
+  color: var(--harmony-neutral-foreground-1);
+}
+
+.harmony-text-caption {
+  font-size: var(--harmony-font-size-sm);
+  font-weight: 400;
+  line-height: var(--harmony-line-height-normal);
+  color: var(--harmony-neutral-foreground-3);
+}
+
+/* ===== 容器组件 ===== */
+.harmony-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--harmony-space-lg);
+}
+
+.harmony-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--harmony-space-md);
+}
+
+.harmony-stack {
+  position: relative;
+}
+
+.harmony-grid {
+  display: grid;
+  gap: var(--harmony-space-lg);
+}
+
+.harmony-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.harmony-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== 卡片组件 ===== */
+.harmony-card {
+  background: var(--harmony-neutral-background-1);
+  border-radius: var(--harmony-radius-xl);
+  border: 1px solid var(--harmony-neutral-stroke-1);
+  box-shadow: var(--harmony-shadow-2);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.harmony-card:hover {
+  box-shadow: var(--harmony-shadow-4);
+  border-color: var(--harmony-brand-primary);
+  transform: translateY(-2px);
+}
+
+.harmony-card.elevated {
+  box-shadow: var(--harmony-shadow-8);
+}
+
+/* ===== 按钮组件 ===== */
+.harmony-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--harmony-space-sm);
+  padding: var(--harmony-space-md) var(--harmony-space-xl);
+  min-height: 44px; /* 触摸友好的最小高度 */
+  border-radius: var(--harmony-radius-md);
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: var(--harmony-font-size-md);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  outline: none;
+  background: transparent;
+  color: var(--harmony-neutral-foreground-1);
+}
+
+.harmony-button:focus-visible {
+  outline: 2px solid var(--harmony-brand-primary);
+  outline-offset: 2px;
+}
+
+/* 主要按钮 */
+.harmony-button.primary {
+  background: var(--harmony-brand-primary);
+  color: white;
+  border-color: var(--harmony-brand-primary);
+}
+
+.harmony-button.primary:hover {
+  background: var(--harmony-brand-primary-hover);
+  border-color: var(--harmony-brand-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--harmony-shadow-4);
+}
+
+.harmony-button.primary:active {
+  background: var(--harmony-brand-primary-pressed);
+  border-color: var(--harmony-brand-primary-pressed);
+  transform: translateY(0);
+}
+
+/* 次要按钮 */
+.harmony-button.secondary {
+  background: var(--harmony-brand-secondary);
+  color: var(--harmony-brand-primary);
+  border-color: var(--harmony-brand-primary);
+}
+
+.harmony-button.secondary:hover {
+  background: var(--harmony-brand-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--harmony-shadow-2);
+}
+
+/* 文本按钮 */
+.harmony-button.text {
+  background: transparent;
+  color: var(--harmony-brand-primary);
+  border-color: transparent;
+  padding: var(--harmony-space-sm) var(--harmony-space-md);
+  min-height: auto;
+}
+
+.harmony-button.text:hover {
+  background: var(--harmony-brand-secondary);
+  color: var(--harmony-brand-primary-hover);
+}
+
+/* 图标按钮 */
+.harmony-button.icon-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--harmony-radius-md);
+  background: var(--harmony-neutral-background-3);
+}
+
+.harmony-button.icon-button:hover {
+  background: var(--harmony-neutral-background-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--harmony-shadow-2);
+}
+
+/* 浮动按钮 */
+.harmony-floating-button {
+  position: fixed;
+  bottom: var(--harmony-space-3xl);
+  right: var(--harmony-space-2xl);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--harmony-brand-primary);
+  color: white;
+  border: none;
+  box-shadow: var(--harmony-shadow-8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--harmony-font-size-lg);
+  z-index: 1000;
+}
+
+.harmony-floating-button:hover {
+  background: var(--harmony-brand-primary-hover);
+  transform: scale(1.1);
+  box-shadow: var(--harmony-shadow-16);
+}
+
+/* ===== 导航组件 ===== */
+.harmony-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--harmony-neutral-background-1);
+  border-bottom: 1px solid var(--harmony-neutral-stroke-divider);
+  box-shadow: var(--harmony-shadow-2);
+  z-index: 100;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 var(--harmony-space-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-title {
+  font-size: var(--harmony-font-size-xl);
+  font-weight: 700;
+  color: var(--harmony-brand-primary);
+}
+
+.nav-actions {
+  display: flex;
+  gap: var(--harmony-space-sm);
+}
+
+/* ===== 标签栏组件 ===== */
+.harmony-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  background: var(--harmony-neutral-background-1);
+  border-top: 1px solid var(--harmony-neutral-stroke-divider);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  padding: 0 var(--harmony-space-lg);
+  z-index: 100;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--harmony-space-xs);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: var(--harmony-space-sm);
+  border-radius: var(--harmony-radius-sm);
+}
+
+.tab-item:hover {
+  background: var(--harmony-neutral-background-hover);
+}
+
+.tab-item.active {
+  color: var(--harmony-brand-primary);
+}
+
+.tab-item.active .tab-icon {
+  transform: scale(1.1);
+}
+
+.tab-icon {
+  font-size: var(--harmony-font-size-lg);
+  transition: transform 0.3s ease;
+}
+
+.tab-label {
+  font-size: var(--harmony-font-size-xs);
+  font-weight: 500;
+  color: var(--harmony-neutral-foreground-2);
+}
+
+.tab-item.active .tab-label {
+  color: var(--harmony-brand-primary);
+}
+
+/* ===== 响应式断点 ===== */
+@media (max-width: 576px) {
+  :root {
+    --harmony-space-2xl: 16px;
+    --harmony-space-3xl: 24px;
+  }
+  
+  .harmony-text-title {
+    font-size: var(--harmony-font-size-3xl);
+  }
+  
+  .harmony-text-subtitle {
+    font-size: var(--harmony-font-size-xl);
+  }
+  
+  .nav-content {
+    padding: 0 var(--harmony-space-lg);
+  }
+  
+  .harmony-floating-button {
+    bottom: 88px; /* 避免与标签栏重叠 */
+    right: var(--harmony-space-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .harmony-tab-bar {
+    display: none; /* 平板和桌面端隐藏底部标签栏 */
+  }
+  
+  .harmony-floating-button {
+    bottom: var(--harmony-space-3xl);
+  }
+}
+
+@media (min-width: 1200px) {
+  .nav-content {
+    padding: 0 var(--harmony-space-4xl);
+  }
+}
+
+/* ===== 动画效果 ===== */
+@keyframes harmony-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes harmony-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes harmony-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ===== 工具类 ===== */
+.harmony-fade-in {
+  animation: harmony-fade-in 0.6s ease-out;
+}
+
+.harmony-scale-in {
+  animation: harmony-scale-in 0.4s ease-out;
+}
+
+.harmony-slide-up {
+  animation: harmony-slide-up 0.5s ease-out;
+}
+
+/* ===== 深色模式平滑过渡 ===== */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

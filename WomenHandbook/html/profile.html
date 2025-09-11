@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/profile.css">
+</head>
+<body>
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">个人中心</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 用户信息卡片 -->
+            <div class="harmony-card user-profile">
+                <div class="profile-header">
+                    <div class="avatar-section">
+                        <div class="user-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&q=80" alt="用户头像">
+                            <button class="edit-avatar-btn" onclick="changeAvatar()">
+                                <span class="icon">📷</span>
+                            </button>
+                        </div>
+                        <div class="user-info">
+                            <h2 class="user-name">小美同学</h2>
+                            <p class="user-bio">记录生活中的每一个美好瞬间 ✨</p>
+                            <div class="user-tags">
+                                <span class="user-tag">校园生活</span>
+                                <span class="user-tag">美食探索</span>
+                                <span class="user-tag">旅行达人</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="harmony-button primary edit-profile-btn" onclick="editProfile()">
+                        <span class="icon">✏️</span>
+                        <span>编辑资料</span>
+                    </button>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">作品</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.2k</div>
+                        <div class="stat-label">获赞</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">收藏</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">打卡天数</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成就徽章 -->
+            <div class="harmony-card achievements-section">
+                <div class="card-header">
+                    <h3 class="harmony-text-subtitle">成就徽章</h3>
+                    <button class="harmony-button text" onclick="showAllAchievements()">查看全部</button>
+                </div>
+                <div class="achievements-grid">
+                    <div class="achievement-item earned">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-name">创作达人</h4>
+                            <p class="achievement-desc">创作超过20个作品</p>
+                        </div>
+                    </div>
+                    <div class="achievement-item earned">
+                        <div class="achievement-icon">💖</div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-name">人气之星</h4>
+                            <p class="achievement-desc">获得超过1000个赞</p>
+                        </div>
+                    </div>
+                    <div class="achievement-item earned">
+                        <div class="achievement-icon">📅</div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-name">坚持打卡</h4>
+                            <p class="achievement-desc">连续打卡30天</p>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🌟</div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-name">超级达人</h4>
+                            <p class="achievement-desc">创作超过50个作品</p>
+                            <div class="achievement-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 48%"></div>
+                                </div>
+                                <span class="progress-text">24/50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能菜单 -->
+            <div class="harmony-card menu-section">
+                <div class="menu-grid">
+                    <div class="menu-group">
+                        <h4 class="menu-group-title">创作管理</h4>
+                        <div class="menu-items">
+                            <button class="menu-item" onclick="navigateTo('album.html')">
+                                <div class="menu-icon">📸</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">我的作品</span>
+                                    <span class="menu-desc">查看和管理所有作品</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="showDrafts()">
+                                <div class="menu-icon">📝</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">草稿箱</span>
+                                    <span class="menu-desc">未完成的创作</span>
+                                </div>
+                                <div class="menu-badge">3</div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="showFavorites()">
+                                <div class="menu-icon">⭐</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">我的收藏</span>
+                                    <span class="menu-desc">收藏的模板和作品</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <h4 class="menu-group-title">个人数据</h4>
+                        <div class="menu-items">
+                            <button class="menu-item" onclick="navigateTo('mood.html')">
+                                <div class="menu-icon">😊</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">情绪统计</span>
+                                    <span class="menu-desc">查看心情趋势</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="showDataAnalysis()">
+                                <div class="menu-icon">📊</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">数据分析</span>
+                                    <span class="menu-desc">创作习惯和偏好分析</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="exportData()">
+                                <div class="menu-icon">💾</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">数据导出</span>
+                                    <span class="menu-desc">备份个人数据</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <h4 class="menu-group-title">设置与帮助</h4>
+                        <div class="menu-items">
+                            <button class="menu-item" onclick="navigateTo('settings.html#appearance')">
+                                <div class="menu-icon">🎨</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">主题设置</span>
+                                    <span class="menu-desc">自定义界面主题</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="navigateTo('settings.html#privacy')">
+                                <div class="menu-icon">🔒</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">隐私设置</span>
+                                    <span class="menu-desc">管理隐私和安全</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="showHelp()">
+                                <div class="menu-icon">❓</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">帮助与反馈</span>
+                                    <span class="menu-desc">使用指南和意见反馈</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                            <button class="menu-item" onclick="showAbout()">
+                                <div class="menu-icon">ℹ️</div>
+                                <div class="menu-info">
+                                    <span class="menu-name">关于应用</span>
+                                    <span class="menu-desc">版本信息和更新日志</span>
+                                </div>
+                                <div class="menu-arrow">→</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近活动 -->
+            <div class="harmony-card recent-activity">
+                <div class="card-header">
+                    <h3 class="harmony-text-subtitle">最近活动</h3>
+                    <button class="harmony-button text" onclick="showAllActivity()">查看全部</button>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">🎨</div>
+                        <div class="activity-info">
+                            <span class="activity-text">创作了新作品「校园时光」</span>
+                            <span class="activity-time">2小时前</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">😊</div>
+                        <div class="activity-info">
+                            <span class="activity-text">完成了今日情绪打卡</span>
+                            <span class="activity-time">6小时前</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">❤️</div>
+                        <div class="activity-info">
+                            <span class="activity-text">作品「美食记录」获得了20个赞</span>
+                            <span class="activity-time">昨天</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🏆</div>
+                        <div class="activity-info">
+                            <span class="activity-text">获得了「人气之星」成就徽章</span>
+                            <span class="activity-time">2天前</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('album.html')">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑资料对话框 -->
+    <div class="harmony-dialog edit-profile-dialog" id="editDialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3 class="harmony-text-heading">编辑资料</h3>
+                <button class="harmony-button icon-button" onclick="closeEditDialog()">
+                    <span class="icon">✕</span>
+                </button>
+            </div>
+            <div class="dialog-body">
+                <div class="form-section">
+                    <label class="form-label">昵称</label>
+                    <input type="text" class="harmony-input" value="小美同学" placeholder="请输入昵称">
+                </div>
+                <div class="form-section">
+                    <label class="form-label">个人简介</label>
+                    <textarea class="harmony-textarea" placeholder="介绍一下自己吧...">记录生活中的每一个美好瞬间 ✨</textarea>
+                </div>
+                <div class="form-section">
+                    <label class="form-label">兴趣标签</label>
+                    <div class="tags-input">
+                        <div class="selected-tags">
+                            <span class="tag-item">校园生活 <button class="tag-remove">×</button></span>
+                            <span class="tag-item">美食探索 <button class="tag-remove">×</button></span>
+                            <span class="tag-item">旅行达人 <button class="tag-remove">×</button></span>
+                        </div>
+                        <input type="text" class="tag-input" placeholder="添加标签...">
+                    </div>
+                    <div class="suggested-tags">
+                        <span class="suggested-tag">摄影</span>
+                        <span class="suggested-tag">音乐</span>
+                        <span class="suggested-tag">运动</span>
+                        <span class="suggested-tag">阅读</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="harmony-button secondary" onclick="closeEditDialog()">取消</button>
+                <button class="harmony-button primary" onclick="saveProfile()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/profile.js"></script>
+</body>
+</html>

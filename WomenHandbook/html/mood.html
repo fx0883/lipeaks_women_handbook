@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情绪打卡 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mood.css">
+</head>
+<body>
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">情绪打卡</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button" onclick="showMoodCalendar()">
+                        <span class="icon">📅</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 今日打卡区域 -->
+            <div class="harmony-card mood-check-in">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">今日心情</h2>
+                    <div class="date-info">
+                        <span id="currentDate" class="harmony-text-caption"></span>
+                    </div>
+                </div>
+                
+                <div class="mood-selector">
+                    <div class="mood-question">
+                        <h3 class="harmony-text-heading">今天的你感觉怎么样？</h3>
+                        <p class="harmony-text-caption">选择最符合当下心情的表情</p>
+                    </div>
+                    
+                    <div class="mood-options">
+                        <button class="mood-option" data-mood="excited" onclick="selectMood('excited')">
+                            <div class="mood-emoji">🤩</div>
+                            <div class="mood-label">超开心</div>
+                        </button>
+                        <button class="mood-option" data-mood="happy" onclick="selectMood('happy')">
+                            <div class="mood-emoji">😊</div>
+                            <div class="mood-label">开心</div>
+                        </button>
+                        <button class="mood-option" data-mood="calm" onclick="selectMood('calm')">
+                            <div class="mood-emoji">😌</div>
+                            <div class="mood-label">平静</div>
+                        </button>
+                        <button class="mood-option" data-mood="tired" onclick="selectMood('tired')">
+                            <div class="mood-emoji">😴</div>
+                            <div class="mood-label">疲惫</div>
+                        </button>
+                        <button class="mood-option" data-mood="sad" onclick="selectMood('sad')">
+                            <div class="mood-emoji">😢</div>
+                            <div class="mood-label">难过</div>
+                        </button>
+                        <button class="mood-option" data-mood="angry" onclick="selectMood('angry')">
+                            <div class="mood-emoji">😡</div>
+                            <div class="mood-label">生气</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 心情详情 -->
+                <div class="mood-details" id="moodDetails" style="display: none;">
+                    <div class="detail-section">
+                        <h4 class="harmony-text-body-strong">今天发生了什么？</h4>
+                        <textarea 
+                            class="harmony-textarea" 
+                            placeholder="分享今天让你有这种心情的事情..."
+                            id="moodNote"
+                            rows="3"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4 class="harmony-text-body-strong">添加标签</h4>
+                        <div class="mood-tags">
+                            <button class="tag-option" onclick="toggleTag(this)">工作</button>
+                            <button class="tag-option" onclick="toggleTag(this)">学习</button>
+                            <button class="tag-option" onclick="toggleTag(this)">家庭</button>
+                            <button class="tag-option" onclick="toggleTag(this)">朋友</button>
+                            <button class="tag-option" onclick="toggleTag(this)">健康</button>
+                            <button class="tag-option" onclick="toggleTag(this)">运动</button>
+                            <button class="tag-option" onclick="toggleTag(this)">娱乐</button>
+                            <button class="tag-option" onclick="toggleTag(this)">购物</button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="harmony-button secondary" onclick="cancelMoodEntry()">取消</button>
+                        <button class="harmony-button primary" onclick="saveMoodEntry()">保存打卡</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 本周情绪统计 -->
+            <div class="harmony-card mood-stats">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">本周统计</h2>
+                    <button class="harmony-button text" onclick="showDetailedStats()">查看详情</button>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="weekly-chart">
+                        <div class="chart-days">
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="80%">
+                                    <span class="day-emoji">😊</span>
+                                </div>
+                                <div class="day-label">周一</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="60%">
+                                    <span class="day-emoji">😌</span>
+                                </div>
+                                <div class="day-label">周二</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="90%">
+                                    <span class="day-emoji">🤩</span>
+                                </div>
+                                <div class="day-label">周三</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="70%">
+                                    <span class="day-emoji">😊</span>
+                                </div>
+                                <div class="day-label">周四</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="85%">
+                                    <span class="day-emoji">😊</span>
+                                </div>
+                                <div class="day-label">周五</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar" data-height="95%">
+                                    <span class="day-emoji">🤩</span>
+                                </div>
+                                <div class="day-label">周六</div>
+                            </div>
+                            <div class="chart-day">
+                                <div class="day-bar active" data-height="0%">
+                                    <span class="day-emoji">?</span>
+                                </div>
+                                <div class="day-label">今天</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mood-summary">
+                        <div class="summary-item">
+                            <div class="summary-icon">😊</div>
+                            <div class="summary-info">
+                                <div class="summary-label">主要心情</div>
+                                <div class="summary-value">开心</div>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-icon">🎯</div>
+                            <div class="summary-info">
+                                <div class="summary-label">打卡天数</div>
+                                <div class="summary-value">6/7 天</div>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-icon">📈</div>
+                            <div class="summary-info">
+                                <div class="summary-label">情绪趋势</div>
+                                <div class="summary-value trend-up">积极向上</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 情绪洞察 -->
+            <div class="harmony-card mood-insights">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">情绪洞察</h2>
+                </div>
+                
+                <div class="insights-content">
+                    <div class="insight-item">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            <h4 class="harmony-text-body-strong">周末心情最佳</h4>
+                            <p class="harmony-text-caption">数据显示你在周末的心情通常比较好，可能与休息和娱乐活动有关。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">🌟</div>
+                        <div class="insight-text">
+                            <h4 class="harmony-text-body-strong">运动让你更快乐</h4>
+                            <p class="harmony-text-caption">标记了"运动"标签的日子，你的心情评分平均高出20%。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-item">
+                        <div class="insight-icon">🎵</div>
+                        <div class="insight-text">
+                            <h4 class="harmony-text-body-strong">建议</h4>
+                            <p class="harmony-text-caption">继续保持积极的生活态度，适当安排放松时间，有助于维持良好心情。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <div class="harmony-card mood-history">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">最近记录</h2>
+                    <button class="harmony-button text" onclick="showFullHistory()">查看全部</button>
+                </div>
+                
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-date">
+                            <div class="date-day">昨天</div>
+                            <div class="date-full">12月15日</div>
+                        </div>
+                        <div class="history-mood">
+                            <div class="mood-emoji large">🤩</div>
+                            <div class="mood-info">
+                                <div class="mood-name">超开心</div>
+                                <div class="mood-tags-preview">运动 朋友</div>
+                            </div>
+                        </div>
+                        <div class="history-note">
+                            <p class="harmony-text-caption">和朋友一起去爬山，天气超好，心情也跟着飞起来了！</p>
+                        </div>
+                    </div>
+                    
+                    <div class="history-item">
+                        <div class="history-date">
+                            <div class="date-day">12月14日</div>
+                            <div class="date-full">周四</div>
+                        </div>
+                        <div class="history-mood">
+                            <div class="mood-emoji large">😊</div>
+                            <div class="mood-info">
+                                <div class="mood-name">开心</div>
+                                <div class="mood-tags-preview">学习</div>
+                            </div>
+                        </div>
+                        <div class="history-note">
+                            <p class="harmony-text-caption">完成了期末作业，感觉轻松了很多。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="history-item">
+                        <div class="history-date">
+                            <div class="date-day">12月13日</div>
+                            <div class="date-full">周三</div>
+                        </div>
+                        <div class="history-mood">
+                            <div class="mood-emoji large">😌</div>
+                            <div class="mood-info">
+                                <div class="mood-name">平静</div>
+                                <div class="mood-tags-preview">工作</div>
+                            </div>
+                        </div>
+                        <div class="history-note">
+                            <p class="harmony-text-caption">今天比较平淡，按部就班地完成了各项任务。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item active">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('album.html')">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/mood.js"></script>
+</body>
+</html>

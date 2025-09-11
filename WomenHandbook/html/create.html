@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创作模板 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/create.css">
+</head>
+<body>
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">选择模板</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button">
+                        <span class="icon">🔍</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 搜索栏 -->
+            <div class="harmony-card search-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="harmony-input search-input" placeholder="搜索模板...">
+                    </div>
+                    <button class="harmony-button primary">搜索</button>
+                </div>
+            </div>
+
+            <!-- 分类筛选 -->
+            <div class="harmony-card category-section">
+                <div class="category-header">
+                    <h2 class="harmony-text-subtitle">模板分类</h2>
+                </div>
+                <div class="harmony-scroll horizontal">
+                    <div class="category-list">
+                        <button class="category-item active">
+                            <span class="category-icon">🌟</span>
+                            <span class="category-name">全部</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">🎓</span>
+                            <span class="category-name">校园生活</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">🍕</span>
+                            <span class="category-name">美食记录</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">🏙️</span>
+                            <span class="category-name">城市探索</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">💄</span>
+                            <span class="category-name">美妆时尚</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">📚</span>
+                            <span class="category-name">学习记录</span>
+                        </button>
+                        <button class="category-item">
+                            <span class="category-icon">🎵</span>
+                            <span class="category-name">音乐分享</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模板网格 -->
+            <div class="harmony-card templates-section">
+                <div class="templates-header">
+                    <h2 class="harmony-text-subtitle">精选模板</h2>
+                    <div class="view-options">
+                        <button class="harmony-button icon-button view-grid active">
+                            <span class="icon">⊞</span>
+                        </button>
+                        <button class="harmony-button icon-button view-list">
+                            <span class="icon">☰</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="harmony-grid templates-grid">
+                    <!-- 模板项目 -->
+                    <div class="template-card" onclick="selectTemplate('campus-daily')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=400&q=80" alt="校园日常">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">4:5</span>
+                                <span class="template-badge hot">🔥 热门</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">校园日常拼贴</h3>
+                            <p class="harmony-text-caption">记录美好的校园时光</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 1.2k 次</span>
+                                <span class="rating">⭐ 4.8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="selectTemplate('club-poster')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="社团招新">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">9:16</span>
+                                <span class="template-badge new">✨ 新品</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">社团招新海报</h3>
+                            <p class="harmony-text-caption">制作吸引人的招新海报</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 856 次</span>
+                                <span class="rating">⭐ 4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="selectTemplate('citywalk')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=400&q=80" alt="Citywalk">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">9:16</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">城市漫步记录</h3>
+                            <p class="harmony-text-caption">分享你的城市探索之旅</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 2.1k 次</span>
+                                <span class="rating">⭐ 4.7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="selectTemplate('food-diary')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400&q=80" alt="美食日记">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">1:1</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">美食日记</h3>
+                            <p class="harmony-text-caption">记录每一次味觉的享受</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 3.2k 次</span>
+                                <span class="rating">⭐ 4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="selectTemplate('makeup-look')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80" alt="妆容分享">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">4:5</span>
+                                <span class="template-badge trending">📈 趋势</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">妆容分享</h3>
+                            <p class="harmony-text-caption">展示你的美妆技巧</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 987 次</span>
+                                <span class="rating">⭐ 4.6</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="selectTemplate('study-notes')">
+                        <div class="template-preview">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80" alt="学习笔记">
+                            <div class="template-overlay">
+                                <button class="harmony-button primary">使用模板</button>
+                            </div>
+                            <div class="template-badges">
+                                <span class="template-badge ratio">4:5</span>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3 class="harmony-text-body-strong">学习笔记</h3>
+                            <p class="harmony-text-caption">整理你的学习心得</p>
+                            <div class="template-meta">
+                                <span class="usage-count">已使用 1.8k 次</span>
+                                <span class="rating">⭐ 4.8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载更多 -->
+                <div class="load-more-section">
+                    <button class="harmony-button secondary load-more-btn">
+                        <span class="icon">↻</span>
+                        <span>加载更多</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item active">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('album.html')">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模板预览对话框 -->
+    <div class="harmony-dialog template-preview-dialog" id="templateDialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3 class="harmony-text-heading">模板预览</h3>
+                <button class="harmony-button icon-button" onclick="closeTemplateDialog()">
+                    <span class="icon">✕</span>
+                </button>
+            </div>
+            <div class="dialog-body">
+                <div class="template-preview-large">
+                    <img id="previewImage" src="" alt="模板预览">
+                </div>
+                <div class="template-details">
+                    <h4 id="templateTitle" class="harmony-text-body-strong"></h4>
+                    <p id="templateDescription" class="harmony-text-caption"></p>
+                    <div class="template-features">
+                        <div class="feature-tag">📱 支持多尺寸</div>
+                        <div class="feature-tag">🎨 可自定义色彩</div>
+                        <div class="feature-tag">📝 可编辑文字</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="harmony-button secondary" onclick="closeTemplateDialog()">取消</button>
+                <button class="harmony-button primary" onclick="useTemplate()">使用此模板</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/create.js"></script>
+</body>
+</html>

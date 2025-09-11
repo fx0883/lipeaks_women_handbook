@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的相册 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/album.css">
+</head>
+<body>
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">我的相册</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button" onclick="toggleSelectMode()">
+                        <span class="icon">☑</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="showSortOptions()">
+                        <span class="icon">⚹</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 统计概览 -->
+            <div class="harmony-card stats-overview">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">总作品</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.2k</div>
+                        <div class="stat-label">获赞数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">本月创作</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">收藏数</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 筛选选项 -->
+            <div class="harmony-card filter-section">
+                <div class="filter-header">
+                    <h3 class="harmony-text-body-strong">筛选分类</h3>
+                </div>
+                <div class="harmony-scroll horizontal">
+                    <div class="filter-list">
+                        <button class="filter-item active" onclick="filterWorks('all')">
+                            <span class="filter-icon">📱</span>
+                            <span class="filter-name">全部</span>
+                            <span class="filter-count">24</span>
+                        </button>
+                        <button class="filter-item" onclick="filterWorks('campus')">
+                            <span class="filter-icon">🎓</span>
+                            <span class="filter-name">校园</span>
+                            <span class="filter-count">8</span>
+                        </button>
+                        <button class="filter-item" onclick="filterWorks('food')">
+                            <span class="filter-icon">🍕</span>
+                            <span class="filter-name">美食</span>
+                            <span class="filter-count">6</span>
+                        </button>
+                        <button class="filter-item" onclick="filterWorks('travel')">
+                            <span class="filter-icon">🏙️</span>
+                            <span class="filter-name">旅行</span>
+                            <span class="filter-count">5</span>
+                        </button>
+                        <button class="filter-item" onclick="filterWorks('beauty')">
+                            <span class="filter-icon">💄</span>
+                            <span class="filter-name">美妆</span>
+                            <span class="filter-count">3</span>
+                        </button>
+                        <button class="filter-item" onclick="filterWorks('mood')">
+                            <span class="filter-icon">😊</span>
+                            <span class="filter-name">心情</span>
+                            <span class="filter-count">2</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 作品网格 -->
+            <div class="harmony-card works-section">
+                <div class="works-header">
+                    <h3 class="harmony-text-body-strong">作品集</h3>
+                    <div class="view-controls">
+                        <button class="harmony-button icon-button view-grid active" onclick="switchView('grid')">
+                            <span class="icon">⊞</span>
+                        </button>
+                        <button class="harmony-button icon-button view-waterfall" onclick="switchView('waterfall')">
+                            <span class="icon">⊟</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="works-grid" id="worksGrid">
+                    <!-- 作品项目 -->
+                    <div class="work-item" data-category="campus" onclick="openWork(1)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=400&q=80" alt="校园时光" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">24</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">4:5</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">校园时光</h4>
+                            <p class="work-date">2024年12月15日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+
+                    <div class="work-item" data-category="food" onclick="openWork(2)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400&q=80" alt="美食记录" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like liked">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">42</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">1:1</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">美食记录</h4>
+                            <p class="work-date">2024年12月14日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+
+                    <div class="work-item" data-category="travel" onclick="openWork(3)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=400&q=80" alt="城市漫步" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">18</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">9:16</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">城市漫步</h4>
+                            <p class="work-date">2024年12月13日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+
+                    <div class="work-item" data-category="beauty" onclick="openWork(4)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80" alt="妆容分享" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">31</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">4:5</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">妆容分享</h4>
+                            <p class="work-date">2024年12月12日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+
+                    <div class="work-item" data-category="campus" onclick="openWork(5)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="社团活动" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">15</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">9:16</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">社团活动</h4>
+                            <p class="work-date">2024年12月11日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+
+                    <div class="work-item" data-category="mood" onclick="openWork(6)">
+                        <div class="work-image">
+                            <img src="https://images.unsplash.com/photo-1553729784-e91953dec042?w=400&q=80" alt="心情日记" loading="lazy">
+                            <div class="work-overlay">
+                                <div class="work-actions">
+                                    <button class="action-btn like">
+                                        <span class="icon">❤️</span>
+                                        <span class="count">27</span>
+                                    </button>
+                                    <button class="action-btn share">
+                                        <span class="icon">↗️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="work-badges">
+                                <span class="work-badge">1:1</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h4 class="work-title">心情日记</h4>
+                            <p class="work-date">2024年12月10日</p>
+                        </div>
+                        <div class="work-checkbox">
+                            <input type="checkbox" class="harmony-checkbox">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载更多 -->
+                <div class="load-more-section">
+                    <button class="harmony-button secondary load-more-btn" onclick="loadMoreWorks()">
+                        <span class="icon">↻</span>
+                        <span>加载更多</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 批量操作栏 -->
+        <div class="batch-actions" id="batchActions">
+            <div class="batch-content">
+                <div class="batch-info">
+                    <span id="selectedCount">已选择 0 项</span>
+                </div>
+                <div class="batch-buttons">
+                    <button class="harmony-button text" onclick="selectAll()">全选</button>
+                    <button class="harmony-button text" onclick="shareSelected()">分享</button>
+                    <button class="harmony-button text danger" onclick="deleteSelected()">删除</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item active">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 作品预览对话框 -->
+    <div class="harmony-dialog work-preview-dialog" id="workDialog">
+        <div class="dialog-content work-preview-content">
+            <div class="dialog-header">
+                <button class="harmony-button icon-button" onclick="closeWorkDialog()">
+                    <span class="icon">✕</span>
+                </button>
+                <div class="work-actions-header">
+                    <button class="harmony-button icon-button">
+                        <span class="icon">❤️</span>
+                    </button>
+                    <button class="harmony-button icon-button">
+                        <span class="icon">↗️</span>
+                    </button>
+                    <button class="harmony-button icon-button">
+                        <span class="icon">⋯</span>
+                    </button>
+                </div>
+            </div>
+            <div class="dialog-body">
+                <div class="work-preview-image">
+                    <img id="previewWorkImage" src="" alt="作品预览">
+                </div>
+                <div class="work-preview-info">
+                    <h3 id="previewWorkTitle" class="harmony-text-heading"></h3>
+                    <p id="previewWorkDate" class="harmony-text-caption"></p>
+                    <div class="work-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">❤️</span>
+                            <span class="stat-value">24</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">👁️</span>
+                            <span class="stat-value">156</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">↗️</span>
+                            <span class="stat-value">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="harmony-button secondary" onclick="editWork()">编辑</button>
+                <button class="harmony-button primary" onclick="shareWork()">分享</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/album.js"></script>
+</body>
+</html>

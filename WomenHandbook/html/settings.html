@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 - 出片手账</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/settings.css">
+</head>
+<body>
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <button class="harmony-button icon-button" onclick="goBack()">
+                    <span class="icon">←</span>
+                </button>
+                <div class="nav-title">设置</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button" onclick="showHelp()">
+                        <span class="icon">❓</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 用户信息卡片 -->
+            <div class="harmony-card user-info-card">
+                <div class="user-profile-section">
+                    <div class="user-avatar-container">
+                        <div class="user-avatar-large">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&q=80" alt="用户头像">
+                            <div class="avatar-status">✨</div>
+                        </div>
+                        <button class="edit-avatar-large" onclick="changeAvatar()">
+                            <span class="icon">📷</span>
+                        </button>
+                    </div>
+                    <div class="user-info-details">
+                        <h2 class="user-name-large">小仙女</h2>
+                        <p class="user-level">创作达人 · 加入 128 天</p>
+                        <button class="harmony-button text edit-profile" onclick="editUserInfo()">
+                            <span class="icon">✏️</span>
+                            <span>编辑资料</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="user-stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">42</div>
+                        <div class="stat-label">创作作品</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">128</div>
+                        <div class="stat-label">使用天数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">256</div>
+                        <div class="stat-label">记录心情</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">收藏模板</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置分类导航 -->
+            <div class="harmony-card settings-nav">
+                <div class="settings-nav-header">
+                    <h3 class="harmony-text-subtitle">设置分类</h3>
+                </div>
+                <div class="harmony-scroll horizontal">
+                    <div class="nav-categories">
+                        <button class="nav-category active" onclick="showSettingsSection('privacy')">
+                            <span class="category-icon">🔒</span>
+                            <span class="category-name">隐私</span>
+                        </button>
+                        <button class="nav-category" onclick="showSettingsSection('notifications')">
+                            <span class="category-icon">🔔</span>
+                            <span class="category-name">通知</span>
+                        </button>
+                        <button class="nav-category" onclick="showSettingsSection('appearance')">
+                            <span class="category-icon">🎨</span>
+                            <span class="category-name">外观</span>
+                        </button>
+                        <button class="nav-category" onclick="showSettingsSection('data')">
+                            <span class="category-icon">💾</span>
+                            <span class="category-name">数据</span>
+                        </button>
+                        <button class="nav-category" onclick="showSettingsSection('about')">
+                            <span class="category-icon">ℹ️</span>
+                            <span class="category-name">关于</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 隐私设置 -->
+            <div class="harmony-card settings-section" id="privacySection">
+                <div class="section-header">
+                    <h2 class="harmony-text-subtitle">🔒 隐私设置</h2>
+                    <p class="harmony-text-caption">保护你的个人信息和数据安全</p>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">数据加密</h3>
+                            <p class="setting-desc">使用端到端加密保护你的手账内容</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('dataEncryption', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">匿名统计</h3>
+                            <p class="setting-desc">允许收集匿名使用数据以改善应用体验</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" onchange="toggleSetting('anonymousStats', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">自动登录</h3>
+                            <p class="setting-desc">在此设备上保持登录状态</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('autoLogin', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">数据共享</h3>
+                            <p class="setting-desc">选择数据共享级别</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="harmony-select" onchange="changeSetting('dataSharing', this.value)">
+                                <option value="none">不共享</option>
+                                <option value="anonymous">匿名共享</option>
+                                <option value="limited">有限共享</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通知设置 -->
+            <div class="harmony-card settings-section" id="notificationsSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="harmony-text-subtitle">🔔 通知设置</h2>
+                    <p class="harmony-text-caption">管理你的通知偏好和提醒方式</p>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">推送通知</h3>
+                            <p class="setting-desc">接收应用推送通知</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('pushNotifications', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">每日提醒</h3>
+                            <p class="setting-desc">每天提醒你记录心情和创作</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('dailyReminder', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">提醒时间</h3>
+                            <p class="setting-desc">设置每日提醒的时间</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="time" class="harmony-time-input" value="20:00" onchange="changeSetting('reminderTime', this.value)">
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">声音提醒</h3>
+                            <p class="setting-desc">通知时播放提示音</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('soundAlert', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">振动提醒</h3>
+                            <p class="setting-desc">通知时设备振动</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" onchange="toggleSetting('vibrationAlert', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 外观设置 -->
+            <div class="harmony-card settings-section" id="appearanceSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="harmony-text-subtitle">🎨 外观设置</h2>
+                    <p class="harmony-text-caption">个性化你的界面外观和主题</p>
+                </div>
+                
+                <!-- 主题选择 -->
+                <div class="setting-group">
+                    <h3 class="setting-group-title">主题选择</h3>
+                    <div class="theme-grid">
+                        <div class="theme-card active" onclick="selectTheme('pink-dream')">
+                            <div class="theme-preview" style="background: linear-gradient(135deg, #FF6B9D, #FFB3D1);"></div>
+                            <div class="theme-info">
+                                <h4 class="theme-name">粉色梦境</h4>
+                                <p class="theme-desc">温柔浪漫的粉色系</p>
+                            </div>
+                            <div class="theme-check">✓</div>
+                        </div>
+                        
+                        <div class="theme-card" onclick="selectTheme('purple-fantasy')">
+                            <div class="theme-preview" style="background: linear-gradient(135deg, #9C88FF, #C4B5FD);"></div>
+                            <div class="theme-info">
+                                <h4 class="theme-name">紫色幻想</h4>
+                                <p class="theme-desc">神秘优雅的紫色系</p>
+                            </div>
+                            <div class="theme-check">✓</div>
+                        </div>
+                        
+                        <div class="theme-card" onclick="selectTheme('mint-fresh')">
+                            <div class="theme-preview" style="background: linear-gradient(135deg, #4ECDC4, #A2E6E1);"></div>
+                            <div class="theme-info">
+                                <h4 class="theme-name">薄荷清新</h4>
+                                <p class="theme-desc">清新自然的薄荷绿</p>
+                            </div>
+                            <div class="theme-check">✓</div>
+                        </div>
+                        
+                        <div class="theme-card" onclick="selectTheme('peach-warm')">
+                            <div class="theme-preview" style="background: linear-gradient(135deg, #FFB88C, #FFD4B8);"></div>
+                            <div class="theme-info">
+                                <h4 class="theme-name">桃子温暖</h4>
+                                <p class="theme-desc">温暖治愈的桃子色</p>
+                            </div>
+                            <div class="theme-check">✓</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">字体大小</h3>
+                            <p class="setting-desc">调整界面字体大小</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="harmony-select" onchange="changeSetting('fontSize', this.value)">
+                                <option value="small">小</option>
+                                <option value="medium" selected>中</option>
+                                <option value="large">大</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">动画效果</h3>
+                            <p class="setting-desc">启用界面动画和过渡效果</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('animations', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">语言设置</h3>
+                            <p class="setting-desc">选择界面语言</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="harmony-select" onchange="changeSetting('language', this.value)">
+                                <option value="zh-CN" selected>简体中文</option>
+                                <option value="zh-TW">繁體中文</option>
+                                <option value="en-US">English</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据管理 -->
+            <div class="harmony-card settings-section" id="dataSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="harmony-text-subtitle">💾 数据管理</h2>
+                    <p class="harmony-text-caption">管理你的数据备份、导入和导出</p>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">自动保存</h3>
+                            <p class="setting-desc">编辑时自动保存作品</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('autoSave', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">云端同步</h3>
+                            <p class="setting-desc">将数据同步到云端</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" onchange="toggleSetting('cloudSync', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据操作按钮 -->
+                    <div class="data-actions">
+                        <div class="action-buttons-grid">
+                            <button class="harmony-button secondary action-btn" onclick="exportData()">
+                                <span class="icon">📤</span>
+                                <span>导出数据</span>
+                            </button>
+                            <button class="harmony-button secondary action-btn" onclick="importData()">
+                                <span class="icon">📥</span>
+                                <span>导入数据</span>
+                            </button>
+                            <button class="harmony-button secondary action-btn" onclick="backupToCloud()">
+                                <span class="icon">☁️</span>
+                                <span>备份到云端</span>
+                            </button>
+                            <button class="harmony-button secondary action-btn danger" onclick="clearData()">
+                                <span class="icon">🗑️</span>
+                                <span>清除数据</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 存储使用情况 -->
+                    <div class="storage-info">
+                        <h4 class="storage-title">存储使用情况</h4>
+                        <div class="storage-bar">
+                            <div class="storage-used" style="width: 15.6%"></div>
+                        </div>
+                        <p class="storage-text">已使用 15.6MB / 100MB</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 关于应用 -->
+            <div class="harmony-card settings-section" id="aboutSection" style="display: none;">
+                <div class="section-header">
+                    <h2 class="harmony-text-subtitle">ℹ️ 关于应用</h2>
+                    <p class="harmony-text-caption">了解应用信息和获取帮助</p>
+                </div>
+                
+                <!-- 应用信息 -->
+                <div class="app-info-section">
+                    <div class="app-icon-info">
+                        <div class="app-icon-large">
+                            <img src="https://images.unsplash.com/photo-1557683304-673a23048d34?w=100&q=80" alt="应用图标">
+                        </div>
+                        <div class="app-details">
+                            <h3 class="app-name">出片手账</h3>
+                            <p class="app-version">版本 1.0.0</p>
+                            <p class="app-description">专为12-20岁女性设计的温柔手账应用</p>
+                            <p class="app-copyright">© 2024 出片手账团队</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 帮助与支持 -->
+                <div class="help-section">
+                    <h4 class="help-title">帮助与支持</h4>
+                    <div class="help-grid">
+                        <button class="help-item" onclick="showTutorial()">
+                            <div class="help-icon">📖</div>
+                            <div class="help-info">
+                                <h5 class="help-name">使用教程</h5>
+                                <p class="help-desc">学习如何使用应用功能</p>
+                            </div>
+                            <div class="help-arrow">→</div>
+                        </button>
+                        
+                        <button class="help-item" onclick="showFeedback()">
+                            <div class="help-icon">💬</div>
+                            <div class="help-info">
+                                <h5 class="help-name">意见反馈</h5>
+                                <p class="help-desc">告诉我们你的想法和建议</p>
+                            </div>
+                            <div class="help-arrow">→</div>
+                        </button>
+                        
+                        <button class="help-item" onclick="showPrivacyPolicy()">
+                            <div class="help-icon">🔒</div>
+                            <div class="help-info">
+                                <h5 class="help-name">隐私政策</h5>
+                                <p class="help-desc">了解我们如何保护你的隐私</p>
+                            </div>
+                            <div class="help-arrow">→</div>
+                        </button>
+                        
+                        <button class="help-item" onclick="showUserAgreement()">
+                            <div class="help-icon">📋</div>
+                            <div class="help-info">
+                                <h5 class="help-name">用户协议</h5>
+                                <p class="help-desc">查看使用条款和协议</p>
+                            </div>
+                            <div class="help-arrow">→</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 更新设置 -->
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3 class="setting-title">自动更新</h3>
+                            <p class="setting-desc">自动检查并安装应用更新</p>
+                        </div>
+                        <div class="setting-control">
+                            <label class="harmony-switch">
+                                <input type="checkbox" checked onchange="toggleSetting('autoUpdate', this.checked)">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="update-action">
+                        <button class="harmony-button primary" onclick="checkUpdate()">
+                            <span class="icon">🔄</span>
+                            <span>检查更新</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item" onclick="navigateTo('index.html')">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('album.html')">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item active">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认对话框 -->
+    <div class="harmony-dialog confirm-dialog" id="confirmDialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3 class="harmony-text-heading" id="confirmTitle">确认操作</h3>
+            </div>
+            <div class="dialog-body">
+                <p id="confirmMessage" class="harmony-text-body">确定要执行此操作吗？</p>
+            </div>
+            <div class="dialog-footer">
+                <button class="harmony-button secondary" onclick="closeConfirmDialog()">取消</button>
+                <button class="harmony-button primary" id="confirmButton" onclick="confirmAction()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/settings.js"></script>
+</body>
+</html>

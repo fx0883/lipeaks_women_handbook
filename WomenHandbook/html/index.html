@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出片手账 - 鸿蒙UI原型</title>
+    <link rel="stylesheet" href="styles/harmonyos-design.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- 鸿蒙应用主容器 -->
+    <div class="harmony-app">
+        <!-- 顶部导航栏 -->
+        <div class="harmony-navigation">
+            <div class="nav-content">
+                <div class="nav-title">出片手账</div>
+                <div class="nav-actions">
+                    <button class="harmony-button icon-button">
+                        <span class="icon">🔍</span>
+                    </button>
+                    <button class="harmony-button icon-button" onclick="navigateTo('settings.html')">
+                        <span class="icon">⚙️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区域 - 使用Column布局 -->
+        <div class="harmony-column main-content">
+            
+            <!-- 头部banner区域 -->
+            <div class="harmony-card welcome-banner">
+                <div class="harmony-column">
+                    <div class="banner-content">
+                        <h1 class="harmony-text-title">欢迎回来</h1>
+                        <p class="harmony-text-body">把日常小确幸制作成美美的手账吧 ✨</p>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="harmony-row action-buttons">
+                            <button class="harmony-button primary">
+                                <span class="icon">🎨</span>
+                                <span>开始创作</span>
+                            </button>
+                            <button class="harmony-button secondary">
+                                <span class="icon">😊</span>
+                                <span>情绪打卡</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能网格 - 使用Grid布局 -->
+            <div class="harmony-card">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">主要功能</h2>
+                </div>
+                <div class="harmony-grid feature-grid">
+                    <div class="harmony-card feature-item">
+                        <div class="feature-icon">🎨</div>
+                        <div class="feature-info">
+                            <h3 class="harmony-text-body-strong">模板创作</h3>
+                            <p class="harmony-text-caption">选择喜欢的模板快速出片</p>
+                        </div>
+                        <div class="feature-action">
+                            <button class="harmony-button text">进入</button>
+                        </div>
+                    </div>
+                    
+                    <div class="harmony-card feature-item">
+                        <div class="feature-icon">😊</div>
+                        <div class="feature-info">
+                            <h3 class="harmony-text-body-strong">情绪记录</h3>
+                            <p class="harmony-text-caption">记录每日心情变化</p>
+                        </div>
+                        <div class="feature-action">
+                            <button class="harmony-button text">记录</button>
+                        </div>
+                    </div>
+                    
+                    <div class="harmony-card feature-item">
+                        <div class="feature-icon">📸</div>
+                        <div class="feature-info">
+                            <h3 class="harmony-text-body-strong">我的相册</h3>
+                            <p class="harmony-text-caption">查看所有创作作品</p>
+                        </div>
+                        <div class="feature-action">
+                            <button class="harmony-button text">查看</button>
+                        </div>
+                    </div>
+                    
+                    <div class="harmony-card feature-item">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-info">
+                            <h3 class="harmony-text-body-strong">待办清单</h3>
+                            <p class="harmony-text-caption">管理日常待办事项</p>
+                        </div>
+                        <div class="feature-action">
+                            <button class="harmony-button text">管理</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 热门模板区域 -->
+            <div class="harmony-card">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">热门模板</h2>
+                    <button class="harmony-button text">查看全部</button>
+                </div>
+                <div class="harmony-scroll horizontal">
+                    <div class="template-list">
+                        <div class="template-item">
+                            <div class="template-image">
+                                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=300&q=80" alt="校园日常">
+                                <div class="template-badge">4:5</div>
+                            </div>
+                            <div class="template-info">
+                                <h4 class="harmony-text-body-strong">校园日常拼贴</h4>
+                                <p class="harmony-text-caption">记录美好校园时光</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-item">
+                            <div class="template-image">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80" alt="社团招新">
+                                <div class="template-badge">9:16</div>
+                            </div>
+                            <div class="template-info">
+                                <h4 class="harmony-text-body-strong">社团招新海报</h4>
+                                <p class="harmony-text-caption">制作精美招新海报</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-item">
+                            <div class="template-image">
+                                <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=300&q=80" alt="Citywalk">
+                                <div class="template-badge">9:16</div>
+                            </div>
+                            <div class="template-info">
+                                <h4 class="harmony-text-body-strong">Citywalk记录</h4>
+                                <p class="harmony-text-caption">分享城市探索之旅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-item">
+                            <div class="template-image">
+                                <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=300&q=80" alt="美食日记">
+                                <div class="template-badge">1:1</div>
+                            </div>
+                            <div class="template-info">
+                                <h4 class="harmony-text-body-strong">美食日记</h4>
+                                <p class="harmony-text-caption">记录美味瞬间</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近作品 -->
+            <div class="harmony-card">
+                <div class="card-header">
+                    <h2 class="harmony-text-subtitle">最近作品</h2>
+                    <button class="harmony-button text">查看全部</button>
+                </div>
+                <div class="harmony-grid recent-works">
+                    <div class="work-item">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&q=80" alt="作品1">
+                    </div>
+                    <div class="work-item">
+                        <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=200&q=80" alt="作品2">
+                    </div>
+                    <div class="work-item">
+                        <img src="https://images.unsplash.com/photo-1553729784-e91953dec042?w=200&q=80" alt="作品3">
+                    </div>
+                    <div class="work-item">
+                        <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200&q=80" alt="作品4">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="harmony-tab-bar">
+            <div class="tab-item active">
+                <div class="tab-icon">🏠</div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('create.html')">
+                <div class="tab-icon">🎨</div>
+                <div class="tab-label">创作</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('mood.html')">
+                <div class="tab-icon">😊</div>
+                <div class="tab-label">打卡</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('album.html')">
+                <div class="tab-icon">📸</div>
+                <div class="tab-label">相册</div>
+            </div>
+            <div class="tab-item" onclick="navigateTo('settings.html')">
+                <div class="tab-icon">👤</div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 暗色模式切换浮动按钮 -->
+    <button class="harmony-floating-button theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌙</span>
+    </button>
+
+    <script src="scripts/main.js"></script>
+    <script>
+        // 页面导航
+        function navigateTo(page) {
+            // 添加页面切换动画
+            document.body.classList.add('page-transition');
+            setTimeout(() => {
+                window.location.href = page;
+            }, 200);
+        }
+    </script>
+</body>
+</html>
